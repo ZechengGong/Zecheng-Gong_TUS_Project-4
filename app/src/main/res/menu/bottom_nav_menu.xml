@@ -7,7 +7,10 @@
     <item android:title="Service"
           android:icon="@drawable/service_dog"
           android:id="@+id/service"/>
+
     <item android:title="Moments"
           android:icon="@drawable/village"
           android:id="@+id/moments"/>
+    <item
+        android:title=""/>
 </menu>

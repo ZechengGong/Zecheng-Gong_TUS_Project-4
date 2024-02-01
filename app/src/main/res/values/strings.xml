@@ -20,4 +20,7 @@
     <string name="promotions">Early access to Christmas promotions!</string>
     <string name="communityManager">Community Administrator</string>
     <string name="communityManager_text">Welcome to the Pet Village community!</string>
+
+    <string name="TestUser1">Crazy Potatoes</string>
+    <string name="TestUser1Content">Today, I spent a delightful day at the park with my dog. The sun was shining brightly, casting a warm glow over the lush greenery. My dog, full of energy, ran around the park...</string>
 </resources>
