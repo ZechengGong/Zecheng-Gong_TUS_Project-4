@@ -111,6 +111,14 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         }
     }
 
+    private void populateSuggestions(String[] suggestions, CursorAdapter adapter) {
+        MatrixCursor cursor = new MatrixCursor(new String[] {BaseColumns._ID, "suggestion"});
+        for (int i = 0; i < suggestions.length; i++) {
+            cursor.addRow(new Object[] {i, suggestions[i]});
+        }
+        adapter.changeCursor(cursor);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -188,30 +196,40 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             }
         });
 
-
-
-
-
-
-        //Add searchView
+        //Add searchView/////////////////////////////////////////////
 
         SearchView searchView = Home.findViewById(R.id.searchView); // 确保您有一个名为searchView的SearchView在您的fragment_home.xml布局中
         BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
 
-        // 设置搜索框建议的 CursorAdapter
-        final String[] from = new String[] {"suggestion"};
-        final int[] to = new int[] {android.R.id.text1};
+//        // 设置搜索框建议的 CursorAdapter
+//        final String[] from = new String[] {"suggestion"};
+//        final int[] to = new int[] {android.R.id.text1};
 
         MatrixCursor cursor = new MatrixCursor(new String[] {BaseColumns._ID, "suggestion"});
         for (int i = 0; i < SUGGESTIONS.length; i++) {
             cursor.addRow(new Object[] {i, SUGGESTIONS[i]});
         }
 
-        CursorAdapter suggestionAdapter = new SimpleCursorAdapter(getActivity(),
-                android.R.layout.simple_list_item_1, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        CursorAdapter suggestionAdapter = new SimpleCursorAdapter(
+                getActivity(),
+                android.R.layout.simple_list_item_1,
+                cursor,
+                new String[] {"suggestion"},
+                new int[] {android.R.id.text1},
+                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
+        );
         searchView.setSuggestionsAdapter(suggestionAdapter);
 
 
+        // 当 SearchView 获得焦点时显示所有建议
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    populateSuggestions(SUGGESTIONS, suggestionAdapter); // 显示所有建议
+                }
+            }
+        });
 
         // 设置搜索框的监听器
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -224,14 +242,38 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                     transaction.addToBackStack(null);
                     transaction.commit();
                     bottomNavigationView.setSelectedItemId(R.id.service); // 使用您 Service Fragment 对应的菜单项 ID
-                    return true;
+                    return true; // 如果处理了查询，则返回 true
                 }
+
+                if ("Moments".equalsIgnoreCase(query)) {
+                    Fragment serviceFragment = new ServiceFragment(); // Assuming ServiceFragment is a Fragment
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, serviceFragment); // 'container' is your FrameLayout or the id of the Fragment container
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    bottomNavigationView.setSelectedItemId(R.id.moments); // 使用您 Service Fragment 对应的菜单项 ID
+                    return true; // 如果处理了查询，则返回 true
+                }
+
+                // 如果没有处理查询，则返回 false
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // Implement search suggestions logic here if needed
+                // 始终显示建议，即使 newText 为空，也显示所有建议
+                if (newText.isEmpty()) {
+                    populateSuggestions(SUGGESTIONS, suggestionAdapter);
+                } else {
+                    // 根据输入 newText 过滤建议
+                    List<String> filteredSuggestions = new ArrayList<>();
+                    for (String suggestion : SUGGESTIONS) {
+                        if (suggestion.toLowerCase().contains(newText.toLowerCase())) { // 改为 contains 实现模糊搜索
+                            filteredSuggestions.add(suggestion);
+                        }
+                    }
+                    populateSuggestions(filteredSuggestions.toArray(new String[0]), suggestionAdapter);
+                }
                 return true;
             }
         });
@@ -257,7 +299,6 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             }
         });
 
-
         // 设置根视图的触摸监听器
         Home.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -277,10 +318,21 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             }
         });
 
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.onActionViewExpanded(); // 手动扩展 SearchView
+                populateSuggestions(SUGGESTIONS, suggestionAdapter); // 显示所有建议
+            }
+        });
+
+
 
         return Home;
     }
 
+
+    //End of Search
 
     @Override
     public boolean onBackPressed() {
