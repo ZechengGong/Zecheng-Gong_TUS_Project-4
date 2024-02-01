@@ -38,7 +38,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import android.database.Cursor;
 
+import org.imaginativeworld.whynotimagecarousel.ImageCarousel;
+import org.imaginativeworld.whynotimagecarousel.model.CarouselItem;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -118,6 +122,18 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         card_dogs = Home.findViewById(R.id.card_dogs);
         card_cats = Home.findViewById(R.id.card_cats);
         card_nearby = Home.findViewById(R.id.card_nearby);
+
+        ImageCarousel imageCarousel = Home.findViewById(R.id.carousel);
+        imageCarousel.registerLifecycle(getLifecycle());
+        imageCarousel.setAutoPlay(true);
+
+        List< CarouselItem> list = new ArrayList<>();
+        list.add(new CarouselItem("https://images.unsplash.com/photo-1706430201079-7ca144fbe95d?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Hi"));
+        list.add(new CarouselItem("https://images.unsplash.com/photo-1682685796467-89a6f149f07a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"));
+        list.add(new CarouselItem(R.drawable.cat,"Hi"));
+
+        imageCarousel.setData(list);
+//////////////////////////////////////////////////////////////////////////
 
 //        card_dogs.setOnClickListener(new View.OnClickListener() {
 //            @Override
