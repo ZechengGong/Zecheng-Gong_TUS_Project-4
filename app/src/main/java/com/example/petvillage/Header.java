@@ -19,12 +19,6 @@ public class Header extends AppCompatActivity {
         setContentView(R.layout.header);
 
 
-
-
-
-
-
-
     }
 }
 

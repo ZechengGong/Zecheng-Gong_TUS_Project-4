@@ -139,17 +139,18 @@ public class ServiceFragment extends Fragment {
         floating_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent send = new Intent(getActivity(),Service_received.class);
+                Intent send = new Intent(getActivity(), Service_received.class);
 
                 send.putExtra("ItemsToSend", msg + "\n");
                 startActivity(send);
                 msg = "";
-                getActivity().overridePendingTransition(R.transition.slide_in_right,R.transition.slide_out_left);
+                getActivity().overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
         });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         return Service;
     }
+
     public class MyAdapter extends BaseAdapter {
 
         @Override

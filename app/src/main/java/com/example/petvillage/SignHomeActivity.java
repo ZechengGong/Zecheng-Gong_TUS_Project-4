@@ -23,7 +23,7 @@ import java.net.URL;
 
 public class SignHomeActivity extends AppCompatActivity {
 
-    private TextView name,mail;
+    private TextView name, mail;
     private Button logout;
     private ImageView photo;
     private CardView cardView;
@@ -47,10 +47,10 @@ public class SignHomeActivity extends AppCompatActivity {
                 .requestProfile()
                 .build();
 
-        gsc = GoogleSignIn.getClient(this,gso);
+        gsc = GoogleSignIn.getClient(this, gso);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account!=null){
+        if (account != null) {
 
             String Name = account.getDisplayName();
             String Mail = account.getEmail();
@@ -77,9 +77,9 @@ public class SignHomeActivity extends AppCompatActivity {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent go = new Intent(SignHomeActivity.this,MainActivity.class);
+                Intent go = new Intent(SignHomeActivity.this, MainActivity.class);
                 startActivity(go);
-                overridePendingTransition(R.transition.slide_in_left,R.transition.slide_out_right);// transition
+                overridePendingTransition(R.transition.slide_in_left, R.transition.slide_out_right);// transition
 
             }
         });
@@ -92,7 +92,7 @@ public class SignHomeActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
                 finish();
-                startActivity(new Intent(getApplicationContext(),Login.class));
+                startActivity(new Intent(getApplicationContext(), Login.class));
 
             }
         });

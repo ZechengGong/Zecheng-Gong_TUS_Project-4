@@ -35,7 +35,7 @@ public class Login extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        gsc = GoogleSignIn.getClient(this,gso);
+        gsc = GoogleSignIn.getClient(this, gso);
 
         google_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,18 +45,18 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private void SignIn(){
+    private void SignIn() {
 
         Intent intent = gsc.getSignInIntent();
-        startActivityForResult(intent,100);
+        startActivityForResult(intent, 100);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==100){
-            Task<GoogleSignInAccount> task= GoogleSignIn.getSignedInAccountFromIntent(data);
+        if (requestCode == 100) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
                 task.getResult(ApiException.class);
@@ -67,12 +67,12 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    private void HomeActivity(){
+    private void HomeActivity() {
 
         finish();
-        Intent intent = new Intent(getApplicationContext(),SignHomeActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SignHomeActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.transition.slide_in_right,R.transition.slide_out_left);// transition
+        overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);// transition
 
     }
 }

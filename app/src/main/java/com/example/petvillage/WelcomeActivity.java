@@ -23,7 +23,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     finish();
                     Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
                     startActivity(i);
-                    overridePendingTransition(R.transition.slide_in_right,R.transition.slide_out_left);
+                    overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                 }
             }
         };

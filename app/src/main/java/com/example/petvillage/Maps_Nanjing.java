@@ -12,7 +12,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Maps_Nanjing extends AppCompatActivity
-            implements OnMapReadyCallback {
+        implements OnMapReadyCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +25,14 @@ public class Maps_Nanjing extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            LatLng nanjing = new LatLng(32.026332730000625, 118.80490457347275);
-            googleMap.addMarker(new MarkerOptions()
-                    .position(nanjing)
-                    .title("Marker in Nanjing Head Store"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(nanjing));
-            googleMap.setMinZoomPreference(11);
-        }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng nanjing = new LatLng(32.026332730000625, 118.80490457347275);
+        googleMap.addMarker(new MarkerOptions()
+                .position(nanjing)
+                .title("Marker in Nanjing Head Store"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(nanjing));
+        googleMap.setMinZoomPreference(11);
     }
+}

@@ -36,8 +36,7 @@ public class Service_received extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(drawerToggle.onOptionsItemSelected(item))
-        {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -83,7 +82,7 @@ public class Service_received extends AppCompatActivity {
                 saved_text = converToString(ls_received_text);
                 Toast.makeText(Service_received.this, saved_text, Toast.LENGTH_SHORT).show();
 
-                database = getApplicationContext().getSharedPreferences("service_data_store",MODE_PRIVATE);
+                database = getApplicationContext().getSharedPreferences("service_data_store", MODE_PRIVATE);
                 SharedPreferences.Editor editor = database.edit();
                 editor.putString("key_saved_text", saved_text);
                 editor.commit();
@@ -106,32 +105,28 @@ public class Service_received extends AppCompatActivity {
 // /////////////////////////////////////////////////////////////////////////////////
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.drawer_view);
-        drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId())
-                {
-                    case R.id.home:
-                    {
+                switch (item.getItemId()) {
+                    case R.id.home: {
                         Intent go = new Intent(Service_received.this, MainActivity.class);
                         startActivity(go);
-                        overridePendingTransition(R.transition.slide_in_right,R.transition.slide_out_left);
+                        overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
-                    case R.id.contact:
-                    {
+                    case R.id.contact: {
                         Intent i = new Intent();
                         i.setAction(Intent.ACTION_DIAL);
                         i.setData(Uri.parse("tel:" + 400123456));
                         startActivity(i);
                         break;
                     }
-                    case R.id.email:
-                    {
+                    case R.id.email: {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"petvillage@petvilg.ie"});
                         i.putExtra(Intent.EXTRA_SUBJECT, "From Ms./ Mr. / Mx.");
@@ -140,27 +135,24 @@ public class Service_received extends AppCompatActivity {
                         startActivity(Intent.createChooser(i, "Send Mail Using :"));
                         break;
                     }
-                    case R.id.about:
-                    {
+                    case R.id.about: {
                         Intent goAbout = new Intent(Service_received.this, About.class);
                         startActivity(goAbout);
-                        overridePendingTransition(R.transition.slide_in_right,R.transition.slide_out_left);
+                        overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
 
-                    case R.id.login:
-                    {
+                    case R.id.login: {
                         Intent gologin = new Intent(Service_received.this, Login.class);
                         startActivity(gologin);
-                        overridePendingTransition(R.transition.slide_in_right,R.transition.slide_out_left);
+                        overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
 
-                    case R.id.logout:
-                    {
+                    case R.id.logout: {
                         Intent gologout = new Intent(Service_received.this, SignHomeActivity.class);
                         startActivity(gologout);
-                        overridePendingTransition(R.transition.slide_in_right,R.transition.slide_out_left);
+                        overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
                 }
@@ -168,43 +160,40 @@ public class Service_received extends AppCompatActivity {
             }
         });
     }
-        public ArrayList<String> converToArrayList(String str)
-        {
 
-            String[] strSplit = str.split(",");
+    public ArrayList<String> converToArrayList(String str) {
 
-            ArrayList<String> strList = new ArrayList<String>(
-                    Arrays.asList(strSplit));
+        String[] strSplit = str.split(",");
 
-            return strList;
+        ArrayList<String> strList = new ArrayList<String>(
+                Arrays.asList(strSplit));
+
+        return strList;
+    }
+
+    public String converToString(ArrayList<String> arr) {
+        StringBuffer sb = new StringBuffer();
+        for (String s : arr) {
+            sb.append(s);
+            sb.append(",");
         }
-
-        public String converToString(ArrayList<String> arr)
-        {
-            StringBuffer sb = new StringBuffer();
-            for (String s : arr) {
-                        sb.append(s);
-                        sb.append(",");
-            }
-            String str = sb.toString();
-            str = str.substring(0, str.length() -1);
-            return str;
-        }
+        String str = sb.toString();
+        str = str.substring(0, str.length() - 1);
+        return str;
+    }
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START))
-        {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
 
-        @Override
-        public void finish() {
-            super.finish();
-            overridePendingTransition(R.transition.slide_in_left,R.transition.slide_out_right);// transition
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.transition.slide_in_left, R.transition.slide_out_right);// transition
     }
 }

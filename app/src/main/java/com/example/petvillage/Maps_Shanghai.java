@@ -12,18 +12,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Maps_Shanghai extends AppCompatActivity
-                       implements OnMapReadyCallback{
+        implements OnMapReadyCallback {
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_maps_shanghai);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps_shanghai);
 
-            // Get the SupportMapFragment and request notification when the map is ready to be used.
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map_sh);
-            mapFragment.getMapAsync(this);
-        }
+        // Get the SupportMapFragment and request notification when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map_sh);
+        mapFragment.getMapAsync(this);
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         LatLng shanghai = new LatLng(31.20897925639823, 121.49688018722419);
