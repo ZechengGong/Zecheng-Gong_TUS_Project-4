@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
     private CardView card_nearby;
     private CardView card_cats;
 
-    private static final String[] SUGGESTIONS = {"Service", "Moments", "Login", "About"};
+    private static final String[] SUGGESTIONS = {"Service&Shopping", "Moments", "Login", "About"};
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -236,7 +236,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if ("Service".equalsIgnoreCase(query)) {
+                if ("Service&Shopping".equalsIgnoreCase(query)) {
                     Fragment serviceFragment = new ServiceFragment(); // Assuming ServiceFragment is a Fragment
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, serviceFragment); // 'container' is your FrameLayout or the id of the Fragment container

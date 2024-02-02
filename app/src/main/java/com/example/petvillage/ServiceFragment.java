@@ -90,89 +90,8 @@ public class ServiceFragment extends Fragment {
         // Inflate the layout for this fragment
         View Service = inflater.inflate(R.layout.fragment_service, container, false);
 
-        list_service = Service.findViewById(R.id.list_service);
-        floating_submit = Service.findViewById(R.id.floating_submit);
-
-        ls_service_text = new ArrayList<>();
-        ls_service_text.add("Cleaning Service");
-        ls_service_text.add("Shearing Service");
-        ls_service_text.add("Pet Checkup");
-        ls_service_text.add("Pet Vaccines");
-        ls_service_text.add("Pet Sterilization");
-
-        ls_service_fee = new ArrayList<>();
-        ls_service_fee.add("€15 Once");
-        ls_service_fee.add("€19 Once");
-        ls_service_fee.add("Starting at\n€89");
-        ls_service_fee.add("Starting at\n€129");
-        ls_service_fee.add("Starting at\n€699");
-
-        ls_service_images = new ArrayList<>();
-        ls_service_images.add(R.drawable.bathing_dog);
-        ls_service_images.add(R.drawable.dog_haircut);
-        ls_service_images.add(R.drawable.medical_checkup);
-        ls_service_images.add(R.drawable.pet_vaccines);
-        ls_service_images.add(R.drawable.sterilization);
-
-        MyAdapter adapter = new MyAdapter();
-        list_service.setAdapter(adapter);
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-        list_service.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String myText = ls_service_text.get(i);
-                msg = msg + myText + "," + "\n";
-                Toast.makeText(getActivity(), ls_service_text.get(i) + "is added to list", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
-        list_service.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), "Please LONG Press the item to select", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        floating_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent send = new Intent(getActivity(), Service_received.class);
-
-                send.putExtra("ItemsToSend", msg + "\n");
-                startActivity(send);
-                msg = "";
-                getActivity().overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
-            }
-        });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         return Service;
     }
 
-    public class MyAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return ls_service_images.size();  //added this
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-
-            view = getLayoutInflater().inflate(R.layout.list_service_cards, viewGroup, false);
-            return view;
-        }
-    }
 }

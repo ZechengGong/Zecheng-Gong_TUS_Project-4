@@ -1,115 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ServiceFragment" >
+    tools:context=".ServiceFragment">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F8C986"
+        android:padding="16dp"
+        android:text="Pet Village Official Store"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <!-- 商品列表容器 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:background="#FBECD5">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:padding="16dp">
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
+            <!-- 商品2的位置 -->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="140dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginBottom="16dp">
 
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="230dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/home_sousuo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/btn_search"
-                    android:layout_width="79dp"
-                    android:layout_height="38dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/home_btn"
-                    android:text="搜 索"
-                    android:textColor="#fff"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/view"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:textSize="15sp" />
-
+                <!-- 商品图片 -->
                 <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="30dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/sousuo"
-                    app:layout_constraintBottom_toBottomOf="@+id/view"
-                    app:layout_constraintStart_toStartOf="@+id/view"
-                    app:layout_constraintTop_toTopOf="@+id/view" />
+                    android:id="@+id/product_image_2"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/test_dog_food_1" /> <!-- 替换为商品的图片资源 -->
 
-                <EditText
-                    android:id="@+id/et_search"
-                    android:layout_width="170dp"
-                    android:layout_height="26dp"
-                    android:layout_marginStart="3dp"
-                    android:background="#fff"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    app:layout_constraintBottom_toBottomOf="@+id/view"
-                    app:layout_constraintStart_toEndOf="@+id/imageView8"
-                    app:layout_constraintTop_toTopOf="@+id/view" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <!-- 商品描述 -->
+                <TextView
+                    android:id="@+id/product_description_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/product_image_2"
+                    android:text="Dog snacks freeze-dried chicken"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
+                <!-- 商品价格 -->
+                <TextView
+                    android:id="@+id/product_price_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/product_description_2"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_toRightOf="@id/product_image_2"
+                    android:text="€6.99"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- 商品2的位置（复制上面的代码块并将id更改为product_2） -->
+            <!-- 商品2的位置 -->
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/guideline5">
+                android:layout_marginBottom="16dp">
 
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tab_layout"
+                <!-- 商品图片 -->
+                <ImageView
+                    android:id="@+id/product_image_1"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/test_dog_food_2" /> <!-- 替换为商品的图片资源 -->
+
+                <!-- 商品描述 -->
+                <TextView
+                    android:id="@+id/product_description_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Monday" />
+                    android:layout_toRightOf="@id/product_image_1"
+                    android:text="All natural dog biscuits"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-                <com.google.android.material.tabs.TabItem
+                <!-- 商品价格 -->
+                <TextView
+                    android:id="@+id/product_price_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tuesday" />
+                    android:layout_below="@id/product_description_1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="37dp"
+                    android:layout_toRightOf="@id/product_image_1"
+                    android:text="€2.99"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Wednesday" />
-            </com.google.android.material.tabs.TabLayout>
-
-            <ListView
-                android:id="@+id/lv_list"
+            <!-- 商品3的位置（复制上面的代码块并将id更改为product_3） -->
+            <!-- 商品3的位置（复制上面的代码块并将id更改为product_2） -->
+            <!-- 商品3的位置 -->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:scrollbars="none" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <!-- 商品图片 -->
+                <ImageView
+                    android:id="@+id/product_image_3"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/test_dog_food_3" /> <!-- 替换为商品的图片资源 -->
+
+                <!-- 商品描述 -->
+                <TextView
+                    android:id="@+id/product_description_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/product_image_3"
+                    android:text="Chicken Dumbbells"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <!-- 商品价格 -->
+                <TextView
+                    android:id="@+id/product_price_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/product_description_3"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="37dp"
+                    android:layout_toRightOf="@id/product_image_3"
+                    android:text="€3.99"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- 商品4的位置（复制上面的代码块并将id更改为product_4） -->
+            <!-- 商品4的位置 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <!-- 商品图片 -->
+                <ImageView
+                    android:id="@+id/product_image_4"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/test_dog_food_4" /> <!-- 替换为商品的图片资源 -->
+
+                <!-- 商品描述 -->
+                <TextView
+                    android:id="@+id/product_description_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/product_image_4"
+                    android:text="Chicken Dumbbells"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <!-- 商品价格 -->
+                <TextView
+                    android:id="@+id/product_price_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/product_description_4"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="37dp"
+                    android:layout_toRightOf="@id/product_image_4"
+                    android:text="€2.99"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- 商品5的位置 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <!-- 商品图片 -->
+                <ImageView
+                    android:id="@+id/product_image_5"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/test_dog_food_5" /> <!-- 替换为商品的图片资源 -->
+
+                <!-- 商品描述 -->
+                <TextView
+                    android:id="@+id/product_description_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/product_image_5"
+                    android:text="Special for poodle teddy dogs"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <!-- 商品价格 -->
+                <TextView
+                    android:id="@+id/product_price_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/product_description_5"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_toRightOf="@id/product_image_5"
+                    android:text="€2.99"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
 
         </LinearLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
+    </ScrollView>
+</RelativeLayout>

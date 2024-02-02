@@ -23,4 +23,9 @@
 
     <string name="TestUser1">Crazy Potatoes</string>
     <string name="TestUser1Content">Today, I spent a delightful day at the park with my dog. The sun was shining brightly, casting a warm glow over the lush greenery. My dog, full of energy, ran around the park...</string>
+    <string name="TestUser2">Villager221</string>
+    <string name="TestUser2Content">What kind of puppy should I have?</string>
+
+
+
 </resources>
