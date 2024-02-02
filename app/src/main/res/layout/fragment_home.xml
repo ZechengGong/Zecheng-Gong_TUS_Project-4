@@ -214,6 +214,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="416dp"
             android:layout_height="335dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:background="#CAAEAE"
             app:cardBackgroundColor="#E4A951"
             app:cardCornerRadius="50dp"
@@ -259,9 +261,11 @@
 
                 <TextView
                     android:id="@+id/textView23"
-                    android:layout_width="413dp"
-                    android:layout_height="309dp"
+                    android:layout_width="386dp"
+                    android:layout_height="291dp"
+                    android:layout_marginStart="15dp"
                     android:layout_marginTop="56dp"
+                    android:layout_marginEnd="15dp"
                     android:text="@string/TestUser1Content"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -333,8 +337,8 @@
                     android:id="@+id/imageView16"
                     android:layout_width="34dp"
                     android:layout_height="25dp"
-                    android:layout_marginStart="218dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="192dp"
+                    android:layout_marginTop="16dp"
                     android:src="@drawable/tick"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

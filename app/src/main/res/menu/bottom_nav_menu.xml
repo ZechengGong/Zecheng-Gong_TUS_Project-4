@@ -19,6 +19,6 @@
           android:id="@+id/moments"/>
     <item
         android:title="Assistance"
-        android:icon="@drawable/village"
+        android:icon="@drawable/pet_care"
         android:id="@+id/Assistance" />
 </menu>
