@@ -7,271 +7,67 @@
     tools:context=".MomentsFragment"
     android:background="@color/white">
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_marginTop="235dp"
-        app:cardCornerRadius="50dp">
+        android:layout_height="match_parent"
+        >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/imageViewAdd"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="100dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/add_image" />
+
+        <EditText
+            android:id="@+id/inputText"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="0sp"
-            android:background="#1E787575">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewAdd"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="284dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="40dp"
+            android:hint="Enter something here..." />
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="46dp"
-                android:layout_height="43dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/girl"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/communityManager"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="40dp"
-                android:text="1 hours ago"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="68dp"
-                android:text="@string/communityManager_text"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/image4"
-                android:layout_width="147dp"
-                android:layout_height="123dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="100dp"
-                android:src="@drawable/nanjing"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="147dp"
-                android:layout_height="123dp"
-                android:layout_marginStart="184dp"
-                android:layout_marginTop="100dp"
-                android:src="@drawable/nanjing1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="34dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="280dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/tick"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:background="#CAAEAE"
-        app:cardCornerRadius="50dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/textViewProgress"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#1E787575">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inputText"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="0%"
+            android:textSize="25dp"/>
 
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="46dp"
-                android:layout_height="43dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/guide_dog_avatar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/official"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="40dp"
-                android:text="52min ago"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="68dp"
-                android:text="@string/promotions"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/image_goods"
-                android:layout_width="147dp"
-                android:layout_height="123dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="100dp"
-                android:src="@drawable/goods1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="147dp"
-                android:layout_height="123dp"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="100dp"
-                android:src="@drawable/goods4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView15"
-                android:layout_width="147dp"
-                android:layout_height="123dp"
-                android:layout_marginStart="196dp"
-                android:layout_marginTop="100dp"
-                android:src="@drawable/goods"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView16"
-                android:layout_width="34dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="218dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/tick"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_marginTop="470dp"
-        app:cardCornerRadius="50dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="0sp"
-            android:background="#1E787575">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewProgress"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="40dp" />
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="46dp"
-                android:layout_height="43dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/woman"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/btnUpload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/progressBar"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="40dp"
+            android:text="POST" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/TestUser2"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="40dp"
-                android:text="2 hours ago"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="68dp"
-                android:text="@string/TestUser2Content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="147dp"
-                android:layout_height="123dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="100dp"
-                android:src="@drawable/test_dog_7"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="147dp"
-                android:layout_height="123dp"
-                android:layout_marginStart="184dp"
-                android:layout_marginTop="100dp"
-                android:src="@drawable/test_dog_8"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
+    </RelativeLayout>
 </FrameLayout>

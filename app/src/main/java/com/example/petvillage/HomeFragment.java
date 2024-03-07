@@ -136,9 +136,9 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         imageCarousel.setAutoPlay(true);
 
         List< CarouselItem> list = new ArrayList<>();
-        list.add(new CarouselItem("https://images.unsplash.com/photo-1706512990173-91e7797cb3d0?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
-        list.add(new CarouselItem("https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
-        list.add(new CarouselItem("https://images.unsplash.com/photo-1554692918-08fa0fdc9db3?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
+//        list.add(new CarouselItem("https://images.unsplash.com/photo-1706512990173-91e7797cb3d0?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
+//        list.add(new CarouselItem("https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
+//        list.add(new CarouselItem("https://images.unsplash.com/photo-1554692918-08fa0fdc9db3?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
         // list.add(new CarouselItem(R.drawable.cat,"Hi"));
 
         imageCarousel.setData(list);
@@ -326,8 +326,6 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 populateSuggestions(SUGGESTIONS, suggestionAdapter); // 显示所有建议
             }
         });
-
-
 
         return Home;
     }
