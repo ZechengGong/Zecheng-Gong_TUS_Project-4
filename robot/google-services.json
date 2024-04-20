@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "87335065200",
+    "firebase_url": "https://my-project-pet-village-default-rtdb.firebaseio.com",
+    "project_id": "my-project-pet-village",
+    "storage_bucket": "my-project-pet-village.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87335065200:android:042cb22876d359d15086b5",
+        "android_client_info": {
+          "package_name": "com.example.petvillage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87335065200-og52eonkslacd09hc7oh8uu9doag1fp0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcuwtRlIkdixoD-eTU8hPufkQx54zqYmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87335065200-g05jtuhqd24fgtv2r7l72u2fk2notvtm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87335065200:android:4701d7df18550e7f5086b5",
+        "android_client_info": {
+          "package_name": "com.example.robot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87335065200-og52eonkslacd09hc7oh8uu9doag1fp0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcuwtRlIkdixoD-eTU8hPufkQx54zqYmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87335065200-g05jtuhqd24fgtv2r7l72u2fk2notvtm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
