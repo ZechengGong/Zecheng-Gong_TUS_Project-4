@@ -9,11 +9,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -101,7 +99,7 @@ public class Nearby extends AppCompatActivity {
         maps_nanjing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Nearby.this, Maps_Nanjing.class);
+                Intent i = new Intent(Nearby.this, Maps_Dublin.class);
                 startActivity(i);
                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
@@ -110,7 +108,7 @@ public class Nearby extends AppCompatActivity {
         maps_shanghai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Nearby.this, Maps_Shanghai.class);
+                Intent i = new Intent(Nearby.this, Maps_Galway.class);
                 startActivity(i);
                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }

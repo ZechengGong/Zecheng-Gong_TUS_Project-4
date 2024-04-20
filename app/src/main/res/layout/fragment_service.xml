@@ -35,18 +35,13 @@
                 android:layout_marginBottom="16dp">
 
                 <!-- 商品图片 -->
-                <ImageView
-                    android:id="@+id/product_image_2"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/test_dog_food_1" /> <!-- 替换为商品的图片资源 -->
+                <!-- 替换为商品的图片资源 -->
 
                 <!-- 商品描述 -->
                 <TextView
                     android:id="@+id/product_description_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/product_image_2"
                     android:text="Dog snacks freeze-dried chicken"
                     android:textSize="25dp"
                     android:textStyle="bold" />
@@ -59,7 +54,6 @@
                     android:layout_below="@id/product_description_2"
                     android:layout_marginLeft="9dp"
                     android:layout_marginTop="17dp"
-                    android:layout_toRightOf="@id/product_image_2"
                     android:text="€6.99"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -73,18 +67,13 @@
                 android:layout_marginBottom="16dp">
 
                 <!-- 商品图片 -->
-                <ImageView
-                    android:id="@+id/product_image_1"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/test_dog_food_2" /> <!-- 替换为商品的图片资源 -->
+                <!-- 替换为商品的图片资源 -->
 
                 <!-- 商品描述 -->
                 <TextView
                     android:id="@+id/product_description_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/product_image_1"
                     android:text="All natural dog biscuits"
                     android:textSize="25dp"
                     android:textStyle="bold" />
@@ -97,7 +86,6 @@
                     android:layout_below="@id/product_description_1"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="37dp"
-                    android:layout_toRightOf="@id/product_image_1"
                     android:text="€2.99"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -112,18 +100,13 @@
                 android:layout_marginBottom="16dp">
 
                 <!-- 商品图片 -->
-                <ImageView
-                    android:id="@+id/product_image_3"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/test_dog_food_3" /> <!-- 替换为商品的图片资源 -->
+                <!-- 替换为商品的图片资源 -->
 
                 <!-- 商品描述 -->
                 <TextView
                     android:id="@+id/product_description_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/product_image_3"
                     android:text="Chicken Dumbbells"
                     android:textSize="25dp"
                     android:textStyle="bold" />
@@ -136,7 +119,6 @@
                     android:layout_below="@id/product_description_3"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="37dp"
-                    android:layout_toRightOf="@id/product_image_3"
                     android:text="€3.99"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -150,18 +132,13 @@
                 android:layout_marginBottom="16dp">
 
                 <!-- 商品图片 -->
-                <ImageView
-                    android:id="@+id/product_image_4"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/test_dog_food_4" /> <!-- 替换为商品的图片资源 -->
+                <!-- 替换为商品的图片资源 -->
 
                 <!-- 商品描述 -->
                 <TextView
                     android:id="@+id/product_description_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/product_image_4"
                     android:text="Chicken Dumbbells"
                     android:textSize="25dp"
                     android:textStyle="bold" />
@@ -174,7 +151,6 @@
                     android:layout_below="@id/product_description_4"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="37dp"
-                    android:layout_toRightOf="@id/product_image_4"
                     android:text="€2.99"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -187,18 +163,13 @@
                 android:layout_marginBottom="16dp">
 
                 <!-- 商品图片 -->
-                <ImageView
-                    android:id="@+id/product_image_5"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/test_dog_food_5" /> <!-- 替换为商品的图片资源 -->
+                <!-- 替换为商品的图片资源 -->
 
                 <!-- 商品描述 -->
                 <TextView
                     android:id="@+id/product_description_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/product_image_5"
                     android:text="Special for poodle teddy dogs"
                     android:textSize="25dp"
                     android:textStyle="bold" />
@@ -211,13 +182,10 @@
                     android:layout_below="@id/product_description_5"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="27dp"
-                    android:layout_toRightOf="@id/product_image_5"
                     android:text="€2.99"
                     android:textSize="20dp"
                     android:textStyle="bold" />
             </RelativeLayout>
-
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

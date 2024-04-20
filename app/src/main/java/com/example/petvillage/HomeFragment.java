@@ -136,24 +136,14 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         imageCarousel.setAutoPlay(true);
 
         List< CarouselItem> list = new ArrayList<>();
-//        list.add(new CarouselItem("https://images.unsplash.com/photo-1706512990173-91e7797cb3d0?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
-//        list.add(new CarouselItem("https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
-//        list.add(new CarouselItem("https://images.unsplash.com/photo-1554692918-08fa0fdc9db3?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
+        list.add(new CarouselItem("https://images.unsplash.com/photo-1706512990173-91e7797cb3d0?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
+        list.add(new CarouselItem("https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
+        list.add(new CarouselItem("https://images.unsplash.com/photo-1554692918-08fa0fdc9db3?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","Add daily recommendations here"));
         // list.add(new CarouselItem(R.drawable.cat,"Hi"));
 
         imageCarousel.setData(list);
 //////////////////////////////////////////////////////////////////////////
 
-//        card_dogs.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Intent i = new Intent(getActivity(), DOGS.class);
-//                startActivity(i);
-//                getActivity().overridePendingTransition(R.transition.slide_in_right,R.transition.slide_out_left);
-//
-//            }
-//        });
         card_dogs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,9 +186,6 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 return false;
             }
         });
-
-        //Add searchView/////////////////////////////////////////////
-
         SearchView searchView = Home.findViewById(R.id.searchView); // 确保您有一个名为searchView的SearchView在您的fragment_home.xml布局中
         BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
 
@@ -237,12 +224,12 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if ("Service&Shopping".equalsIgnoreCase(query)) {
-                    Fragment serviceFragment = new ServiceFragment(); // Assuming ServiceFragment is a Fragment
+                    Fragment PublishFragment = new Publish(); // Assuming ServiceFragment is a Fragment
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                    transaction.replace(R.id.frame_layout, serviceFragment); // 'container' is your FrameLayout or the id of the Fragment container
+                    transaction.replace(R.id.frame_layout, PublishFragment); // 'container' is your FrameLayout or the id of the Fragment container
                     transaction.addToBackStack(null);
                     transaction.commit();
-                    bottomNavigationView.setSelectedItemId(R.id.service); // 使用您 Service Fragment 对应的菜单项 ID
+                    bottomNavigationView.setSelectedItemId(R.id.publish); // 使用您 Service Fragment 对应的菜单项 ID
                     return true; // 如果处理了查询，则返回 true
                 }
 
@@ -330,7 +317,6 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         return Home;
     }
 
-
     //End of Search
 
     @Override
@@ -354,16 +340,4 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         dialog.show();
     }
     //Add
-
-
-//    @Override
-//    public void onBackPressed() {
-//        if(drawerLayout.isDrawerOpen(GravityCompat.START))
-//        {
-//            drawerLayout.closeDrawer(GravityCompat.START);
-//        }
-//        else {
-//            super.onBackPressed();
-//        }
-//    }
 }

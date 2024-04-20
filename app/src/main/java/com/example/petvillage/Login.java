@@ -24,6 +24,7 @@ public class Login extends AppCompatActivity {
     private GoogleSignInOptions gso;
     private GoogleSignInClient gsc;
 
+    // Mar 07: Login Session
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,6 @@ public class Login extends AppCompatActivity {
     }
 
     private void SignIn() {
-
         Intent intent = gsc.getSignInIntent();
         startActivityForResult(intent, 100);
     }
@@ -73,6 +73,5 @@ public class Login extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), SignHomeActivity.class);
         startActivity(intent);
         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);// transition
-
     }
 }

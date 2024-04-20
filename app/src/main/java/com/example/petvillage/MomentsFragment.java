@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.petvillage.databinding.FragmentHomeBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,6 +27,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.annotation.Nullable;
@@ -45,6 +47,10 @@ public class MomentsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    FragmentHomeBinding binding;
+    ArrayList<Model> list;
+    Adapter adapter;
+    Model model;
 
     public MomentsFragment() {
         // Required empty public constructor
@@ -80,13 +86,6 @@ public class MomentsFragment extends Fragment {
     }
 
     private static int REQUEST_CODE_IMAGE = 101;
-    private ImageView imageViewAdd;
-    private EditText inputText;
-    private TextView textViewProgress;
-    private ProgressBar progressBar;
-    private Button btnUpload;
-    Uri imageUri;
-    boolean isImageAdd = false;
 
     DatabaseReference DataRef;
     StorageReference StorageRef;
@@ -95,97 +94,11 @@ public class MomentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment_moments, container, false);
 
         View Moments = inflater.inflate(R.layout.fragment_moments, container, false);
 
-        imageViewAdd = Moments.findViewById(R.id.imageViewAdd);
-        inputText = Moments.findViewById(R.id.inputText);
-        textViewProgress = Moments.findViewById(R.id.textViewProgress);
-        progressBar = Moments.findViewById(R.id.progressBar);
-        btnUpload = Moments.findViewById(R.id.btnUpload);
-
-        textViewProgress.setVisibility(View.GONE);
-        progressBar.setVisibility(View.GONE);
-
-        DataRef = FirebaseDatabase.getInstance().getReference().child("Posts");
-        StorageRef = FirebaseStorage.getInstance().getReference().child("PostsImage");
-
-        imageViewAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent,REQUEST_CODE_IMAGE);
-            }
-        });
-
-        btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              final String text = inputText.getText().toString();
-              if(isImageAdd != false && text!=null){
-                   uploadImage(text);
-              }
-            }
-        });
         return Moments;
     }
-
-    private void uploadImage(final String text) {
-
-        textViewProgress.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-
-
-        final String key =  DataRef.push().getKey();
-        StorageRef.child(key+".jpg").putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                StorageRef.child(key+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-
-                        HashMap hashMap = new HashMap();
-                        hashMap.put("PostTitle", text);
-                        hashMap.put("ImageUrl",uri.toString());
-
-                        DataRef.child(key).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(getActivity(), "Data Successfully Uploaded", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                    }
-                });
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                double progress = (snapshot.getBytesTransferred()*100)/snapshot.getTotalByteCount();
-
-                String progressText = String.format("%d%%", (int) progress);
-                textViewProgress.setText(progressText);
-            }
-        });
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == REQUEST_CODE_IMAGE && resultCode == getActivity().RESULT_OK && data != null) {
-            imageUri = data.getData();
-            isImageAdd = true;
-            imageViewAdd.setImageURI(imageUri);
-        }
-    }
-
 }
 
 

@@ -1,63 +1,41 @@
 {
   "project_info": {
-    "project_number": "87335065200",
-    "firebase_url": "https://my-project-pet-village-default-rtdb.firebaseio.com",
-    "project_id": "my-project-pet-village",
-    "storage_bucket": "my-project-pet-village.appspot.com"
+    "project_number": "514882947635",
+    "project_id": "pet-village-v2",
+    "storage_bucket": "pet-village-v2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:87335065200:android:042cb22876d359d15086b5",
+        "mobilesdk_app_id": "1:514882947635:android:7306a58d061bd57a947146",
         "android_client_info": {
           "package_name": "com.example.petvillage"
         }
       },
       "oauth_client": [
         {
-          "client_id": "87335065200-og52eonkslacd09hc7oh8uu9doag1fp0.apps.googleusercontent.com",
+          "client_id": "514882947635-6mda5d4bpk0fh04d62npip15ja130vki.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.petvillage",
+            "certificate_hash": "308cf5dfa411cf9397467fc320a0e6c547db23aa"
+          }
+        },
+        {
+          "client_id": "514882947635-up9kb2lkghtf5ud9k21vu8nslo5olehr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCcuwtRlIkdixoD-eTU8hPufkQx54zqYmw"
+          "current_key": "AIzaSyAoveDvBcyvk0UyCOk1nXCL6F_pzASNXzE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "87335065200-g05jtuhqd24fgtv2r7l72u2fk2notvtm.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:87335065200:android:4701d7df18550e7f5086b5",
-        "android_client_info": {
-          "package_name": "com.example.robot"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "87335065200-og52eonkslacd09hc7oh8uu9doag1fp0.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCcuwtRlIkdixoD-eTU8hPufkQx54zqYmw"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "87335065200-g05jtuhqd24fgtv2r7l72u2fk2notvtm.apps.googleusercontent.com",
+              "client_id": "514882947635-up9kb2lkghtf5ud9k21vu8nslo5olehr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -33,6 +33,14 @@
                     android:icon="@drawable/logout_1"
                     android:title="Log out"
                     />
+                <item android:id="@+id/nav_publish"
+                    android:icon="@drawable/publish"
+                    android:title="POST"
+                    />
+                <item android:id="@+id/nav_profile"
+                    android:icon="@drawable/profile"
+                    android:title="Profile"
+                    />
             </group>
         </menu>
     </item>

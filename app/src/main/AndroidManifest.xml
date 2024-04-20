@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +17,7 @@
         android:theme="@style/Theme.PetVillage"
         tools:targetApi="31">
         <activity
-            android:name=".Maps_Shanghai"
+            android:name=".Maps_Galway"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -58,7 +60,7 @@
             android:value="AIzaSyDcrOsjmy4jCLPlWylXPGLKPyvrOfIybyI" />
 
         <activity
-            android:name=".Maps_Nanjing"
+            android:name=".Maps_Dublin"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

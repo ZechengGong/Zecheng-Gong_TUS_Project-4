@@ -224,15 +224,15 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="282dp">
 
                 <ImageView
                     android:id="@+id/imageView12"
-                    android:layout_width="46dp"
-                    android:layout_height="43dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="50dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="32dp"
                     android:src="@drawable/potatoes"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -242,9 +242,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="72dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:text="@string/TestUser1"
-                    android:textSize="18sp"
+                    android:textSize="25sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -254,91 +254,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="72dp"
-                    android:layout_marginTop="40dp"
-                    android:text="12min ago"
+                    android:layout_marginTop="64dp"
+                    android:text="1day ago"
+                    android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView23"
-                    android:layout_width="386dp"
-                    android:layout_height="291dp"
+                    android:layout_width="387dp"
+                    android:layout_height="155dp"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="56dp"
+                    android:layout_marginTop="96dp"
                     android:layout_marginEnd="15dp"
                     android:text="@string/TestUser1Content"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/image_goods"
-                    android:layout_width="147dp"
-                    android:layout_height="123dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="148dp"
-                    android:src="@drawable/test_dog_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imageView14"
-                    android:layout_width="147dp"
-                    android:layout_height="123dp"
-                    android:layout_marginStart="148dp"
-                    android:layout_marginTop="148dp"
-                    android:src="@drawable/test_dog_2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imageView15"
-                    android:layout_width="147dp"
-                    android:layout_height="123dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="228dp"
-                    android:src="@drawable/test_dog_3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imageView25"
-                    android:layout_width="147dp"
-                    android:layout_height="123dp"
-                    android:layout_marginStart="148dp"
-                    android:layout_marginTop="228dp"
-                    android:src="@drawable/test_dog_4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imageView26"
-                    android:layout_width="147dp"
-                    android:layout_height="123dp"
-                    android:layout_marginStart="292dp"
-                    android:layout_marginTop="148dp"
-                    android:src="@drawable/test_dog_5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imageView27"
-                    android:layout_width="147dp"
-                    android:layout_height="123dp"
-                    android:layout_marginStart="292dp"
-                    android:layout_marginTop="228dp"
-                    android:src="@drawable/test_dog_6"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView16"
-                    android:layout_width="34dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="192dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="45dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="240dp"
+                    android:layout_marginTop="36dp"
                     android:src="@drawable/tick"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -22,10 +22,19 @@
     <string name="communityManager_text">Welcome to the Pet Village community!</string>
 
     <string name="TestUser1">Crazy Potatoes</string>
-    <string name="TestUser1Content">Today, I spent a delightful day at the park with my dog. The sun was shining brightly, casting a warm glow over the lush greenery. My dog, full of ...read more</string>
+    <string name="TestUser1Content">Welcome to pet village
+                                    \nStart publishing your first post!
+                                    \nClick the ADD sign to post what you want.</string>
     <string name="TestUser2">Villager221</string>
     <string name="TestUser2Content">What kind of puppy should I have?</string>
 
+    <string name="title_activity_drawer_actvity">DrawerActvity</string>
+    <string name="nav_header_title">Blog App</string>
+    <string name="nav_header_subtitle">youtube.com/artorean</string>
 
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Publish Blog</string>
+    <string name="menu_slideshow">Profile</string>
+    <string name="default_web_client_id">514882947635-up9kb2lkghtf5ud9k21vu8nslo5olehr.apps.googleusercontent.com</string>
 
 </resources>

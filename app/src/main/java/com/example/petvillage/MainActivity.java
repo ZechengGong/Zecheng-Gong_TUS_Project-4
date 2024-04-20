@@ -1,6 +1,7 @@
 package com.example.petvillage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -25,7 +26,19 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.petvillage.databinding.ActivityMainBinding;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
+    GoogleSignInOptions signInOptions;
+    GoogleSignInClient signInClient;
+    FirebaseAuth auth;
 
     @Override
     public void onBackPressed() {
@@ -60,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        replaceFragment(new HomeFragment());
+        // setContentView(R.layout.activity_main);
+        // replaceFragment(new HomeFragment());
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -91,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 showBottomDialog();
             }
         });
-
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.drawer_view);
@@ -143,12 +158,80 @@ public class MainActivity extends AppCompatActivity {
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
+                    case R.id.nav_publish:
+                        FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction1.replace(R.id.frame_layout, new MomentsFragment());
+                        fragmentTransaction1.commit();
+                        break;
+//                    case R.id.nav_profile:
+//                        FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+//                        fragmentTransaction2.replace(R.id.frame_layout, new Profile());
+//                        fragmentTransaction2.commit();
+//                        break;
                 }
                 return false;
             }
         });
+        setupsignin();
+    }
 
+    private void setupsignin() {
+        auth = FirebaseAuth.getInstance();
+        signInOptions=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
 
+        signInClient= GoogleSignIn.getClient(this,signInOptions);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser!=null){
+            displayFragment(new MomentsFragment());
+        }else{
+            sigin();
+        }
+    }
+
+    private void displayFragment(Fragment fragment) {
+        // 替换并显示指定的 Fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment); // 确保 frame_layout 是你的容器 ID
+        fragmentTransaction.commitAllowingStateLoss();  // 使用 commitAllowingStateLoss 防止异常
+    }
+
+    private void sigin() {
+        Intent intent = signInClient.getSignInIntent();
+        startActivityForResult(intent,100);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==100){
+            Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+                auth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(getApplicationContext(), "Login Successful!!", Toast.LENGTH_SHORT).show();
+                            displayFragment(new MomentsFragment());  // 正确显示 Fragment
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Login Failed!!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void showBottomDialog() {
@@ -157,37 +240,14 @@ public class MainActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
 
-        LinearLayout videoLayout = dialog.findViewById(R.id.layoutVideo);
         LinearLayout shortsLayout = dialog.findViewById(R.id.layoutShorts);
-        LinearLayout liveLayout = dialog.findViewById(R.id.layoutLive);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
-
-        videoLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialog.dismiss();
-                Toast.makeText(MainActivity.this,"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
         shortsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showPublishFragment();
                 dialog.dismiss();
-                Toast.makeText(MainActivity.this,"Create a short is Clicked",Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        liveLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialog.dismiss();
-                Toast.makeText(MainActivity.this,"Go live is Clicked",Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -215,4 +275,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
     }
+
+    public void showPublishFragment() {
+        Publish publishFragment = new Publish();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, publishFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
 }
