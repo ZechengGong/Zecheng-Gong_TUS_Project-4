@@ -133,7 +133,7 @@ public class MomentsFragment extends Fragment {
     private void filter(String newText) {
         ArrayList<Model> filtered_list = new ArrayList<>();
         for(Model item:list){
-            if (item.getTittle().toString().toLowerCase().contains(newText)){
+            if (item.getTitle().toString().toLowerCase().contains(newText)){
                 filtered_list.add(item);
             }
         }

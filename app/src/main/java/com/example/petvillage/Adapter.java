@@ -48,7 +48,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Model model = list.get(position);
-        holder.title.setText(model.getTittle());
+        holder.title.setText(model.getTitle());
         holder.date.setText(model.getDate());
         holder.share_count.setText(model.getShare_count());
         holder.author.setText(model.getAuthor());
@@ -83,7 +83,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         EditText desc = u_dialog.findViewById(R.id.b_desc);
                         EditText author = u_dialog.findViewById(R.id.b_author);
 
-                        title.setText(model.getTittle());
+                        title.setText(model.getTitle());
                         desc.setText(model.getDesc());
                         author.setText(model.getAuthor());
 

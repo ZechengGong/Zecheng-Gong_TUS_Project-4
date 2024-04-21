@@ -1,9 +1,15 @@
 package com.example.petvillage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Model {
     String tittle, desc, author, date, img, share_count,id,timestamp;
+    List<Comment> comments;
 
-    public Model(String tittle, String desc, String author, String date, String img, String share_count, String id, String timestamp) {
+    private String userId;
+
+    public Model(String tittle, String desc, String author, String date, String img, String share_count, String id, String timestamp, String userId) {
         this.tittle = tittle;
         this.desc = desc;
         this.author = author;
@@ -11,7 +17,9 @@ public class Model {
         this.img = img;
         this.share_count = share_count;
         this.id = id;
+        this.userId = userId;
         this.timestamp = timestamp;
+        this.comments = new ArrayList<>();
     }
 
     public String getTimestamp() {
@@ -33,11 +41,11 @@ public class Model {
         this.id = id;
     }
 
-    public String getTittle() {
+    public String getTitle() {
         return tittle;
     }
 
-    public void setTittle(String tittle) {
+    public void setTitle(String tittle) {
         this.tittle = tittle;
     }
 
@@ -77,7 +85,23 @@ public class Model {
         return share_count;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     public void setShare_count(String share_count) {
         this.share_count = share_count;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
 }
