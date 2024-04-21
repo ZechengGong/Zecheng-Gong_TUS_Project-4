@@ -45,7 +45,7 @@
             android:layout_marginEnd="35dp"
             android:layout_marginBottom="-25dp"
             android:clickable="true"
-            app:srcCompat="@drawable/ic_share_icon" />
+            app:srcCompat="@drawable/like" />
 
         <TextView
             android:id="@+id/textView4"

@@ -25,8 +25,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
@@ -151,43 +153,70 @@ public class BlogDetail extends AppCompatActivity {
         Toast.makeText(this,message,Toast.LENGTH_LONG).show();
     }
 
-    private void showdata() {
-        id = getIntent().getStringExtra("id");
-        FirebaseFirestore.getInstance().collection("Blogs").document(id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+    private void checkLikeStatus() {
+        DocumentReference blogRef = FirebaseFirestore.getInstance().collection("Blogs").document(id);
+        blogRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                Glide.with(getApplicationContext()).load(value.getString("img")).into(binding.imageView3);
-                binding.textView4.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>"+value.getString("author")));
-                binding.textView5.setText(value.getString("tittle"));
-                binding.textView6.setText(value.getString("desc"));
-                title= value.getString("tittle");
-                desc= value.getString("desc");
-                count= value.getString("share_count");
-
-                int i_count=Integer.parseInt(count);
-                n_count=i_count+1;
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    List<String> likedBy = (List<String>) documentSnapshot.get("likedBy");
+                    if (likedBy != null && likedBy.contains(firebaseUser.getUid())) {
+                        binding.floatingActionButton.setImageResource(R.drawable.liked);  // 已点赞状态图标
+                    } else {
+                        binding.floatingActionButton.setImageResource(R.drawable.like);  // 未点赞状态图标
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("BlogDetail", "Error getting document: ", e);
             }
         });
+    }
+
+
+    private void showdata() {
+        id = getIntent().getStringExtra("id");
+
+        checkLikeStatus();  // 检查并设置点赞状态
+
+        FirebaseFirestore.getInstance().collection("POSTs").document(id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null && value.exists()) {
+                    Glide.with(getApplicationContext()).load(value.getString("img")).into(binding.imageView3);
+                    binding.textView4.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + value.getString("author")));
+                    binding.textView5.setText(value.getString("title"));
+                    binding.textView6.setText(value.getString("desc"));
+                    title = value.getString("title");
+                    desc = value.getString("desc");
+                    count = value.getString("share_count");
+                    n_count = Integer.parseInt(count) + 1;
+                }
+            }
+        });
+
         binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                String shareBody = desc;
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_SUBJECT, title);
-                intent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                startActivity(Intent.createChooser(intent,"Share Using"));
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference blogRef = db.collection("Blogs").document(id);
 
-                HashMap<String,Object> map = new HashMap<>();
-                map.put("share_count", String.valueOf(n_count));
-                FirebaseFirestore.getInstance().collection("Blogs").document(id).update(map);
-            }
-
-        });
-        binding.imageView4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
+                blogRef.update("likes", FieldValue.increment(1), "likedBy", FieldValue.arrayUnion(firebaseUser.getUid()))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                binding.floatingActionButton.setImageResource(R.drawable.liked);  // 更新为已点赞图标
+                                Toast.makeText(BlogDetail.this, "Liked!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(BlogDetail.this, "Error liking post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
     }

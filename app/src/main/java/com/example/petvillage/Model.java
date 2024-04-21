@@ -9,6 +9,8 @@ public class Model {
 
     private String userId;
 
+    private int likes;
+
     public Model(String tittle, String desc, String author, String date, String img, String share_count, String id, String timestamp, String userId) {
         this.tittle = tittle;
         this.desc = desc;
@@ -102,6 +104,14 @@ public class Model {
     }
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
 }
