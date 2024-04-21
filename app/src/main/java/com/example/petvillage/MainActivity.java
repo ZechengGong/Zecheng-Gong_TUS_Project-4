@@ -97,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.moments:
                     replaceFragment(new MomentsFragment());
                     break;
+                case R.id.publish:
+                    replaceFragment(new Publish());
+                    break;
             }
             return true;
         });
@@ -120,25 +123,27 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.home: {
                         Toast.makeText(MainActivity.this, "You are already on the Home Page", Toast.LENGTH_SHORT).show();
-                        break;
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        return true;
                     }
                     case R.id.contact: {
                         Intent i = new Intent();
                         i.setAction(Intent.ACTION_DIAL);
-                        i.setData(Uri.parse("tel:" + 400123456));
+                        i.setData(Uri.parse("tel:" + 00353123456));
                         startActivity(i);
                         break;
                     }
                     case R.id.email: {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"petvillage@petvilg.ie"});
-                        i.putExtra(Intent.EXTRA_SUBJECT, "From Ms./ Mr. / Mx.");
+                        i.putExtra(Intent.EXTRA_SUBJECT, "From - ");
                         i.putExtra(Intent.EXTRA_TEXT, "To Pet Village Team: ");
                         i.setType("message/rfc822");
                         startActivity(Intent.createChooser(i, "Send Mail Using :"));
                         break;
                     }
                     case R.id.about: {
+                        drawerLayout.closeDrawer(GravityCompat.START);
                         Intent goAbout = new Intent(MainActivity.this, About.class);
                         startActivity(goAbout);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
@@ -146,36 +151,27 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     case R.id.login: {
-                        Intent gologin = new Intent(MainActivity.this, Login.class);
+                        Intent gologin = new Intent(MainActivity.this, Google_Login.class);
                         startActivity(gologin);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
 
                     case R.id.logout: {
-                        Intent gologout = new Intent(MainActivity.this, SignHomeActivity.class);
-                        startActivity(gologout);
+                        Intent logout = new Intent(MainActivity.this, Google_Logout.class);
+                        startActivity(logout);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
-                    case R.id.nav_publish:
-                        FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction1.replace(R.id.frame_layout, new MomentsFragment());
-                        fragmentTransaction1.commit();
-                        break;
-//                    case R.id.nav_profile:
-//                        FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-//                        fragmentTransaction2.replace(R.id.frame_layout, new Profile());
-//                        fragmentTransaction2.commit();
-//                        break;
                 }
-                return false;
+                return true;
             }
         });
-        setupsignin();
+        setupSignIn();
+        setFragment(new HomeFragment());
     }
 
-    private void setupsignin() {
+    private void setupSignIn() {
         auth = FirebaseAuth.getInstance();
         signInOptions=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -185,16 +181,22 @@ public class MainActivity extends AppCompatActivity {
         signInClient= GoogleSignIn.getClient(this,signInOptions);
     }
 
+    public void setFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .commit();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser!=null){
-            displayFragment(new MomentsFragment());
-        }else{
-            sigin();
+        if (currentUser == null) {
+            signIn();
         }
     }
+
 
     private void displayFragment(Fragment fragment) {
         // 替换并显示指定的 Fragment
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commitAllowingStateLoss();  // 使用 commitAllowingStateLoss 防止异常
     }
 
-    private void sigin() {
+    private void signIn() {
         Intent intent = signInClient.getSignInIntent();
         startActivityForResult(intent,100);
     }
@@ -222,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(getApplicationContext(), "Login Successful!!", Toast.LENGTH_SHORT).show();
-                            displayFragment(new MomentsFragment());  // 正确显示 Fragment
+                            displayFragment(new HomeFragment());  // 正确显示 Fragment
                         }else{
                             Toast.makeText(getApplicationContext(), "Login Failed!!", Toast.LENGTH_SHORT).show();
                         }
@@ -272,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);  // 确保添加这行代码
         fragmentTransaction.commit();
 
     }

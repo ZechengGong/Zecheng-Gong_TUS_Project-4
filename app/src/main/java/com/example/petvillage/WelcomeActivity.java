@@ -1,62 +1,49 @@
 package com.example.petvillage;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
+import android.os.Handler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 public class WelcomeActivity extends AppCompatActivity {
+
+    private static final int SPLASH_TIME_OUT = 2500;  // Splash screen timer
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        Thread splashTread = new Thread() {
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
             public void run() {
-                try {
-                    sleep(2500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (currentUser == null) {
+                    // No user is signed in
+                    Intent loginIntent = new Intent(WelcomeActivity.this, Google_Login.class);
+                    startActivity(loginIntent);
                     finish();
-                    Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
-                    startActivity(i);
-                    overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                } else {
+                    // User is signed in
+                    Intent mainIntent = new Intent(WelcomeActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    finish();
                 }
             }
-        };
-        splashTread.start();
+        }, SPLASH_TIME_OUT);
     }
 
     @Override
     protected void onPause() {
-        // TODO Auto-generated method stub
         super.onPause();
         MusicServer.stop(this);
     }
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
         MusicServer.play(this, R.raw.mixkit_happy_puppy_barks);
     }
-
 }

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="128dp"
             android:layout_marginTop="608dp"
-            android:text="Tel : 400 123456"
+            android:text="Tel : +353 123456"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="68dp"
                     android:layout_marginTop="168dp"
-                    android:text="Version 1.0.2"
+                    android:text="Version 1.1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
