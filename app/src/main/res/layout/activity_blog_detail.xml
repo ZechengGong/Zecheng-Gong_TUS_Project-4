@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView4"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Title will be here."
@@ -89,7 +89,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/commentsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="190dp"
+            android:layout_height="210dp"
             android:layout_below="@+id/post_detail_comment"
             android:layout_marginTop="25dp"
             tools:listitem="@layout/comment_list" />

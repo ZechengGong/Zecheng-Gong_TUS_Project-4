@@ -63,7 +63,7 @@ public class Publish extends Fragment {
         binding.btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploaddata(filepath);
+                uploadData(filepath);
             }
         });
         return binding.getRoot();
@@ -72,11 +72,11 @@ public class Publish extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        selectimage();
+        selectImage();
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void selectimage() {
+    private void selectImage() {
         binding.view2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,11 +99,11 @@ public class Publish extends Fragment {
             binding.imgThumbnail.setImageURI(filepath);
             binding.view2.setVisibility(View.INVISIBLE);
             binding.bSelectImage.setVisibility(View.INVISIBLE);
-            uploaddata(filepath);
+            uploadData(filepath);
         }
     }
 
-    private void uploaddata(Uri filepath) {
+    private void uploadData(Uri filepath) {
         binding.btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +120,7 @@ public class Publish extends Fragment {
                             } else {
                                 ProgressDialog pd = new ProgressDialog(getContext());
                                 pd.setTitle("Uploading...");
-                                pd.setMessage("Please wait for a while until we upload this data to our Firebase Storage and Firestore");
+                                pd.setMessage("Uploading to Firebase, please do not exit");
                                 pd.setCancelable(false);
                                 pd.show();
 
@@ -172,7 +172,6 @@ public class Publish extends Fragment {
                                         }
                                     });
                                 }
-
 
                             }
                         }

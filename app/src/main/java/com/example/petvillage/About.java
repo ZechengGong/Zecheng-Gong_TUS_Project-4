@@ -59,7 +59,7 @@ public class About extends AppCompatActivity {
                     case R.id.email: {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"petvillage@petvilg.ie"});
-                        i.putExtra(Intent.EXTRA_SUBJECT, "From Ms./ Mr. / Mx.");
+                        i.putExtra(Intent.EXTRA_SUBJECT, "From");
                         i.putExtra(Intent.EXTRA_TEXT, "To Pet Village Team: ");
                         i.setType("message/rfc822");
                         startActivity(Intent.createChooser(i, "Send Mail Using :"));
@@ -71,16 +71,18 @@ public class About extends AppCompatActivity {
                     }
 
                     case R.id.login: {
-                        Intent gologin = new Intent(About.this, Login.class);
+                        Intent gologin = new Intent(About.this, MainActivity.class);
                         startActivity(gologin);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                        Toast.makeText(About.this, "Please return to the homepage and try to log in again.", Toast.LENGTH_SHORT).show();
                         break;
                     }
 
                     case R.id.logout: {
-                        Intent gologout = new Intent(About.this, SignHomeActivity.class);
+                        Intent gologout = new Intent(About.this, MainActivity.class);
                         startActivity(gologout);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                        Toast.makeText(About.this, "Please return to the homepage and try to log out again.", Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
