@@ -29,7 +29,7 @@
             android:backgroundTint="@color/light_white"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
-            android:text="12 OCT"
+            android:text="1 JAN"
             android:textColor="@color/black"
             android:textSize="11sp" />
     </androidx.cardview.widget.CardView>
@@ -54,9 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="AJAZ AHMED"
+            android:text="Nickname"
             android:textColor="@color/dark_black"
-            android:textSize="10sp" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/textView9"
@@ -65,9 +65,9 @@
             android:layout_marginBottom="0dp"
             android:maxLines="3"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Master Your Skill With Fun And Learn Very Fundamentals..."
+            android:text="Title here"
             android:textColor="@color/dark_black"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textView10"

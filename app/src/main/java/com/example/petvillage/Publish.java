@@ -156,7 +156,7 @@ public class Publish extends Fragment {
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()) {
                                                                 pd.dismiss();
-                                                                Toast.makeText(getContext(), "Post Uploaded!!!", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(getContext(), "Post Uploaded!", Toast.LENGTH_SHORT).show();
 
                                                                 binding.imgThumbnail.setVisibility(View.INVISIBLE);
                                                                 binding.view2.setVisibility(View.VISIBLE);

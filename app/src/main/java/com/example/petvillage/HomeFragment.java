@@ -229,7 +229,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                     transaction.replace(R.id.frame_layout, PublishFragment); // 'container' is your FrameLayout or the id of the Fragment container
                     transaction.addToBackStack(null);
                     transaction.commit();
-                    bottomNavigationView.setSelectedItemId(R.id.publish); // 使用您 Service Fragment 对应的菜单项 ID
+                    bottomNavigationView.setSelectedItemId(R.id.shopping); // 使用您 Service Fragment 对应的菜单项 ID
                     return true; // 如果处理了查询，则返回 true
                 }
 

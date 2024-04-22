@@ -51,7 +51,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.title.setText(model.getTitle());
         holder.date.setText(model.getDate());
         holder.share_count.setText(String.valueOf(model.getLikes() + " Liked"));  // Updated to show likes
-        holder.author.setText(model.getAuthor());
+        holder.author.setText("By: " + model.getAuthor());
 
         Glide.with(holder.author.getContext()).load(model.getImg()).into(holder.img);
 
@@ -68,8 +68,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             @Override
             public boolean onLongClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(holder.author.getContext());
-                builder.setTitle("What you want to do?");
-                builder.setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+                builder.setTitle("Choose an action on the post: ");
+                builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final Dialog u_dialog = new Dialog(holder.author.getContext());
@@ -92,11 +92,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                             @Override
                             public void onClick(View v) {
                                 if (title.getText().toString().equals("")) {
-                                    title.setError("Field is Required!!");
+                                    title.setError("Field is Required!");
                                 } else if (desc.getText().toString().equals("")) {
-                                    desc.setError("Field is Required!!");
+                                    desc.setError("Field is Required!");
                                 } else if (author.getText().toString().equals("")) {
-                                    author.setError("Field is Required!!");
+                                    author.setError("Field is Required!");
                                 } else {
 
 
@@ -123,13 +123,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
                     }
                 });
-                builder.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AlertDialog.Builder builders = new AlertDialog.Builder(holder.author.
                                 getContext());
-                        builders.setTitle("Are you sure to Delete it??");
-                        builders.setPositiveButton("Yes! I am Sure", new
+                        builders.setTitle("Are you sure you want to delete this post?");
+                        builders.setPositiveButton("Yes", new
                                 DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

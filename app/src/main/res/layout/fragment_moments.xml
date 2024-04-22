@@ -5,31 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MomentsFragment"
-    android:background="@color/white">
+    android:background="#ffecb8">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <ImageView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="185dp"
+            android:layout_height="50dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Home"
+            android:src="@drawable/ic_home_title"
             android:textColor="@color/black"
             android:textSize="27sp" />
 
         <View
             android:id="@+id/view"
-            android:layout_width="40dp"
-            android:layout_height="5dp"
+            android:layout_width="210dp"
+            android:layout_height="20dp"
             android:layout_below="@id/textView3"
             android:layout_alignStart="@+id/textView3"
-            android:background="@drawable/light_bg"
-            android:backgroundTint="@color/dark_black" />
+            android:background="@drawable/ic_line" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchview"
@@ -45,7 +44,7 @@
             android:backgroundTint="@color/light_white"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
-            app:queryHint="Search Blogs"></androidx.appcompat.widget.SearchView>
+            app:queryHint="Search POST"></androidx.appcompat.widget.SearchView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_blogs"

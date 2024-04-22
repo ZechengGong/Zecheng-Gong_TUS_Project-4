@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffad60"
     tools:context=".ServiceFragment">
 
     <TextView
@@ -12,180 +14,16 @@
         android:background="#F8C986"
         android:padding="16dp"
         android:text="Pet Village Official Store"
-        android:textSize="20dp"
+        android:textSize="25dp"
+        android:layout_centerHorizontal="true"
         android:textStyle="bold" />
 
-    <!-- 商品列表容器 -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/header"
-        android:background="#FBECD5">
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_marginTop="216dp"
+        android:src="@drawable/ic_shopping_opening" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- 商品2的位置 -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-
-                <!-- 商品图片 -->
-                <!-- 替换为商品的图片资源 -->
-
-                <!-- 商品描述 -->
-                <TextView
-                    android:id="@+id/product_description_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dog snacks freeze-dried chicken"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <!-- 商品价格 -->
-                <TextView
-                    android:id="@+id/product_price_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/product_description_2"
-                    android:layout_marginLeft="9dp"
-                    android:layout_marginTop="17dp"
-                    android:text="€6.99"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <!-- 商品2的位置（复制上面的代码块并将id更改为product_2） -->
-            <!-- 商品2的位置 -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-
-                <!-- 商品图片 -->
-                <!-- 替换为商品的图片资源 -->
-
-                <!-- 商品描述 -->
-                <TextView
-                    android:id="@+id/product_description_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="All natural dog biscuits"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <!-- 商品价格 -->
-                <TextView
-                    android:id="@+id/product_price_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/product_description_1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="37dp"
-                    android:text="€2.99"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <!-- 商品3的位置（复制上面的代码块并将id更改为product_3） -->
-            <!-- 商品3的位置（复制上面的代码块并将id更改为product_2） -->
-            <!-- 商品3的位置 -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-
-                <!-- 商品图片 -->
-                <!-- 替换为商品的图片资源 -->
-
-                <!-- 商品描述 -->
-                <TextView
-                    android:id="@+id/product_description_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chicken Dumbbells"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <!-- 商品价格 -->
-                <TextView
-                    android:id="@+id/product_price_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/product_description_3"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="37dp"
-                    android:text="€3.99"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <!-- 商品4的位置（复制上面的代码块并将id更改为product_4） -->
-            <!-- 商品4的位置 -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-
-                <!-- 商品图片 -->
-                <!-- 替换为商品的图片资源 -->
-
-                <!-- 商品描述 -->
-                <TextView
-                    android:id="@+id/product_description_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chicken Dumbbells"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <!-- 商品价格 -->
-                <TextView
-                    android:id="@+id/product_price_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/product_description_4"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="37dp"
-                    android:text="€2.99"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <!-- 商品5的位置 -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-
-                <!-- 商品图片 -->
-                <!-- 替换为商品的图片资源 -->
-
-                <!-- 商品描述 -->
-                <TextView
-                    android:id="@+id/product_description_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Special for poodle teddy dogs"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <!-- 商品价格 -->
-                <TextView
-                    android:id="@+id/product_price_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/product_description_5"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="27dp"
-                    android:text="€2.99"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
 </RelativeLayout>

@@ -3,10 +3,8 @@ import com.example.petvillage.Comment;
 import com.google.firebase.database.ServerValue;
 
 public class Comment {
-
     private String content,uid,uimg,uname;
     private Object timestamp;
-
 
     public Comment() {
     }

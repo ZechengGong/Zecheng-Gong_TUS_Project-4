@@ -1,7 +1,5 @@
 package com.example.petvillage;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -14,30 +12,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.petvillage.databinding.FragmentHomeBinding;
 import com.example.petvillage.databinding.FragmentMomentsBinding;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -111,11 +97,11 @@ public class MomentsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @androidx.annotation.Nullable Bundle savedInstanceState) {
         setupRv();
-        setusearchview();
+        setSearchView();
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void setusearchview() {
+    private void setSearchView() {
         binding.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -132,18 +118,18 @@ public class MomentsFragment extends Fragment {
 
     private void filter(String newText) {
         ArrayList<Model> filtered_list = new ArrayList<>();
-        for(Model item:list){
-            if (item.getTitle().toString().toLowerCase().contains(newText)){
+        for(Model item : list){
+            if (item.getTitle() != null && item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
                 filtered_list.add(item);
             }
         }
         if (filtered_list.isEmpty()){
-            //
-        }
-        else{
+            Toast.makeText(getContext(), "No matches found", Toast.LENGTH_SHORT).show();
+        } else {
             adapter.filter_list(filtered_list);
         }
     }
+
 
     private void setupRv() {
         list = new ArrayList<>();

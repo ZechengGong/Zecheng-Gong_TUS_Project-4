@@ -7,8 +7,8 @@
 
     <ImageView
         android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_round_remove_24"
+        android:layout_height="10dp"
+        android:src="@drawable/ic_line"
         android:layout_gravity="center|top"
         android:scaleType="centerCrop"/>
 
@@ -22,17 +22,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="viewStart"
-            android:text="Post"
+            android:text="Quick Options"
             android:padding="8dp"
-            android:textColor="@color/lavender"
+            android:textColor="#ffcb85"
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
-            android:textSize="25dp" />
+            android:textSize="15dp"
+            android:textStyle="bold"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_clear_24"
+            android:src="@drawable/ic_cancel_bottom_sheet"
             android:layout_marginLeft="250dp"
             android:layout_marginTop="8dp"
             android:id="@+id/cancelButton"/>
@@ -51,15 +52,16 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_whatshot_24"/>
+            android:src="@drawable/ic_post_mini"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="POST"
-            android:textColor="@color/lavender"
+            android:text="Make a POST"
+            android:textColor="#ffcb85"
             android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 

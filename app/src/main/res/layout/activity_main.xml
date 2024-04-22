@@ -45,7 +45,7 @@
             android:contentDescription="BUTTON"
             app:layout_anchor="@id/bottomAppBar"
             app:layout_anchorGravity="center"
-            app:tint="@color/lavender"/>
+            app:tint="#ffcb85"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7EED8807"
+    android:background="#ffcb85"
     tools:context=".HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_marginTop="3dp"
-            android:background="#5EED8807"
+            android:background="#ffcb85"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -216,8 +216,8 @@
             android:layout_height="335dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="#CAAEAE"
-            app:cardBackgroundColor="#E4A951"
+            android:background="#ffc100"
+            app:cardBackgroundColor="#ffcb85"
             app:cardCornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -255,30 +255,30 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="72dp"
                     android:layout_marginTop="64dp"
-                    android:text="1day ago"
+                    android:text="2days ago"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView23"
-                    android:layout_width="387dp"
-                    android:layout_height="155dp"
+                    android:layout_width="351dp"
+                    android:layout_height="158dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="96dp"
                     android:layout_marginEnd="15dp"
                     android:text="@string/TestUser1Content"
-                    android:textSize="25sp"
+                    android:textSize="23sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_bias="0.526"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView16"
-                    android:layout_width="45dp"
-                    android:layout_height="30dp"
+                    android:layout_width="36dp"
+                    android:layout_height="28dp"
                     android:layout_marginStart="240dp"
                     android:layout_marginTop="36dp"
                     android:src="@drawable/tick"

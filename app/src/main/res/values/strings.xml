@@ -22,9 +22,9 @@
     <string name="communityManager_text">Welcome to the Pet Village community!</string>
 
     <string name="TestUser1">Crazy Potatoes</string>
-    <string name="TestUser1Content">Welcome to pet village
-                                    \nStart publishing your first post!
-                                    \nClick the ADD sign to post what you want.</string>
+    <string name="TestUser1Content">\nWelcome to Pet Village!
+                                    \n\nStart publishing your first post!
+                                    \nClick the ADD button to post what you want.</string>
     <string name="TestUser2">Villager221</string>
     <string name="TestUser2Content">What kind of puppy should I have?</string>
 
