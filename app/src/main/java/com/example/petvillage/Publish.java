@@ -111,8 +111,8 @@ public class Publish extends Fragment {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                         if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                            if (binding.bTittle.getText().toString().equals("")) {
-                                binding.bTittle.setError("Field is Required!!");
+                            if (binding.bTitle.getText().toString().equals("")) {
+                                binding.bTitle.setError("Field is Required!!");
                             } else if (binding.bDesc.getText().toString().equals("")) {
                                 binding.bDesc.setError("Field is Required!!");
                             } else if (binding.bAuthor.getText().toString().equals("")) {
@@ -124,7 +124,7 @@ public class Publish extends Fragment {
                                 pd.setCancelable(false);
                                 pd.show();
 
-                                String title = binding.bTittle.getText().toString();
+                                String title = binding.bTitle.getText().toString();
                                 String desc = binding.bDesc.getText().toString();
                                 String author = binding.bAuthor.getText().toString();
 
@@ -143,7 +143,7 @@ public class Publish extends Fragment {
                                                     String final_date = date + " " + month;
 
                                                     HashMap<String, String> map = new HashMap<>();
-                                                    map.put("tittle", title);
+                                                    map.put("title", title);
                                                     map.put("desc", desc);
                                                     map.put("author", author);
                                                     map.put("date", final_date);
@@ -151,7 +151,7 @@ public class Publish extends Fragment {
                                                     map.put("timestamp", String.valueOf(System.currentTimeMillis()));
                                                     map.put("share_count", "0");
 
-                                                    FirebaseFirestore.getInstance().collection("Blogs").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    FirebaseFirestore.getInstance().collection("POSTs").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()) {
@@ -161,7 +161,7 @@ public class Publish extends Fragment {
                                                                 binding.imgThumbnail.setVisibility(View.INVISIBLE);
                                                                 binding.view2.setVisibility(View.VISIBLE);
                                                                 binding.bSelectImage.setVisibility(View.VISIBLE);
-                                                                binding.bTittle.setText("");
+                                                                binding.bTitle.setText("");
                                                                 binding.bDesc.setText("");
                                                                 binding.bAuthor.setText("");
                                                             }
@@ -177,7 +177,7 @@ public class Publish extends Fragment {
                             }
                         }
                         if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied()){
-                            showsettingdialog();
+                            showSettingdialog();
                         }
                     }
 
@@ -196,7 +196,7 @@ public class Publish extends Fragment {
         });
     }
 
-    private void showsettingdialog() {
+    private void showSettingdialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Need Permission");
         builder.setMessage("This app needs permission to use this feature. You can grant us these permission manually by clicking on below button");

@@ -50,7 +50,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         Model model = list.get(position);
         holder.title.setText(model.getTitle());
         holder.date.setText(model.getDate());
-        holder.share_count.setText(String.valueOf(model.getLikes()));  // Updated to show likes
+        holder.share_count.setText(String.valueOf(model.getLikes() + " Liked"));  // Updated to show likes
         holder.author.setText(model.getAuthor());
 
         Glide.with(holder.author.getContext()).load(model.getImg()).into(holder.img);
@@ -79,7 +79,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         u_dialog.setContentView(R.layout.update_dialog);
                         u_dialog.show();
 
-                        EditText title = u_dialog.findViewById(R.id.b_tittle);
+                        EditText title = u_dialog.findViewById(R.id.b_title);
                         EditText desc = u_dialog.findViewById(R.id.b_desc);
                         EditText author = u_dialog.findViewById(R.id.b_author);
 
@@ -101,11 +101,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
 
                                     HashMap<String, Object> map = new HashMap<>();
-                                    map.put("tittle", title.getText().toString());
+                                    map.put("title", title.getText().toString());
                                     map.put("desc", desc.getText().toString());
                                     map.put("author", author.getText().toString());
 
-                                    FirebaseFirestore.getInstance().collection("Blogs").document(model.getId()).update(map)
+                                    FirebaseFirestore.getInstance().collection("POSTs").document(model.getId()).update(map)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -133,7 +133,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                                 DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        FirebaseFirestore.getInstance().collection("Blogs").
+                                        FirebaseFirestore.getInstance().collection("POSTs").
                                                 document(model.getId()).delete();
                                         dialog.dismiss();
                                     }
@@ -166,7 +166,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             title = itemView.findViewById(R.id.textView9);
             share_count = itemView.findViewById(R.id.textView10);
             author = itemView.findViewById(R.id.textView8);
-
         }
     }
 }

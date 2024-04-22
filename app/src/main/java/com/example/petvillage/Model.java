@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-    String tittle, desc, author, date, img, share_count,id,timestamp;
-    List<Comment> comments;
+    private String title, desc, author, date, img, share_count,id, timestamp;
+    private List<Comment> comments;
 
     private String userId;
 
     private int likes;
 
-    public Model(String tittle, String desc, String author, String date, String img, String share_count, String id, String timestamp, String userId) {
-        this.tittle = tittle;
+    public Model(String title, String desc, String author, String date, String img, String share_count, String id, String timestamp, String userId) {
+        this.title = title;
         this.desc = desc;
         this.author = author;
         this.date = date;
@@ -44,11 +44,11 @@ public class Model {
     }
 
     public String getTitle() {
-        return tittle;
+        return title;
     }
 
-    public void setTitle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDesc() {
@@ -109,9 +109,7 @@ public class Model {
     public int getLikes() {
         return likes;
     }
-
     public void setLikes(int likes) {
         this.likes = likes;
     }
-
 }

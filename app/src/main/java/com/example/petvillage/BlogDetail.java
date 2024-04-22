@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,7 +56,7 @@ public class BlogDetail extends AppCompatActivity {
     List<Comment> listComment;
 
     EditText editTextComment;
-    Button btnAddComment;
+    ImageButton btnAddComment;
 
     static String COMMENT_KEY = "Comment" ;
 
@@ -78,9 +79,15 @@ public class BlogDetail extends AppCompatActivity {
         btnAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String comment_content = editTextComment.getText().toString().trim();  // 获取输入并去除两端空白
+                if (comment_content.isEmpty()) {
+                    Toast.makeText(BlogDetail.this, "Comment cannot be empty!", Toast.LENGTH_SHORT).show();
+                    btnAddComment.setVisibility(View.VISIBLE);  // 重新显示评论按钮
+                    return;  // 退出处理过程，不执行添加评论
+                }
+
                 btnAddComment.setVisibility(View.INVISIBLE);
                 DatabaseReference commentReference = firebaseDatabase.getReference(COMMENT_KEY).child(id).push();
-                String comment_content = editTextComment.getText().toString();
                 String uid = firebaseUser.getUid();
                 String uname = firebaseUser.getDisplayName();
                 String uimg = (firebaseUser.getPhotoUrl() != null) ? firebaseUser.getPhotoUrl().toString() : "default_user_image_url";
@@ -104,12 +111,11 @@ public class BlogDetail extends AppCompatActivity {
 //                    }
 //                });
 
-
                 commentReference.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("CommentDebug", "Comment added successfully");
-                        showMessage("comment added");
+                        showMessage("Comment added");
                         editTextComment.setText("");
                         btnAddComment.setVisibility(View.VISIBLE);
                     }
@@ -117,7 +123,7 @@ public class BlogDetail extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d("CommentDebug", "Failed to add comment: " + e.getMessage());
-                        showMessage("fail to add comment : " + e.getMessage());
+                        showMessage("Fail to add comment : " + e.getMessage());
                         btnAddComment.setVisibility(View.VISIBLE);
                     }
                 });
@@ -154,7 +160,7 @@ public class BlogDetail extends AppCompatActivity {
     }
 
     private void checkLikeStatus() {
-        DocumentReference blogRef = FirebaseFirestore.getInstance().collection("Blogs").document(id);
+        DocumentReference blogRef = FirebaseFirestore.getInstance().collection("POSTs").document(id);
         blogRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -201,7 +207,7 @@ public class BlogDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference blogRef = db.collection("Blogs").document(id);
+                DocumentReference blogRef = db.collection("POSTs").document(id);
 
                 blogRef.update("likes", FieldValue.increment(1), "likedBy", FieldValue.arrayUnion(firebaseUser.getUid()))
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -217,6 +223,13 @@ public class BlogDetail extends AppCompatActivity {
                                 Toast.makeText(BlogDetail.this, "Error liking post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
+            }
+        });
+
+        binding.imageView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
