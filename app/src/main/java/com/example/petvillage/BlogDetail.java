@@ -198,7 +198,12 @@ public class BlogDetail extends AppCompatActivity {
                     title = value.getString("title");
                     desc = value.getString("desc");
                     count = value.getString("share_count");
-                    n_count = Integer.parseInt(count) + 1;
+                    try {
+                        n_count = Integer.parseInt(count) + 1;
+                    } catch (NumberFormatException e) {
+                        Log.e("BlogDetail", "Failed to parse share count: ", e);
+                        n_count = 0;  // Set to default if parsing fails
+                    }
                 }
             }
         });

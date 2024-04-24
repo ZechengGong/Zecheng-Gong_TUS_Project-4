@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.petvillage.BlogDetail;
 
@@ -27,7 +29,7 @@ import java.util.HashMap;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-    ArrayList<Model> list;
+    public ArrayList<Model> list;
 
     public Adapter(ArrayList<Model> list) {
         this.list = list;
@@ -50,103 +52,104 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         Model model = list.get(position);
         holder.title.setText(model.getTitle());
         holder.date.setText(model.getDate());
-        holder.share_count.setText(String.valueOf(model.getLikes() + " Liked"));  // Updated to show likes
+        holder.share_count.setText(model.getLikes() + " Likes");
         holder.author.setText("By: " + model.getAuthor());
 
         Glide.with(holder.author.getContext()).load(model.getImg()).into(holder.img);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(holder.author.getContext(), BlogDetail.class);
-                intent.putExtra("id", model.getId());
-                holder.author.getContext().startActivity(intent);
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.author.getContext(), BlogDetail.class);
+            intent.putExtra("id", model.getId());
+            holder.author.getContext().startActivity(intent);
+        });
+
+        holder.itemView.setOnLongClickListener(v -> {
+            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            if (currentUserId.equals(model.getUserId())) {
+                showUserOptionsDialog(holder, model);
+            } else {
+                Toast.makeText(holder.author.getContext(), "You can only modify your own posts.", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
+    }
+
+    private void showUserOptionsDialog(ViewHolder holder, Model model) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(holder.author.getContext());
+        builder.setTitle("Choose an action for the post:");
+
+        builder.setPositiveButton("Update", (dialog, which) -> showUpdateDialog(holder, model));
+        builder.setNegativeButton("Delete", (dialog, which) -> showDeleteConfirmation(holder, model));
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showUpdateDialog(ViewHolder holder, Model model) {
+        final Dialog dialog = new Dialog(holder.author.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.update_dialog);
+
+        EditText title = dialog.findViewById(R.id.b_title);
+        EditText desc = dialog.findViewById(R.id.b_desc);
+        EditText author = dialog.findViewById(R.id.b_author);
+
+        title.setText(model.getTitle());
+        desc.setText(model.getDesc());
+        author.setText(model.getAuthor());
+
+        dialog.findViewById(R.id.btn_publish).setOnClickListener(v -> {
+            if (validateFields(title, desc, author)) {
+                updatePost(model.getId(), title.getText().toString(), desc.getText().toString(), author.getText().toString(), dialog);
             }
         });
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(holder.author.getContext());
-                builder.setTitle("Choose an action on the post: ");
-                builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final Dialog u_dialog = new Dialog(holder.author.getContext());
-                        u_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        u_dialog.setCancelable(false);
-                        u_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                        u_dialog.setContentView(R.layout.update_dialog);
-                        u_dialog.show();
+        dialog.show();
+    }
 
-                        EditText title = u_dialog.findViewById(R.id.b_title);
-                        EditText desc = u_dialog.findViewById(R.id.b_desc);
-                        EditText author = u_dialog.findViewById(R.id.b_author);
+    private boolean validateFields(EditText title, EditText desc, EditText author) {
+        if (title.getText().toString().isEmpty() || desc.getText().toString().isEmpty() || author.getText().toString().isEmpty()) {
+            if (title.getText().toString().isEmpty()) title.setError("Field is Required!");
+            if (desc.getText().toString().isEmpty()) desc.setError("Field is Required!");
+            if (author.getText().toString().isEmpty()) author.setError("Field is Required!");
+            return false;
+        }
+        return true;
+    }
 
-                        title.setText(model.getTitle());
-                        desc.setText(model.getDesc());
-                        author.setText(model.getAuthor());
+    private void updatePost(String postId, String title, String desc, String author, Dialog dialog) {
+        HashMap<String, Object> updateMap = new HashMap<>();
+        updateMap.put("title", title);
+        updateMap.put("desc", desc);
+        updateMap.put("author", author);
 
-                        TextView dialogbutton = u_dialog.findViewById(R.id.btn_publish);
-                        dialogbutton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (title.getText().toString().equals("")) {
-                                    title.setError("Field is Required!");
-                                } else if (desc.getText().toString().equals("")) {
-                                    desc.setError("Field is Required!");
-                                } else if (author.getText().toString().equals("")) {
-                                    author.setError("Field is Required!");
-                                } else {
-
-
-                                    HashMap<String, Object> map = new HashMap<>();
-                                    map.put("title", title.getText().toString());
-                                    map.put("desc", desc.getText().toString());
-                                    map.put("author", author.getText().toString());
-
-                                    FirebaseFirestore.getInstance().collection("POSTs").document(model.getId()).update(map)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        dialog.dismiss();
-                                                        u_dialog.dismiss();
-                                                    }
-                                                }
-                                            });
-
-                                }
-                            }
-
-                        });
-
+        FirebaseFirestore.getInstance().collection("POSTs").document(postId).update(updateMap)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(dialog.getContext(), "Post updated successfully", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(dialog.getContext(), "Update failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-                builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AlertDialog.Builder builders = new AlertDialog.Builder(holder.author.
-                                getContext());
-                        builders.setTitle("Are you sure you want to delete this post?");
-                        builders.setPositiveButton("Yes", new
-                                DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        FirebaseFirestore.getInstance().collection("POSTs").
-                                                document(model.getId()).delete();
-                                        dialog.dismiss();
-                                    }
-                                });
-                        AlertDialog dialogs = builders.create();
-                        dialogs.show();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                return false;
-            }
+    }
+
+    private void showDeleteConfirmation(ViewHolder holder, Model model) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(holder.author.getContext());
+        builder.setTitle("Are you sure you want to delete this post?");
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            deletePost(model.getId(), holder);
         });
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
+    private void deletePost(String postId, ViewHolder holder) {
+        FirebaseFirestore.getInstance().collection("POSTs").document(postId).delete()
+                .addOnSuccessListener(aVoid -> Toast.makeText(holder.author.getContext(), "Post deleted successfully", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(holder.author.getContext(), "Failed to delete post: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     @Override

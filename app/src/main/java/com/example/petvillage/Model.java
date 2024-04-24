@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-    private String title, desc, author, date, img, share_count,id, timestamp;
+    private String title, desc, author, date, img, share_count,id;
+    private long timestamp;
     private List<Comment> comments;
 
     private String userId;
 
     private int likes;
 
-    public Model(String title, String desc, String author, String date, String img, String share_count, String id, String timestamp, String userId) {
+    public Model(String title, String desc, String author, String date, String img, String share_count, String id, long timestamp, String userId) {
         this.title = title;
         this.desc = desc;
         this.author = author;
@@ -24,11 +25,11 @@ public class Model {
         this.comments = new ArrayList<>();
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 

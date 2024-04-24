@@ -64,7 +64,7 @@
                 android:fontFamily="@font/poppins"
                 android:gravity="start"
                 android:hint="Write anything down..."
-                android:inputType="textPersonName"
+                android:inputType="textMultiLine"
                 android:minHeight="150dp"
                 android:padding="15dp"
                 android:textColor="@color/black" />

@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
-    GoogleSignInOptions signInOptions;
-    GoogleSignInClient signInClient;
-    FirebaseAuth auth;
+    private GoogleSignInOptions signInOptions;
+    private GoogleSignInClient signInClient;
+    private FirebaseAuth auth;
 
     @Override
     public void onBackPressed() {
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.contact: {
                         Intent i = new Intent();
                         i.setAction(Intent.ACTION_DIAL);
-                        i.setData(Uri.parse("tel:" + 00353123456));
+                        i.setData(Uri.parse("tel:" + 353123456));
                         startActivity(i);
                         break;
                     }

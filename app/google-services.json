@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "514882947635",
-    "project_id": "pet-village-v2",
-    "storage_bucket": "pet-village-v2.appspot.com"
+    "project_number": "725407141615",
+    "project_id": "pet-village-v3",
+    "storage_bucket": "pet-village-v3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:514882947635:android:7306a58d061bd57a947146",
+        "mobilesdk_app_id": "1:725407141615:android:c75cc8add1c007376a551a",
         "android_client_info": {
           "package_name": "com.example.petvillage"
         }
       },
       "oauth_client": [
         {
-          "client_id": "514882947635-6mda5d4bpk0fh04d62npip15ja130vki.apps.googleusercontent.com",
+          "client_id": "725407141615-1e5vgj6scb9d146bnoglscajem57b3ot.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.petvillage",
-            "certificate_hash": "308cf5dfa411cf9397467fc320a0e6c547db23aa"
+            "certificate_hash": "f61ae6fe6cac3b6267d54b75929e689adf4f5ecf"
           }
         },
         {
-          "client_id": "514882947635-up9kb2lkghtf5ud9k21vu8nslo5olehr.apps.googleusercontent.com",
+          "client_id": "725407141615-0dbh80v2u28t6bu0mp1tv9mk3gdtm91q.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAoveDvBcyvk0UyCOk1nXCL6F_pzASNXzE"
+          "current_key": "AIzaSyC9QhBOCEFNiGyl0PQofrM6D5kkA_oB7UM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "514882947635-up9kb2lkghtf5ud9k21vu8nslo5olehr.apps.googleusercontent.com",
+              "client_id": "725407141615-0dbh80v2u28t6bu0mp1tv9mk3gdtm91q.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

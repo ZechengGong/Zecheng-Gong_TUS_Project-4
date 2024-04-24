@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -42,9 +43,8 @@ import java.util.List;
 
 public class Publish extends Fragment {
 
-    FragmentPublishBinding binding;
-    Uri filepath;
-
+    public FragmentPublishBinding binding;
+    public Uri filepath;
 
     public Publish() {
         // Required empty public constructor
@@ -53,22 +53,23 @@ public class Publish extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPublishBinding.inflate(inflater, container, false);
         binding.btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadData(filepath);
+                if (filepath != null) { // 确保图片已选择
+                    uploadData(filepath); // 仅在点击时上传
+                } else {
+                    Toast.makeText(getContext(), "Please select an image first.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return binding.getRoot();
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -90,109 +91,74 @@ public class Publish extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 101 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filepath = data.getData();
+            filepath = data.getData(); // 保存图片的Uri，稍后上传
             binding.imgThumbnail.setVisibility(View.VISIBLE);
-            binding.imgThumbnail.setImageURI(filepath);
+            binding.imgThumbnail.setImageURI(filepath); // 显示图片预览
             binding.view2.setVisibility(View.INVISIBLE);
             binding.bSelectImage.setVisibility(View.INVISIBLE);
-            uploadData(filepath);
         }
     }
 
     private void uploadData(Uri filepath) {
-        binding.btnPublish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dexter.withActivity(getActivity()).withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                            if (binding.bTitle.getText().toString().equals("")) {
-                                binding.bTitle.setError("Field is Required!!");
-                            } else if (binding.bDesc.getText().toString().equals("")) {
-                                binding.bDesc.setError("Field is Required!!");
-                            } else if (binding.bAuthor.getText().toString().equals("")) {
-                                binding.bAuthor.setError("Field is Required!!");
-                            } else {
-                                ProgressDialog pd = new ProgressDialog(getContext());
-                                pd.setTitle("Uploading...");
-                                pd.setMessage("Uploading to Firebase, please do not exit");
-                                pd.setCancelable(false);
-                                pd.show();
+        String title = binding.bTitle.getText().toString().trim();
+        String content = binding.bDesc.getText().toString().trim();
+        String nickName = binding.bAuthor.getText().toString().trim();
+        String currentDate = DateFormat.format("dd MMM yyyy", new Date()).toString();  // 格式化当前日期
 
-                                String title = binding.bTitle.getText().toString();
-                                String desc = binding.bDesc.getText().toString();
-                                String author = binding.bAuthor.getText().toString();
+        if (title.isEmpty() || content.isEmpty() || nickName.isEmpty()) {
+            if (title.isEmpty()) binding.bTitle.setError("Title is required");
+            if (content.isEmpty()) binding.bDesc.setError("Content is required");
+            if (nickName.isEmpty()) binding.bAuthor.setError("Nickname is required");
+            return;
+        }
 
-                                if (filepath != null) {
-                                    FirebaseStorage storage = FirebaseStorage.getInstance();
-                                    StorageReference reference = storage.getReference().child("images/" + filepath.toString() + ".jpg");
-                                    reference.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            reference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Uri> task) {
-                                                    String file_url = task.getResult().toString();
-                                                    String date = (String) DateFormat.format("dd", new Date());
-                                                    String month = (String) DateFormat.format("MMM", new Date());
-                                                    String final_date = date + " " + month;
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Uploading...");
+        progressDialog.setMessage("Please wait, uploading post");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
-                                                    HashMap<String, String> map = new HashMap<>();
-                                                    map.put("title", title);
-                                                    map.put("desc", desc);
-                                                    map.put("author", author);
-                                                    map.put("date", final_date);
-                                                    map.put("img", file_url);
-                                                    map.put("timestamp", String.valueOf(System.currentTimeMillis()));
-                                                    map.put("share_count", "0");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();  // 获取用户ID
 
-                                                    FirebaseFirestore.getInstance().collection("POSTs").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                pd.dismiss();
-                                                                Toast.makeText(getContext(), "Post Uploaded!", Toast.LENGTH_SHORT).show();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("post_images/" + System.currentTimeMillis() + ".jpg");
+        storageRef.putFile(filepath)
+                .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    HashMap<String, Object> postMap = new HashMap<>();
+                    postMap.put("title", title);
+                    postMap.put("content", content);
+                    postMap.put("nickName", nickName);
+                    postMap.put("userId", userId);
+                    postMap.put("img", uri.toString());
+                    postMap.put("date", currentDate);  // 添加当前日期
+                    postMap.put("timestamp", System.currentTimeMillis());
 
-                                                                binding.imgThumbnail.setVisibility(View.INVISIBLE);
-                                                                binding.view2.setVisibility(View.VISIBLE);
-                                                                binding.bSelectImage.setVisibility(View.VISIBLE);
-                                                                binding.bTitle.setText("");
-                                                                binding.bDesc.setText("");
-                                                                binding.bAuthor.setText("");
-                                                            }
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
+                    FirebaseFirestore.getInstance().collection("POSTs").add(postMap)
+                            .addOnSuccessListener(documentReference -> {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "Post uploaded successfully!", Toast.LENGTH_LONG).show();
+                                resetPublishForm();
+                            })
+                            .addOnFailureListener(e -> {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "Failed to upload post: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            });
+                }))
+                .addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Failed to upload image: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+    }
 
-                            }
-                        }
-                        if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied()){
-                            showSettingdialog();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-                        permissionToken.continuePermissionRequest();
-                    }
-
-                }).withErrorListener(new PermissionRequestErrorListener() {
-                    @Override
-                    public void onError(DexterError dexterError) {
-                        getActivity().finish();
-                    }
-                }).onSameThread().check();
-            }
-        });
+    private void resetPublishForm() {
+        binding.bTitle.setText("");
+        binding.bDesc.setText("");
+        binding.bAuthor.setText("");
+        binding.imgThumbnail.setVisibility(View.INVISIBLE);
+        binding.bSelectImage.setVisibility(View.VISIBLE);
     }
 
     private void showSettingdialog() {
