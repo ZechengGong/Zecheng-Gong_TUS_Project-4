@@ -19,12 +19,4 @@
         <item name="android:windowExitAnimation">@xml/slide_out_bottom</item>
     </style>
 
-    <style name="Theme.PetVillage.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.PetVillage.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.PetVillage.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

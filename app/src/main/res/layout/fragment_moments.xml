@@ -18,7 +18,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/poppins_bold"
-            android:src="@drawable/ic_home_title"
+            android:src="@drawable/ic_moments_title"
             android:textColor="@color/black"
             android:textSize="27sp" />
 

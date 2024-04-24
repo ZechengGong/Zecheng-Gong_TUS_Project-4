@@ -18,7 +18,7 @@
           android:icon="@drawable/village"
           android:id="@+id/moments"/>
     <item
-        android:title="Publish"
+        android:title="Assistant"
         android:icon="@drawable/pet_care"
-        android:id="@+id/publish" />
+        android:id="@+id/assistant" />
 </menu>

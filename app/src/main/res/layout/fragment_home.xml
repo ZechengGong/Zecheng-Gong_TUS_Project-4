@@ -22,8 +22,8 @@
             android:background="@drawable/search_view_background"
             android:inputType="text"
             android:queryHint="Search"
-            android:textColor="@color/black"
-            android:textColorHint="#FF000000"
+            android:textColor="@color/dark_black"
+            android:textColorHint="@color/dark_black"
             app:iconifiedByDefault="false"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/notificationBtu"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"

@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -97,9 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.moments:
                     replaceFragment(new MomentsFragment());
                     break;
-                case R.id.publish:
-                    replaceFragment(new Publish());
+                case R.id.assistant:
+                    showAssistantDialog();
                     break;
+
             }
             return true;
         });
@@ -151,9 +154,15 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     case R.id.login: {
-                        Intent gologin = new Intent(MainActivity.this, Google_Login.class);
-                        startActivity(gologin);
-                        overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                            Toast.makeText(MainActivity.this, "You are ALREADY logged in.", Toast.LENGTH_LONG).show();
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                        } else {
+                            // 用户未登录，跳转到登录页面
+                            Intent loginIntent = new Intent(MainActivity.this, Google_Login.class);
+                            startActivity(loginIntent);
+                            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                        }
                         break;
                     }
 
@@ -223,10 +232,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_LONG).show();
                             displayFragment(new HomeFragment());  // 正确显示 Fragment
                         }else{
-                            Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -242,10 +251,10 @@ public class MainActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
 
-        LinearLayout shortsLayout = dialog.findViewById(R.id.layoutShorts);
+        LinearLayout postsLayout = dialog.findViewById(R.id.layoutPosts);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
-        shortsLayout.setOnClickListener(new View.OnClickListener() {
+        postsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPublishFragment();
@@ -288,4 +297,18 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    private void showAssistantDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.pet_care);
+        builder.setTitle("Sorry");
+        builder.setMessage("The function is not yet available.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

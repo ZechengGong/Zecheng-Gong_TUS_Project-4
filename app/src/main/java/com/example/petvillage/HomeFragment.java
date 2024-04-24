@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
     private CardView card_dogs;
     private CardView card_nearby;
     private CardView card_cats;
+    private ImageView notificationBtu;
 
     private static final String[] SUGGESTIONS = {"Service&Shopping", "Moments", "Login", "About"};
 
@@ -130,6 +132,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         card_dogs = Home.findViewById(R.id.card_dogs);
         card_cats = Home.findViewById(R.id.card_cats);
         card_nearby = Home.findViewById(R.id.card_nearby);
+        notificationBtu = Home.findViewById(R.id.notificationBtu);
 
         ImageCarousel imageCarousel = Home.findViewById(R.id.carousel);
         imageCarousel.registerLifecycle(getLifecycle());
@@ -146,7 +149,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         card_dogs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                showDialogDOG();
             }
         });
 
@@ -164,7 +167,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         card_cats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                showDialogCAT();
             }
         });
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -313,6 +316,14 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             }
         });
 
+        notificationBtu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialogNOTIFY();
+            }
+        });
+
+
         return Home;
     }
 
@@ -323,11 +334,11 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         return !drawerLayout.isDrawerOpen(GravityCompat.START);
     }
 
-    private void showDialog() {
+    private void showDialogCAT() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setIcon(R.drawable.cat);
         builder.setTitle("Oops!");
-        builder.setMessage("Sorry, SERVER MAINTENANCE,\nEstimated time: more than 24 hours.\n\nIf you have any questions, you can contact us through the contact information in the DRAWER BAR MENU.");
+        builder.setMessage("Sorry, SERVER MAINTENANCE,\nEstimated time: more than 24 hours.\n\nIf you have any questions, please call or email us through the contact information in the NAVIGATION DRAWER.");
         builder.setPositiveButton("Done",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -339,4 +350,35 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         dialog.show();
     }
     //Add
+
+    private void showDialogDOG() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setIcon(R.drawable.dog);
+        builder.setTitle("Oops!");
+        builder.setMessage("Sorry, SERVER MAINTENANCE,\nEstimated time: more than 24 hours.\n\nIf you have any questions, please call or email us through the contact information in the NAVIGATION DRAWER.");
+        builder.setPositiveButton("Done",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showDialogNOTIFY() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setIcon(R.drawable.bell);
+        builder.setTitle("Notification");
+        builder.setMessage("Notifications feature coming soon...");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

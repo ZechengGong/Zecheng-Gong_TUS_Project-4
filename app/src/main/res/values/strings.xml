@@ -1,40 +1,22 @@
 <resources>
     <string name="app_name">Pet Village</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="open">Open Navigation Drawer</string>
     <string name="close">Close Navigation Drawer</string>
-    <string name="title_activity_nearby">Nearby</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="nanjing_head_store_location">Opening hours: 8:00 am to 9:30 pm.\nNo. 118, Daguang Rd, Qinhuai District, Nanjing, PRC
     </string>
     <string name="copyright">Copyright@2024 Universal Pets. All Rights Reserved </string>
-    <string name="official">Pet Village Official</string>
-    <string name="promotions">Early access to Christmas promotions!</string>
-    <string name="communityManager">Community Administrator</string>
-    <string name="communityManager_text">Welcome to the Pet Village community!</string>
 
     <string name="TestUser1">Crazy Potatoes</string>
     <string name="TestUser1Content">\nWelcome to Pet Village!
                                     \n\nStart publishing your first post!
                                     \nClick the ADD button to post what you want.</string>
-    <string name="TestUser2">Villager221</string>
-    <string name="TestUser2Content">What kind of puppy should I have?</string>
 
-    <string name="title_activity_drawer_actvity">DrawerActvity</string>
-    <string name="nav_header_title">Blog App</string>
-    <string name="nav_header_subtitle">youtube.com/artorean</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Publish Blog</string>
-    <string name="menu_slideshow">Profile</string>
     <string name="default_web_client_id">514882947635-up9kb2lkghtf5ud9k21vu8nslo5olehr.apps.googleusercontent.com</string>
 
 </resources>

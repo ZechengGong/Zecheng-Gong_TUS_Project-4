@@ -18,7 +18,7 @@
             android:layout_width="170dp"
             android:layout_height="120dp"
             android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            tools:srcCompat="@tools:sample/backgrounds/scenic"/>
 
         <TextView
             android:id="@+id/t_date"
@@ -34,7 +34,6 @@
             android:textSize="8sp" />
     </androidx.cardview.widget.CardView>
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +45,6 @@
         android:layout_marginBottom="5dp"
         android:layout_toEndOf="@+id/card"
         android:orientation="vertical">
-
 
         <TextView
             android:id="@+id/textView8"
@@ -81,5 +79,4 @@
             android:textSize="12sp" />
 
     </LinearLayout>
-
 </RelativeLayout>
