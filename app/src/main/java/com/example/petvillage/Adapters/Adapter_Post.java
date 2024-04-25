@@ -1,4 +1,4 @@
-package com.example.petvillage;
+package com.example.petvillage.Adapters;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,18 +16,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.petvillage.Main.PostDetail;
+import com.example.petvillage.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.example.petvillage.Models.Model_Post;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+
+public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> {
 
     public ArrayList<Model_Post> list;
 
-    public Adapter(ArrayList<Model_Post> list) {
+    public Adapter_Post(ArrayList<Model_Post> list) {
         this.list = list;
         this.notifyDataSetChanged();
     }
@@ -89,20 +93,25 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         dialog.setContentView(R.layout.update_dialog);
 
         EditText title = dialog.findViewById(R.id.et_title);
-        EditText desc = dialog.findViewById(R.id.et_content);
+        EditText content = dialog.findViewById(R.id.et_content);
         EditText nickname = dialog.findViewById(R.id.et_nickname);
 
-        title.setText(modelPost.getTitle());
-        desc.setText(modelPost.getDesc());
-        nickname.setText(modelPost.getNickname());
+        // 确保所有元素都不为空
+        if (title != null && content != null && nickname != null) {
+            title.setText(modelPost.getTitle());
+            content.setText(modelPost.getContent());
+            nickname.setText(modelPost.getNickname());
 
-        dialog.findViewById(R.id.btn_publish).setOnClickListener(v -> {
-            if (validateFields(title, desc, nickname)) {
-                updatePost(modelPost.getId(), title.getText().toString(), desc.getText().toString(), nickname.getText().toString(), dialog);
-            }
-        });
+            dialog.findViewById(R.id.btn_update).setOnClickListener(v -> {
+                if (validateFields(title, content, nickname)) {
+                    updatePost(modelPost.getId(), title.getText().toString(), content.getText().toString(), nickname.getText().toString(), dialog);
+                }
+            });
 
-        dialog.show();
+            dialog.show();
+        } else {
+            Toast.makeText(holder.nickname.getContext(), "Error: Dialog layout is not correctly loaded.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private boolean validateFields(EditText title, EditText desc, EditText nickname) {
@@ -115,10 +124,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return true;
     }
 
-    private void updatePost(String postId, String title, String desc, String nickname, Dialog dialog) {
+    private void updatePost(String postId, String title, String content, String nickname, Dialog dialog) {
         HashMap<String, Object> updateMap = new HashMap<>();
         updateMap.put("title", title);
-        updateMap.put("desc", desc);
+        updateMap.put("content", content);
         updateMap.put("nickname", nickname);
 
         FirebaseFirestore.getInstance().collection("POSTs").document(postId).update(updateMap)
@@ -135,12 +144,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private void showDeleteConfirmation(ViewHolder holder, Model_Post modelPost) {
         AlertDialog.Builder builder = new AlertDialog.Builder(holder.nickname.getContext());
         builder.setTitle("Are you sure you want to delete this post?");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-            deletePost(modelPost.getId(), holder);
+
+        // 交换按钮的文本和响应功能
+        builder.setPositiveButton("No", (dialog, which) -> {
+            dialog.dismiss(); // 实际上，这里现在是“否”，所以只需关闭对话框
         });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-        builder.show();
+
+        builder.setNegativeButton("Yes", (dialog, which) -> {
+            deletePost(modelPost.getId(), holder); // 实际上，这里现在是“是”，执行删除操作
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
+
 
     private void deletePost(String postId, ViewHolder holder) {
         FirebaseFirestore.getInstance().collection("POSTs").document(postId).delete()

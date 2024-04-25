@@ -1,5 +1,7 @@
-package com.example.petvillage;
+package com.example.petvillage.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -12,8 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.petvillage.Adapters.Adapter_Post;
+import com.example.petvillage.R;
 import com.example.petvillage.databinding.FragmentMomentsBinding;
 
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +30,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+
+import com.example.petvillage.Models.Model_Post;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +50,7 @@ public class MomentsFragment extends Fragment {
     private String mParam2;
     FragmentMomentsBinding binding;
     ArrayList<Model_Post> list;
-    Adapter adapter;
+    Adapter_Post adapterPost;
     Model_Post modelPost;
 
     public MomentsFragment() {
@@ -100,6 +107,14 @@ public class MomentsFragment extends Fragment {
         setupRv();
         setSearchView();
         super.onViewCreated(view, savedInstanceState);
+
+        ImageView imgRightIcon = view.findViewById(R.id.imgICQuestion);
+        imgRightIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showIconDialog();
+            }
+        });
     }
 
     private void setSearchView() {
@@ -127,7 +142,7 @@ public class MomentsFragment extends Fragment {
         if (filtered_list.isEmpty()){
             Toast.makeText(getContext(), "No matches found", Toast.LENGTH_SHORT).show();
         } else {
-            adapter.filter_list(filtered_list);
+            adapterPost.filter_list(filtered_list);
         }
     }
 
@@ -143,20 +158,35 @@ public class MomentsFragment extends Fragment {
                     modelPost.setId(snapshot.getId());
                     list.add(modelPost);
                 }
-                adapter.notifyDataSetChanged();
+                adapterPost.notifyDataSetChanged();
             }
         });
-        adapter = new Adapter(list);
+        adapterPost = new Adapter_Post(list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setStackFromEnd(true);
         linearLayoutManager.setReverseLayout(true);
         binding.rvBlogs.setLayoutManager(linearLayoutManager);
-        binding.rvBlogs.setAdapter(adapter);
+        binding.rvBlogs.setAdapter(adapterPost);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         binding=null;
+    }
+
+    private void showIconDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setIcon(R.drawable.ic_hint2)
+                .setTitle("Hint")
+                .setMessage("Long press to edit your OWN post.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

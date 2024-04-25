@@ -1,20 +1,18 @@
-package com.example.petvillage;
+package com.example.petvillage.Models;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Model_Post {
-    private String title, desc, nickname, date, img, id;
+    private String title, content, nickname, date, img, id;
     private long timestamp;
     private List<Model_Comment> modelComments;
-
     private String userId;
-
     private int likes;
 
-    public Model_Post(String title, String desc, String nickname, String date, String img, String id, long timestamp, String userId) {
+    public Model_Post(String title, String content, String nickname, String date, String img, String id, long timestamp, String userId) {
         this.title = title;
-        this.desc = desc;
+        this.content = content;
         this.nickname = nickname;
         this.date = date;
         this.img = img;
@@ -51,12 +49,12 @@ public class Model_Post {
         this.title = title;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getContent() {
+        return content;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getNickname() {

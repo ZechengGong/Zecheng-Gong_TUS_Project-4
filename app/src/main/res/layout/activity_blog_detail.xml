@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostDetail">
+    tools:context=".Main.PostDetail">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -103,8 +103,8 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/edittext_button_style_rounded"
             android:ems="10"
-            android:hint="Write a modelComment"
-            android:inputType="textPersonName" />
+            android:hint="Leave a comment"
+            android:inputType="textPersonName"/>
 
         <ImageButton
             android:id="@+id/post_detail_add_comment_btn"

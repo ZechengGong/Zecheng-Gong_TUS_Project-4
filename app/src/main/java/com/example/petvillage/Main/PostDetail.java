@@ -1,4 +1,4 @@
-package com.example.petvillage;
+package com.example.petvillage.Main;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.petvillage.Adapters.Adapter_Comment;
+import com.example.petvillage.R;
 import com.example.petvillage.databinding.ActivityBlogDetailBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,19 +36,19 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.petvillage.Models.Model_Comment;
+
 
 public class PostDetail extends AppCompatActivity {
     private ActivityBlogDetailBinding binding;
     private String id;
-    private String  title, content;
-
+    private String title, content;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private FirebaseDatabase firebaseDatabase;
     private RecyclerView RvComment;
-    private CommentAdapter commentAdapter;
+    private Adapter_Comment adapterComment;
     private List<Model_Comment> listModelComment;
-
     private EditText editTextComment;
     private ImageButton btnAddComment;
 
@@ -138,8 +140,8 @@ public class PostDetail extends AppCompatActivity {
                     Model_Comment modelComment = snap.getValue(Model_Comment.class);
                     listModelComment.add(modelComment) ;
                 }
-                commentAdapter = new CommentAdapter(getApplicationContext(), listModelComment);
-                RvComment.setAdapter(commentAdapter);
+                adapterComment = new Adapter_Comment(getApplicationContext(), listModelComment);
+                RvComment.setAdapter(adapterComment);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -197,9 +199,9 @@ public class PostDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference blogRef = db.collection("POSTs").document(id);
+                DocumentReference postRef = db.collection("POSTs").document(id);
 
-                blogRef.update("likes", FieldValue.increment(1), "likedBy", FieldValue.arrayUnion(firebaseUser.getUid()))
+                postRef.update("likes", FieldValue.increment(1), "likedBy", FieldValue.arrayUnion(firebaseUser.getUid()))
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

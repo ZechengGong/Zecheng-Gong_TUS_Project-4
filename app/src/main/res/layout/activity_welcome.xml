@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7EED8807"
-    tools:context=".WelcomeActivity">
+    tools:context=".Others.WelcomeActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"

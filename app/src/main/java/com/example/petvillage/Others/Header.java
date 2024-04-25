@@ -1,9 +1,11 @@
-package com.example.petvillage;
+package com.example.petvillage.Others;
 
 import android.os.Bundle;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.petvillage.R;
 
 import java.util.ArrayList;
 
@@ -17,7 +19,6 @@ public class Header extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.header);
-
 
     }
 }

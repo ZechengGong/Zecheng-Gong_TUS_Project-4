@@ -10,7 +10,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Post">
+        tools:context=".Fragments.Post">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/b_title"
+                    android:id="@+id/et_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
@@ -57,7 +57,7 @@
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/b_desc"
+                    android:id="@+id/et_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -74,7 +74,7 @@
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/b_author"
+                    android:id="@+id/et_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -89,7 +89,7 @@
                     android:textColor="@color/black" />
 
                 <TextView
-                    android:id="@+id/btn_publish"
+                    android:id="@+id/btn_update"
                     android:layout_width="250dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"

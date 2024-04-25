@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MomentsFragment"
+    tools:context=".Fragments.MomentsFragment"
     android:background="#ffecb8">
 
     <RelativeLayout
@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/textView3"
+            android:id="@+id/titleMoments"
             android:layout_width="185dp"
             android:layout_height="50dp"
             android:layout_marginStart="15dp"
@@ -22,12 +22,22 @@
             android:textColor="@color/black"
             android:textSize="27sp" />
 
+        <ImageView
+            android:id="@+id/imgICQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/titleMoments"
+            android:layout_alignBottom="@id/titleMoments"
+            android:layout_marginStart="3dp"
+            android:layout_toEndOf="@+id/titleMoments"
+            android:src="@drawable/ic_hint"/> <!-- Replace 'ic_your_icon' with your actual icon drawable -->
+
         <View
             android:id="@+id/view"
             android:layout_width="210dp"
             android:layout_height="20dp"
-            android:layout_below="@id/textView3"
-            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@id/titleMoments"
+            android:layout_alignStart="@+id/titleMoments"
             android:background="@drawable/ic_line" />
 
         <androidx.appcompat.widget.SearchView

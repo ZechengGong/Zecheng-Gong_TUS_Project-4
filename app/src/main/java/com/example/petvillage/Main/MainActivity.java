@@ -1,4 +1,4 @@
-package com.example.petvillage;
+package com.example.petvillage.Main;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +27,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.petvillage.Fragments.HomeFragment;
+import com.example.petvillage.Fragments.MomentsFragment;
+import com.example.petvillage.Fragments.Post;
+import com.example.petvillage.Fragments.ServiceFragment;
+import com.example.petvillage.Google.Google_Login;
+import com.example.petvillage.Google.Google_Logout;
+import com.example.petvillage.Others.About;
+import com.example.petvillage.Others.IOnBackPressed;
+import com.example.petvillage.R;
 import com.example.petvillage.databinding.ActivityMainBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

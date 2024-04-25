@@ -1,26 +1,26 @@
-package com.example.petvillage;
+package com.example.petvillage.Models;
 import com.google.firebase.database.ServerValue;
 
 public class Model_Comment {
-    private String content,uid,uimg,uname;
+    private String content,uid, uImg,uname;
     private Object timestamp;
 
     public Model_Comment() {
     }
 
-    public Model_Comment(String content, String uid, String uimg, String uname) {
+    public Model_Comment(String content, String uid, String uImg, String uname) {
         this.content = content;
         this.uid = uid;
-        this.uimg = uimg;
+        this.uImg = uImg;
         this.uname = uname;
         this.timestamp = ServerValue.TIMESTAMP;
 
     }
 
-    public Model_Comment(String content, String uid, String uimg, String uname, Object timestamp) {
+    public Model_Comment(String content, String uid, String uImg, String uname, Object timestamp) {
         this.content = content;
         this.uid = uid;
-        this.uimg = uimg;
+        this.uImg = uImg;
         this.uname = uname;
         this.timestamp = timestamp;
     }
@@ -41,12 +41,12 @@ public class Model_Comment {
         this.uid = uid;
     }
 
-    public String getUimg() {
-        return uimg;
+    public String getuImg() {
+        return uImg;
     }
 
-    public void setUimg(String uimg) {
-        this.uimg = uimg;
+    public void setuImg(String uImg) {
+        this.uImg = uImg;
     }
 
     public String getUname() {

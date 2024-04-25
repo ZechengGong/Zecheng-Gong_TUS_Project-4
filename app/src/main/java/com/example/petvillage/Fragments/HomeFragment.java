@@ -1,4 +1,4 @@
-package com.example.petvillage;
+package com.example.petvillage.Fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +31,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
+import com.example.petvillage.Others.IOnBackPressed;
+import com.example.petvillage.Others.Nearby;
+import com.example.petvillage.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import android.database.Cursor;

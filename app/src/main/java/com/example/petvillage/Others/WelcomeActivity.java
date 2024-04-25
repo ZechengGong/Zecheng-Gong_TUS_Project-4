@@ -1,9 +1,13 @@
-package com.example.petvillage;
+package com.example.petvillage.Others;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.petvillage.Google.Google_Login;
+import com.example.petvillage.Main.MainActivity;
+import com.example.petvillage.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

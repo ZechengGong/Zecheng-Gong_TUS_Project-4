@@ -1,4 +1,4 @@
-package com.example.petvillage;
+package com.example.petvillage.Others;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -10,8 +10,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.example.petvillage.Google.Login;
+import com.example.petvillage.Google.SignHomeActivity;
+import com.example.petvillage.Main.MainActivity;
+import com.example.petvillage.R;
 import com.google.android.material.navigation.NavigationView;
 
 public class DOGS extends AppCompatActivity {

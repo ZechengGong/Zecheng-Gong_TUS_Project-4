@@ -1,8 +1,10 @@
-package com.example.petvillage;
+package com.example.petvillage.Google;
 
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.petvillage.Main.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

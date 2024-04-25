@@ -1,30 +1,18 @@
-package com.example.petvillage;
+package com.example.petvillage.Fragments;
 
-import static android.content.Context.MODE_PRIVATE;
 import static android.media.CamcorderProfile.get;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.petvillage.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;

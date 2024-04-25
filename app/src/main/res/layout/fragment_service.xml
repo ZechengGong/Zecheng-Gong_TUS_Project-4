@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffad60"
-    tools:context=".ServiceFragment">
+    tools:context=".Fragments.ServiceFragment">
 
     <TextView
         android:id="@+id/header"

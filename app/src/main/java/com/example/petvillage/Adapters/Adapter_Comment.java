@@ -1,4 +1,4 @@
-package com.example.petvillage;
+package com.example.petvillage.Adapters;
 
 import android.content.Context;
 import android.text.format.DateFormat;
@@ -17,13 +17,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
+import com.example.petvillage.Models.Model_Comment;
+import com.example.petvillage.R;
+
+public class Adapter_Comment extends RecyclerView.Adapter<Adapter_Comment.CommentViewHolder> {
 
     private Context mContext;
     private List<Model_Comment> mData;
 
 
-    public CommentAdapter(Context mContext, List<Model_Comment> mData) {
+    public Adapter_Comment(Context mContext, List<Model_Comment> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -38,7 +41,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
 
-        Glide.with(mContext).load(mData.get(position).getUimg()).into(holder.img_user);
+        Glide.with(mContext).load(mData.get(position).getuImg()).into(holder.img_user);
         holder.tv_name.setText(mData.get(position).getUname());
         holder.tv_content.setText(mData.get(position).getContent());
         holder.tv_date.setText(timestampToString((Long)mData.get(position).getTimestamp()));

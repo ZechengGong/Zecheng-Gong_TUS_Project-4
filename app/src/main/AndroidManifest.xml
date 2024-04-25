@@ -17,28 +17,28 @@
         android:theme="@style/Theme.PetVillage"
         tools:targetApi="31">
         <activity
-            android:name=".Maps_Galway"
+            android:name=".Google.Maps_Galway"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".SignHomeActivity"
+            android:name=".Google.SignHomeActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Login"
+            android:name=".Google.Login"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".About"
+            android:name=".Others.About"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -60,21 +60,21 @@
             android:value="AIzaSyDcrOsjmy4jCLPlWylXPGLKPyvrOfIybyI" />
 
         <activity
-            android:name=".Maps_Dublin"
+            android:name=".Google.Maps_Dublin"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Nearby"
+            android:name=".Others.Nearby"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".DOGS"
+            android:name=".Others.DOGS"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -82,7 +82,7 @@
         </activity>
         <!-- Added the line android:windowSoftInputMode="adjustPan" -->
         <activity
-            android:name=".MainActivity"
+            android:name=".Main.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan">
             <meta-data
@@ -90,7 +90,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".Others.WelcomeActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -105,21 +105,21 @@
         </activity>
 
         <activity
-            android:name=".PostDetail"
+            android:name=".Main.PostDetail"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
 
-        <activity android:name=".Google_Login"
+        <activity android:name=".Google.Google_Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Google_Logout"
+        <activity android:name=".Google.Google_Logout"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

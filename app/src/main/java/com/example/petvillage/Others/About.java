@@ -1,4 +1,4 @@
-package com.example.petvillage;
+package com.example.petvillage.Others;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -10,18 +10,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.petvillage.Main.MainActivity;
+import com.example.petvillage.R;
 import com.google.android.material.navigation.NavigationView;
 
-public class Nearby extends AppCompatActivity {
+public class About extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
-    private ImageView maps_nanjing;
-    private ImageView maps_shanghai;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -34,8 +33,8 @@ public class Nearby extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nearby);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        setContentView(R.layout.activity_about);
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.drawer_view);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -47,7 +46,7 @@ public class Nearby extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home: {
-                        Intent go = new Intent(Nearby.this, MainActivity.class);
+                        Intent go = new Intent(About.this, MainActivity.class);
                         startActivity(go);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
@@ -62,61 +61,38 @@ public class Nearby extends AppCompatActivity {
                     case R.id.email: {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"petvillage@petvilg.ie"});
-                        i.putExtra(Intent.EXTRA_SUBJECT, "From Ms./ Mr. / Mx.");
+                        i.putExtra(Intent.EXTRA_SUBJECT, "From");
                         i.putExtra(Intent.EXTRA_TEXT, "To Pet Village Team: ");
                         i.setType("message/rfc822");
                         startActivity(Intent.createChooser(i, "Send Mail Using :"));
                         break;
                     }
                     case R.id.about: {
-                        Intent goAbout = new Intent(Nearby.this, About.class);
-                        startActivity(goAbout);
-                        overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                        Toast.makeText(About.this, "You are already on the About Page", Toast.LENGTH_SHORT).show();
                         break;
                     }
 
                     case R.id.login: {
-                        Intent gologin = new Intent(Nearby.this, Login.class);
+                        Intent gologin = new Intent(About.this, MainActivity.class);
                         startActivity(gologin);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                        Toast.makeText(About.this, "Please return to the homepage and try to log in again.", Toast.LENGTH_SHORT).show();
                         break;
                     }
 
                     case R.id.logout: {
-                        Intent gologout = new Intent(Nearby.this, SignHomeActivity.class);
+                        Intent gologout = new Intent(About.this, MainActivity.class);
                         startActivity(gologout);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                        Toast.makeText(About.this, "Please return to the homepage and try to log out again.", Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
                 return false;
             }
         });
-
-        maps_nanjing = findViewById(R.id.maps_nanjing);
-        maps_shanghai = findViewById(R.id.maps_shanghai);
-
-        maps_nanjing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Nearby.this, Maps_Dublin.class);
-                startActivity(i);
-                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
-            }
-        });
-
-        maps_shanghai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Nearby.this, Maps_Galway.class);
-                startActivity(i);
-                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
-            }
-        });
-
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

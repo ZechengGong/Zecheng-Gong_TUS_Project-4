@@ -1,14 +1,11 @@
-package com.example.petvillage;
+package com.example.petvillage.Fragments;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.petvillage.Fragments.MomentsFragment;
+import com.example.petvillage.R;
 import com.example.petvillage.databinding.FragmentPostBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +47,7 @@ public class Post extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPostBinding.inflate(inflater, container, false);
-        binding.btnPublish.setOnClickListener(new View.OnClickListener() {
+        binding.btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (filepath != null) { // 确保图片已选择
