@@ -5,10 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#f4f4f4"
-    android:paddingTop="22dp">
+    android:paddingTop="15dp"
+    android:paddingBottom="10dp">
     <ImageView
         android:id="@+id/comment_user_img"
-        android:layout_width="42dp"
+        android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"

@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.bottomsheetlayout);
+        dialog.setContentView(R.layout.bottom_sheet);
 
         LinearLayout postsLayout = dialog.findViewById(R.id.layoutPosts);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);

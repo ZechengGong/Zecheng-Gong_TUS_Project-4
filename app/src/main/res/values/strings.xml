@@ -13,9 +13,9 @@
     <string name="copyright">Copyright@2024 Universal Pets. All Rights Reserved </string>
 
     <string name="TestUser1">Crazy Potatoes</string>
-    <string name="TestUser1Content">\nWelcome to Pet Village!
+    <string name="home_page_content">\nWelcome to Pet Village!
                                     \n\nStart publishing your first post!
-                                    \nClick the ADD button to post what you want.</string>
+                                    \n\nClick the PLUS button to post.</string>
 
     <string name="default_web_client_id">514882947635-up9kb2lkghtf5ud9k21vu8nslo5olehr.apps.googleusercontent.com</string>
 

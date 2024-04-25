@@ -43,7 +43,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -69,7 +69,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
             if (currentUserId.equals(modelPost.getUserId())) {
                 showUserOptionsDialog(holder, modelPost);
             } else {
-                Toast.makeText(holder.nickname.getContext(), "You can only modify your own posts.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(holder.nickname.getContext(), "You can only modify your OWN posts.", Toast.LENGTH_SHORT).show();
             }
             return true;
         });

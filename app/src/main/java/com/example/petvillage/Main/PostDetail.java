@@ -1,8 +1,11 @@
 package com.example.petvillage.Main;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -16,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.petvillage.Adapters.Adapter_Comment;
 import com.example.petvillage.R;
-import com.example.petvillage.databinding.ActivityBlogDetailBinding;
+import com.example.petvillage.databinding.ActivityPostDetailsBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +43,7 @@ import com.example.petvillage.Models.Model_Comment;
 
 
 public class PostDetail extends AppCompatActivity {
-    private ActivityBlogDetailBinding binding;
+    private ActivityPostDetailsBinding binding;
     private String id;
     private String title, content;
     private FirebaseAuth firebaseAuth;
@@ -52,12 +55,12 @@ public class PostDetail extends AppCompatActivity {
     private EditText editTextComment;
     private ImageButton btnAddComment;
 
-    private static String COMMENT_KEY = "Comment" ;
+    private static String COMMENT_KEY = "Comment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityBlogDetailBinding.inflate(getLayoutInflater());
+        binding = ActivityPostDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         showData();
 
@@ -69,30 +72,53 @@ public class PostDetail extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        // add Comment button click listner
+        // add Comment button click listener
         btnAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String comment_content = editTextComment.getText().toString().trim();  // 获取输入并去除两端空白
-                if (comment_content.isEmpty()) {
+                String commentContent = editTextComment.getText().toString().trim();
+                if (commentContent.isEmpty()) {
                     Toast.makeText(PostDetail.this, "Comment cannot be empty!", Toast.LENGTH_SHORT).show();
-                    btnAddComment.setVisibility(View.VISIBLE);  // 重新显示评论按钮
-                    return;  // 退出处理过程，不执行添加评论
+                    btnAddComment.setVisibility(View.VISIBLE);
+                    return;
                 }
 
                 btnAddComment.setVisibility(View.INVISIBLE);
                 DatabaseReference commentReference = firebaseDatabase.getReference(COMMENT_KEY).child(id).push();
+                String commentId = commentReference.getKey();  // 获取生成的评论ID
                 String uid = firebaseUser.getUid();
                 String uname = firebaseUser.getDisplayName();
-                String uimg = (firebaseUser.getPhotoUrl() != null) ? firebaseUser.getPhotoUrl().toString() : "default_user_image_url";
-                Model_Comment modelComment = new Model_Comment(comment_content, uid, uimg, uname);
+                String uImg = (firebaseUser.getPhotoUrl() != null) ? firebaseUser.getPhotoUrl().toString() : "default_user_image_url";
 
-                Log.d("CommentDebug", "UID: " + uid + ", Name: " + uname + ", Image URL: " + uimg);
+                // 传入 postId
+                Model_Comment modelComment = new Model_Comment(commentContent, uid, uImg, uname, commentId, id);
 
-                String commentPath = COMMENT_KEY + "/" + id;
-                Log.d("CommentDebug", "Reference Path: " + commentPath);
+                if (firebaseUser != null) {
+                    commentReference.setValue(modelComment)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("CommentDebug", "Comment added successfully");
+                                showMessage("Comment added");
+                                editTextComment.setText("");
+                                hideKeyboard();
+                                btnAddComment.setVisibility(View.VISIBLE);
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.d("CommentDebug", "Failed to add comment: " + e.getMessage());
+                                showMessage("Fail to add comment: " + e.getMessage());
+                                btnAddComment.setVisibility(View.VISIBLE);
+                            });
+                } else {
+                    Toast.makeText(PostDetail.this, "Please login to add comments.", Toast.LENGTH_SHORT).show();
+                    btnAddComment.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
-                DatabaseReference testRef = firebaseDatabase.getReference("Test").child("TestChild");
+        iniRvComment();
+    }
+
+//                DatabaseReference testRef = firebaseDatabase.getReference("Test").child("TestChild");
+
 //                testRef.setValue("TestValue").addOnSuccessListener(new OnSuccessListener<Void>() {
 //                    @Override
 //                    public void onSuccess(Void aVoid) {
@@ -105,50 +131,36 @@ public class PostDetail extends AppCompatActivity {
 //                    }
 //                });
 
-                commentReference.setValue(modelComment).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("CommentDebug", "Comment added successfully");
-                        showMessage("Comment added");
-                        editTextComment.setText("");
-                        btnAddComment.setVisibility(View.VISIBLE);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("CommentDebug", "Failed to add comment: " + e.getMessage());
-                        showMessage("Fail to add comment : " + e.getMessage());
-                        btnAddComment.setVisibility(View.VISIBLE);
-                    }
-                });
-            }
-        });
-        iniRvComment();
-    }
-
     private void iniRvComment() {
-
         RvComment.setLayoutManager(new LinearLayoutManager(this));
+        if (listModelComment == null) {
+            listModelComment = new ArrayList<>();
+        }
+        adapterComment = new Adapter_Comment(PostDetail.this, listModelComment);
+        RvComment.setAdapter(adapterComment);
 
         DatabaseReference commentRef = firebaseDatabase.getReference(COMMENT_KEY).child(id);
         commentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listModelComment = new ArrayList<>();
-                for (DataSnapshot snap:dataSnapshot.getChildren()) {
-
+                listModelComment.clear(); // 确保在添加数据前清空列表
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Model_Comment modelComment = snap.getValue(Model_Comment.class);
-                    listModelComment.add(modelComment) ;
+                    if (modelComment != null) {
+                        listModelComment.add(modelComment);
+                    }
                 }
-                adapterComment = new Adapter_Comment(getApplicationContext(), listModelComment);
-                RvComment.setAdapter(adapterComment);
+                adapterComment.notifyDataSetChanged(); // 通知适配器数据已更新
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("FirebaseError", "Failed to read comment: " + databaseError.getMessage());
             }
         });
     }
+
+
     private void showMessage(String message) {
         Toast.makeText(this,message,Toast.LENGTH_LONG).show();
     }
@@ -186,9 +198,10 @@ public class PostDetail extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null && value.exists()) {
                     Glide.with(getApplicationContext()).load(value.getString("img")).into(binding.imageView3);
-                    binding.textView4.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + value.getString("nickname")));
-                    binding.textView5.setText(value.getString("title"));
-                    binding.textView6.setText(value.getString("content"));
+                    binding.textViewName.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + value.getString("nickname")));
+                    binding.textViewTitle.setText(value.getString("title"));
+                    binding.textViewContents.setText(value.getString("content"));
+                    binding.textViewDate.setText("Published on: " + value.getString("date"));
                     title = value.getString("title");
                     content = value.getString("content");
                 }
@@ -217,12 +230,15 @@ public class PostDetail extends AppCompatActivity {
                         });
             }
         });
-
-        binding.imageView4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+//        binding.btu_back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBackPressed();
+//            }
+//        });
+    }
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editTextComment.getWindowToken(), 0);
     }
 }

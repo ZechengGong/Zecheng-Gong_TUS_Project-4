@@ -179,7 +179,7 @@ public class MomentsFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setIcon(R.drawable.ic_hint2)
                 .setTitle("Hint")
-                .setMessage("Long press to edit your OWN post.")
+                .setMessage("LONG PRESS on a post or comment to edit.")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

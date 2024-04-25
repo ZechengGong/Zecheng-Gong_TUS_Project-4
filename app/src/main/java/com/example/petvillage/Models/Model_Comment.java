@@ -5,16 +5,37 @@ public class Model_Comment {
     private String content,uid, uImg,uname;
     private Object timestamp;
 
+    private String commentId;
+
+    private String postId;
+
     public Model_Comment() {
     }
 
-    public Model_Comment(String content, String uid, String uImg, String uname) {
+    public Model_Comment(String content, String uid, String uImg, String uname, String commentId, String postId) {
         this.content = content;
         this.uid = uid;
         this.uImg = uImg;
         this.uname = uname;
         this.timestamp = ServerValue.TIMESTAMP;
+        this.commentId = commentId;
+        this.postId = postId;
+    }
 
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public Model_Comment(String content, String uid, String uImg, String uname, Object timestamp) {

@@ -48,7 +48,7 @@
                     app:srcCompat="@drawable/ireland" />
 
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/textViewDublin"
                     android:layout_width="232dp"
                     android:layout_height="34dp"
                     android:layout_marginStart="56dp"
@@ -110,7 +110,7 @@
                     app:srcCompat="@drawable/irish" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/textViewGalway"
                     android:layout_width="232dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="56dp"
@@ -196,7 +196,7 @@
         android:id="@+id/drawer_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:headerLayout="@layout/header"
+        app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu"
         android:layout_gravity="start"
         />

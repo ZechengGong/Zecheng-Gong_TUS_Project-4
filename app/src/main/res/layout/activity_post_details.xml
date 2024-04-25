@@ -10,28 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            app:srcCompat="@drawable/back" />
-
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
             android:layout_width="match_parent"
-            android:layout_height="190dp"
-            android:layout_below="@id/imageView4"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            app:cardCornerRadius="15dp">
+            android:layout_height="250dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            app:cardCornerRadius="20dp">
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="match_parent"
-                android:layout_height="190dp"
+                android:layout_height="250dp"
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
@@ -42,65 +32,79 @@
             android:layout_alignBottom="@id/card"
             app:backgroundTint="@color/white"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="35dp"
-            android:layout_marginBottom="-25dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="-30dp"
             android:clickable="true"
             app:srcCompat="@drawable/like" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/card"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="2dp"
             android:fontFamily="@font/poppins_medium"
             android:text="By Someone"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:layout_below="@+id/textViewName"
+            android:id="@+id/textViewDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView4"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Date"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewDate"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="10dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Title will be here."
             android:textColor="@color/black"
-            android:textSize="25sp" />
+            android:textSize="22sp" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/textViewContents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView5"
+            android:layout_below="@+id/textViewTitle"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/poppins_medium"
             android:text="Post Contents here"
             android:textColor="@color/dark_black"
             android:textSize="18sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.example.petvillage.Others.NonScrollableRecyclerView
             android:id="@+id/commentsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="210dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/post_detail_comment"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
             tools:listitem="@layout/comment_list" />
 
         <EditText
             android:id="@+id/post_detail_comment"
             android:layout_width="310dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView6"
+            android:layout_below="@+id/textViewContents"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="235dp"
             android:background="@drawable/edittext_button_style_rounded"
             android:ems="10"
             android:hint="Leave a comment"
@@ -108,8 +112,8 @@
 
         <ImageButton
             android:id="@+id/post_detail_add_comment_btn"
-            android:layout_width="47dp"
-            android:layout_height="34dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignTop="@+id/post_detail_comment"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
