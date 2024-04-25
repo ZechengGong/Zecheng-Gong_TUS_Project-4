@@ -3,26 +3,25 @@ package com.example.petvillage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Model {
-    private String title, desc, author, date, img, share_count,id;
+public class Model_Post {
+    private String title, desc, nickname, date, img, id;
     private long timestamp;
-    private List<Comment> comments;
+    private List<Model_Comment> modelComments;
 
     private String userId;
 
     private int likes;
 
-    public Model(String title, String desc, String author, String date, String img, String share_count, String id, long timestamp, String userId) {
+    public Model_Post(String title, String desc, String nickname, String date, String img, String id, long timestamp, String userId) {
         this.title = title;
         this.desc = desc;
-        this.author = author;
+        this.nickname = nickname;
         this.date = date;
         this.img = img;
-        this.share_count = share_count;
         this.id = id;
         this.userId = userId;
         this.timestamp = timestamp;
-        this.comments = new ArrayList<>();
+        this.modelComments = new ArrayList<>();
     }
 
     public long getTimestamp() {
@@ -33,7 +32,7 @@ public class Model {
         this.timestamp = timestamp;
     }
 
-    public Model() {
+    public Model_Post() {
     }
 
     public String getId() {
@@ -60,12 +59,12 @@ public class Model {
         this.desc = desc;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getNickname() {
+        return nickname;
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.nickname = nickname;
     }
 
     public String getDate() {
@@ -84,20 +83,12 @@ public class Model {
         this.img = img;
     }
 
-    public String getShare_count() {
-        return share_count;
+    public List<Model_Comment> getComments() {
+        return modelComments;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public void setShare_count(String share_count) {
-        this.share_count = share_count;
+    public void setComments(List<Model_Comment> modelComments) {
+        this.modelComments = modelComments;
     }
 
     public String getUserId() {

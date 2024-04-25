@@ -1,15 +1,14 @@
 package com.example.petvillage;
-import com.example.petvillage.Comment;
 import com.google.firebase.database.ServerValue;
 
-public class Comment {
+public class Model_Comment {
     private String content,uid,uimg,uname;
     private Object timestamp;
 
-    public Comment() {
+    public Model_Comment() {
     }
 
-    public Comment(String content, String uid, String uimg, String uname) {
+    public Model_Comment(String content, String uid, String uimg, String uname) {
         this.content = content;
         this.uid = uid;
         this.uimg = uimg;
@@ -18,7 +17,7 @@ public class Comment {
 
     }
 
-    public Comment(String content, String uid, String uimg, String uname, Object timestamp) {
+    public Model_Comment(String content, String uid, String uimg, String uname, Object timestamp) {
         this.content = content;
         this.uid = uid;
         this.uimg = uimg;

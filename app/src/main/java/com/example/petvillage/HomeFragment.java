@@ -27,14 +27,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import android.database.Cursor;
@@ -226,7 +222,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if ("Service&Shopping".equalsIgnoreCase(query)) {
-                    Fragment PublishFragment = new Publish(); // Assuming ServiceFragment is a Fragment
+                    Fragment PublishFragment = new Post(); // Assuming ServiceFragment is a Fragment
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, PublishFragment); // 'container' is your FrameLayout or the id of the Fragment container
                     transaction.addToBackStack(null);

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.petvillage.databinding.FragmentMomentsBinding;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -41,9 +42,9 @@ public class MomentsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     FragmentMomentsBinding binding;
-    ArrayList<Model> list;
+    ArrayList<Model_Post> list;
     Adapter adapter;
-    Model model;
+    Model_Post modelPost;
 
     public MomentsFragment() {
         // Required empty public constructor
@@ -117,8 +118,8 @@ public class MomentsFragment extends Fragment {
     }
 
     private void filter(String newText) {
-        ArrayList<Model> filtered_list = new ArrayList<>();
-        for(Model item : list){
+        ArrayList<Model_Post> filtered_list = new ArrayList<>();
+        for(Model_Post item : list){
             if (item.getTitle() != null && item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
                 filtered_list.add(item);
             }
@@ -138,9 +139,9 @@ public class MomentsFragment extends Fragment {
             public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 list.clear();
                 for (DocumentSnapshot snapshot:value.getDocuments()){
-                    model = snapshot.toObject(Model.class);
-                    model.setId(snapshot.getId());
-                    list.add(model);
+                    modelPost = snapshot.toObject(Model_Post.class);
+                    modelPost.setId(snapshot.getId());
+                    list.add(modelPost);
                 }
                 adapter.notifyDataSetChanged();
             }

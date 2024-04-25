@@ -138,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case R.id.email: {
                         Intent i = new Intent(Intent.ACTION_SEND);
-                        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"petvillage@petvilg.ie"});
-                        i.putExtra(Intent.EXTRA_SUBJECT, "From - ");
+                        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"puppy@petvillage.ie"});
+                        i.putExtra(Intent.EXTRA_SUBJECT, "From: ");
                         i.putExtra(Intent.EXTRA_TEXT, "To Pet Village Team: ");
                         i.setType("message/rfc822");
                         startActivity(Intent.createChooser(i, "Send Mail Using :"));
@@ -289,10 +289,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showPublishFragment() {
-        Publish publishFragment = new Publish();
+        Post postFragment = new Post();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, publishFragment);
+        fragmentTransaction.replace(R.id.frame_layout, postFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

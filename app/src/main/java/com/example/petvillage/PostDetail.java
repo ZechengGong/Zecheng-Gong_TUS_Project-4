@@ -1,10 +1,8 @@
 package com.example.petvillage;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -34,38 +32,32 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import java.util.HashMap;
 
-import com.example.petvillage.Comment;
+public class PostDetail extends AppCompatActivity {
+    private ActivityBlogDetailBinding binding;
+    private String id;
+    private String  title, content;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private FirebaseDatabase firebaseDatabase;
+    private RecyclerView RvComment;
+    private CommentAdapter commentAdapter;
+    private List<Model_Comment> listModelComment;
 
-public class BlogDetail extends AppCompatActivity {
-    ActivityBlogDetailBinding binding;
-    String id;
-    String  title, desc,count;
-    int n_count;
+    private EditText editTextComment;
+    private ImageButton btnAddComment;
 
-    FirebaseAuth firebaseAuth;
-    FirebaseUser firebaseUser;
-    FirebaseDatabase firebaseDatabase;
-    RecyclerView RvComment;
-    CommentAdapter commentAdapter;
-    List<Comment> listComment;
-
-    EditText editTextComment;
-    ImageButton btnAddComment;
-
-    static String COMMENT_KEY = "Comment" ;
+    private static String COMMENT_KEY = "Comment" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityBlogDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        showdata();
+        showData();
 
         RvComment = findViewById(R.id.commentsRecyclerView);
         editTextComment = findViewById(R.id.post_detail_comment);
@@ -81,7 +73,7 @@ public class BlogDetail extends AppCompatActivity {
             public void onClick(View view) {
                 String comment_content = editTextComment.getText().toString().trim();  // 获取输入并去除两端空白
                 if (comment_content.isEmpty()) {
-                    Toast.makeText(BlogDetail.this, "Comment cannot be empty!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostDetail.this, "Comment cannot be empty!", Toast.LENGTH_SHORT).show();
                     btnAddComment.setVisibility(View.VISIBLE);  // 重新显示评论按钮
                     return;  // 退出处理过程，不执行添加评论
                 }
@@ -91,7 +83,7 @@ public class BlogDetail extends AppCompatActivity {
                 String uid = firebaseUser.getUid();
                 String uname = firebaseUser.getDisplayName();
                 String uimg = (firebaseUser.getPhotoUrl() != null) ? firebaseUser.getPhotoUrl().toString() : "default_user_image_url";
-                Comment comment = new Comment(comment_content, uid, uimg, uname);
+                Model_Comment modelComment = new Model_Comment(comment_content, uid, uimg, uname);
 
                 Log.d("CommentDebug", "UID: " + uid + ", Name: " + uname + ", Image URL: " + uimg);
 
@@ -111,7 +103,7 @@ public class BlogDetail extends AppCompatActivity {
 //                    }
 //                });
 
-                commentReference.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
+                commentReference.setValue(modelComment).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("CommentDebug", "Comment added successfully");
@@ -140,13 +132,13 @@ public class BlogDetail extends AppCompatActivity {
         commentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listComment = new ArrayList<>();
+                listModelComment = new ArrayList<>();
                 for (DataSnapshot snap:dataSnapshot.getChildren()) {
 
-                    Comment comment = snap.getValue(Comment.class);
-                    listComment.add(comment) ;
+                    Model_Comment modelComment = snap.getValue(Model_Comment.class);
+                    listModelComment.add(modelComment) ;
                 }
-                commentAdapter = new CommentAdapter(getApplicationContext(),listComment);
+                commentAdapter = new CommentAdapter(getApplicationContext(), listModelComment);
                 RvComment.setAdapter(commentAdapter);
             }
             @Override
@@ -182,7 +174,7 @@ public class BlogDetail extends AppCompatActivity {
     }
 
 
-    private void showdata() {
+    private void showData() {
         id = getIntent().getStringExtra("id");
 
         checkLikeStatus();  // 检查并设置点赞状态
@@ -192,18 +184,11 @@ public class BlogDetail extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null && value.exists()) {
                     Glide.with(getApplicationContext()).load(value.getString("img")).into(binding.imageView3);
-                    binding.textView4.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + value.getString("author")));
+                    binding.textView4.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + value.getString("nickname")));
                     binding.textView5.setText(value.getString("title"));
-                    binding.textView6.setText(value.getString("desc"));
+                    binding.textView6.setText(value.getString("content"));
                     title = value.getString("title");
-                    desc = value.getString("desc");
-                    count = value.getString("share_count");
-                    try {
-                        n_count = Integer.parseInt(count) + 1;
-                    } catch (NumberFormatException e) {
-                        Log.e("BlogDetail", "Failed to parse share count: ", e);
-                        n_count = 0;  // Set to default if parsing fails
-                    }
+                    content = value.getString("content");
                 }
             }
         });
@@ -219,13 +204,13 @@ public class BlogDetail extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 binding.floatingActionButton.setImageResource(R.drawable.liked);  // 更新为已点赞图标
-                                Toast.makeText(BlogDetail.this, "Liked!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PostDetail.this, "Liked!", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(BlogDetail.this, "Error liking post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PostDetail.this, "Error liking post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
             }

@@ -2,7 +2,6 @@ package com.example.petvillage;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -19,34 +18,25 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.petvillage.databinding.FragmentPostBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.DexterError;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.PermissionRequestErrorListener;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.example.petvillage.databinding.FragmentPublishBinding;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
-public class Publish extends Fragment {
+public class Post extends Fragment {
 
-    public FragmentPublishBinding binding;
+    public FragmentPostBinding binding;
     public Uri filepath;
 
-    public Publish() {
+    public Post() {
         // Required empty public constructor
     }
 
@@ -57,7 +47,7 @@ public class Publish extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentPublishBinding.inflate(inflater, container, false);
+        binding = FragmentPostBinding.inflate(inflater, container, false);
         binding.btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,15 +93,15 @@ public class Publish extends Fragment {
     }
 
     private void uploadData(Uri filepath) {
-        String title = binding.bTitle.getText().toString().trim();
-        String content = binding.bDesc.getText().toString().trim();
-        String nickName = binding.bAuthor.getText().toString().trim();
+        String title = binding.etTitle.getText().toString().trim();
+        String content = binding.etContent.getText().toString().trim();
+        String nickname = binding.etNickname.getText().toString().trim();
         String currentDate = DateFormat.format("dd MMM yyyy", new Date()).toString();  // 格式化当前日期
 
-        if (title.isEmpty() || content.isEmpty() || nickName.isEmpty()) {
-            if (title.isEmpty()) binding.bTitle.setError("Title is required");
-            if (content.isEmpty()) binding.bDesc.setError("Content is required");
-            if (nickName.isEmpty()) binding.bAuthor.setError("Nickname is required");
+        if (title.isEmpty() || content.isEmpty() || nickname.isEmpty()) {
+            if (title.isEmpty()) binding.etTitle.setError("Title is required");
+            if (content.isEmpty()) binding.etContent.setError("Content is required");
+            if (nickname.isEmpty()) binding.etNickname.setError("Nickname is required");
             return;
         }
 
@@ -130,7 +120,7 @@ public class Publish extends Fragment {
                     HashMap<String, Object> postMap = new HashMap<>();
                     postMap.put("title", title);
                     postMap.put("content", content);
-                    postMap.put("nickName", nickName);
+                    postMap.put("nickname", nickname);
                     postMap.put("userId", userId);
                     postMap.put("img", uri.toString());
                     postMap.put("date", currentDate);  // 添加当前日期
@@ -139,8 +129,9 @@ public class Publish extends Fragment {
                     FirebaseFirestore.getInstance().collection("POSTs").add(postMap)
                             .addOnSuccessListener(documentReference -> {
                                 progressDialog.dismiss();
-                                Toast.makeText(getContext(), "Post uploaded successfully!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Post uploaded successfully", Toast.LENGTH_LONG).show();
                                 resetPublishForm();
+                                navigateToMomentsFragment();
                             })
                             .addOnFailureListener(e -> {
                                 progressDialog.dismiss();
@@ -154,40 +145,55 @@ public class Publish extends Fragment {
     }
 
     private void resetPublishForm() {
-        binding.bTitle.setText("");
-        binding.bDesc.setText("");
-        binding.bAuthor.setText("");
+        binding.etTitle.setText("");
+        binding.etContent.setText("");
+        binding.etNickname.setText("");
         binding.imgThumbnail.setVisibility(View.INVISIBLE);
         binding.bSelectImage.setVisibility(View.VISIBLE);
     }
 
-    private void showSettingdialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Need Permission");
-        builder.setMessage("This app needs permission to use this feature. You can grant us these permission manually by clicking on below button");
-        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", getActivity().getPackageName(),null);
-                intent.setData(uri);
-                startActivityForResult(intent, 101);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                getActivity().finish();
-            }
-        });
-        builder.show();
-    }
+//    private void showSettingdialog() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setTitle("Need Permission");
+//        builder.setMessage("This app needs permission to use this feature. You can grant us these permission manually by clicking on below button");
+//        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                Uri uri = Uri.fromParts("package", getActivity().getPackageName(),null);
+//                intent.setData(uri);
+//                startActivityForResult(intent, 101);
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//                getActivity().finish();
+//            }
+//        });
+//        builder.show();
+//    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         binding = null;
     }
+
+    private void navigateToMomentsFragment() {
+        if (isAdded() && getActivity() != null) {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            MomentsFragment momentsFragment = new MomentsFragment();
+            fragmentTransaction.replace(R.id.frame_layout, momentsFragment); // 确保 'container' 是你的FrameLayout的ID
+            fragmentTransaction.commit();
+
+            // 设置底部导航栏的当前选中项
+            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+            bottomNavigationView.setSelectedItemId(R.id.moments); // 替换为导航到 MomentsFragment 对应的菜单项ID
+        }
+    }
+
 }

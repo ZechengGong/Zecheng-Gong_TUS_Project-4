@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.petvillage.Comment;
 
 import java.util.Calendar;
 import java.util.List;
@@ -21,10 +20,10 @@ import java.util.Locale;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private Context mContext;
-    private List<Comment> mData;
+    private List<Model_Comment> mData;
 
 
-    public CommentAdapter(Context mContext, List<Comment> mData) {
+    public CommentAdapter(Context mContext, List<Model_Comment> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
