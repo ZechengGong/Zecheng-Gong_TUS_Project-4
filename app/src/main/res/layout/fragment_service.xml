@@ -7,23 +7,36 @@
     android:background="#ffad60"
     tools:context=".Fragments.ServiceFragment">
 
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F8C986"
-        android:padding="16dp"
-        android:text="Pet Village Official Store"
-        android:textSize="25dp"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="360dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="170dp"
+
+        android:src="@drawable/ic_store_title" />
 
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header"
-        android:layout_marginTop="216dp"
+        android:layout_below="@+id/imageView5"
+        android:layout_marginTop="-84dp"
         android:src="@drawable/ic_shopping_opening" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/imageView6"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_pet_shop" />
 
 </RelativeLayout>

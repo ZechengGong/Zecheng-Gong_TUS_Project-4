@@ -74,7 +74,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:text="Title will be here."
             android:textColor="@color/black"
-            android:textSize="22sp" />
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/textViewContents"
@@ -82,12 +82,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewTitle"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/poppins_medium"
             android:text="Post Contents here"
             android:textColor="@color/dark_black"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
         <com.example.petvillage.Others.NonScrollableRecyclerView
             android:id="@+id/commentsRecyclerView"
@@ -107,7 +107,7 @@
             android:layout_marginTop="235dp"
             android:background="@drawable/edittext_button_style_rounded"
             android:ems="10"
-            android:hint="Leave a comment"
+            android:hint="Leave a comment..."
             android:inputType="textPersonName"/>
 
         <ImageButton
