@@ -24,13 +24,14 @@
 
         <ImageView
             android:id="@+id/imgICQuestion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="45dp"
+            android:layout_height="50dp"
             android:layout_alignTop="@id/titleMoments"
             android:layout_alignBottom="@id/titleMoments"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="-5dp"
+            android:layout_marginBottom="-5dp"
             android:layout_toEndOf="@+id/titleMoments"
-            android:src="@drawable/ic_hint"/> <!-- Replace 'ic_your_icon' with your actual icon drawable -->
+            android:src="@drawable/ic_hint_2" />
 
         <View
             android:id="@+id/view"
@@ -42,7 +43,7 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
-            android:layout_width="250dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/view"
             android:layout_marginStart="15dp"
@@ -52,7 +53,7 @@
             android:backgroundTint="@color/light_white"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
-            app:queryHint="Search with title">
+            app:queryHint="Search with title or name">
         </androidx.appcompat.widget.SearchView>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -63,7 +64,7 @@
             android:layout_marginStart="14dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="14dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="45dp"
             tools:listitem="@layout/post_list"/>
 
     </RelativeLayout>

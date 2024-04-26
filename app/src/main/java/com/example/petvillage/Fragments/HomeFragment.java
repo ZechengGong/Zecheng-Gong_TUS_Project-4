@@ -1,5 +1,7 @@
 package com.example.petvillage.Fragments;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +20,7 @@ import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.BaseColumns;
@@ -57,7 +60,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
     private CardView card_cats;
     private ImageView notificationBtu;
 
-    private static final String[] SUGGESTIONS = {"Service&Shopping", "Moments", "Login", "About"};
+    private static final String[] SUGGESTIONS = {"Service&Shopping", "Moments","Post","Open Drawer","Call","Email","Contact"};
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -178,6 +181,8 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         drawerToggle.syncState();
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -187,12 +192,11 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 return false;
             }
         });
+
+
         SearchView searchView = Home.findViewById(R.id.searchView); // 确保您有一个名为searchView的SearchView在您的fragment_home.xml布局中
         BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
 
-//        // 设置搜索框建议的 CursorAdapter
-//        final String[] from = new String[] {"suggestion"};
-//        final int[] to = new int[] {android.R.id.text1};
 
         MatrixCursor cursor = new MatrixCursor(new String[] {BaseColumns._ID, "suggestion"});
         for (int i = 0; i < SUGGESTIONS.length; i++) {
@@ -210,42 +214,34 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         searchView.setSuggestionsAdapter(suggestionAdapter);
 
 
-        // 当 SearchView 获得焦点时显示所有建议
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    populateSuggestions(SUGGESTIONS, suggestionAdapter); // 显示所有建议
-                }
-            }
-        });
-
         // 设置搜索框的监听器
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
                 if ("Service&Shopping".equalsIgnoreCase(query)) {
-                    Fragment PublishFragment = new Post(); // Assuming ServiceFragment is a Fragment
-                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                    transaction.replace(R.id.frame_layout, PublishFragment); // 'container' is your FrameLayout or the id of the Fragment container
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                    bottomNavigationView.setSelectedItemId(R.id.shopping); // 使用您 Service Fragment 对应的菜单项 ID
-                    return true; // 如果处理了查询，则返回 true
+                    Fragment serviceFragment = new ServiceFragment(); // Replace with your actual fragment class
+                    transaction.replace(R.id.frame_layout, serviceFragment);
+                    navigateToShoppingFragment();
+                } else if ("Moments".equalsIgnoreCase(query)) {
+                    Fragment momentsFragment = new MomentsFragment(); // Replace with your actual fragment class
+                    transaction.replace(R.id.frame_layout, momentsFragment);
+                    navigateToMomentsFragment();
+                } else if ("Post".equalsIgnoreCase(query)) {
+                    Fragment postFragment = new Post(); // Replace with your actual fragment class
+                    transaction.replace(R.id.frame_layout, postFragment);
+                } else if ("Open Drawer".equalsIgnoreCase(query)|| "Call".equalsIgnoreCase(query)|| "Email".equalsIgnoreCase(query)|| "Contact".equalsIgnoreCase(query)) {
+                    openDrawer();
+                    return true;
+                } else {
+                    // If no special keyword is matched, indicate no action was taken
+                    return false;
                 }
 
-                if ("Moments".equalsIgnoreCase(query)) {
-                    Fragment serviceFragment = new ServiceFragment(); // Assuming ServiceFragment is a Fragment
-                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                    transaction.replace(R.id.frame_layout, serviceFragment); // 'container' is your FrameLayout or the id of the Fragment container
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                    bottomNavigationView.setSelectedItemId(R.id.moments); // 使用您 Service Fragment 对应的菜单项 ID
-                    return true; // 如果处理了查询，则返回 true
-                }
-
-                // 如果没有处理查询，则返回 false
-                return false;
+                transaction.addToBackStack(null);
+                transaction.commit();
+                return true;
             }
 
             @Override
@@ -269,6 +265,7 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
 
         searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
+
             public boolean onSuggestionSelect(int position) {
                 return false;
             }
@@ -279,12 +276,12 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 int columnIndex = cursor.getColumnIndex("suggestion");
                 if (columnIndex >= 0) { // 确保列索引是有效的
                     String suggestion = cursor.getString(columnIndex);
-
                     // 设置搜索框内容并提交
                     searchView.setQuery(suggestion, true);
-                    return true;
+                    hideKeyboard(searchView);
+                    searchView.setQuery("", false);
                 }
-                return false;
+                return true;
             }
         });
 
@@ -321,11 +318,8 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
                 showDialogNOTIFY();
             }
         });
-
-
         return Home;
     }
-
     //End of Search
 
     @Override
@@ -380,4 +374,34 @@ public class HomeFragment extends Fragment implements IOnBackPressed {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
+    private void navigateToShoppingFragment() {
+        if (isAdded() && getActivity() != null) {
+            // 设置底部导航栏的当前选中项
+            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+            bottomNavigationView.setSelectedItemId(R.id.shopping); // 替换为导航到 MomentsFragment 对应的菜单项ID
+        }
+    }
+    private void navigateToMomentsFragment() {
+        if (isAdded() && getActivity() != null) {
+            // 设置底部导航栏的当前选中项
+            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+            bottomNavigationView.setSelectedItemId(R.id.moments); // 替换为导航到 MomentsFragment 对应的菜单项ID
+        }
+    }
+
+    private void openDrawer() {
+        if (drawerLayout != null) {
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null && view != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
 }

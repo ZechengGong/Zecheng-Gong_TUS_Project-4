@@ -85,6 +85,18 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
             intent.putExtra("id", modelPost.getId());
             holder.nickname.getContext().startActivity(intent);
         });
+
+        // 设置长按监听器
+        holder.itemView.setOnLongClickListener(v -> {
+            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            if (currentUserId != null && currentUserId.equals(modelPost.getUserId())) {
+                showUserOptionsDialog(holder, modelPost);
+                return true;  // 表明事件已被处理
+            } else {
+                Toast.makeText(holder.nickname.getContext(), "You can only modify your OWN posts.", Toast.LENGTH_SHORT).show();
+                return false;  // 表明事件未被处理
+            }
+        });
     }
 
     private void showUserOptionsDialog(ViewHolder holder, Model_Post modelPost) {

@@ -134,12 +134,13 @@ public class MomentsFragment extends Fragment {
 
     private void filter(String newText) {
         ArrayList<Model_Post> filtered_list = new ArrayList<>();
-        for(Model_Post item : list){
-            if (item.getTitle() != null && item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
+        for(Model_Post item : list) {
+            if ((item.getTitle() != null && item.getTitle().toLowerCase().contains(newText.toLowerCase())) ||
+                    (item.getNickname() != null && item.getNickname().toLowerCase().contains(newText.toLowerCase()))) {
                 filtered_list.add(item);
             }
         }
-        if (filtered_list.isEmpty()){
+        if (filtered_list.isEmpty()) {
             Toast.makeText(getContext(), "No matches found", Toast.LENGTH_SHORT).show();
         } else {
             adapterPost.filter_list(filtered_list);
@@ -177,9 +178,9 @@ public class MomentsFragment extends Fragment {
 
     private void showIconDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setIcon(R.drawable.ic_hint2)
-                .setTitle("Hint")
-                .setMessage("LONG PRESS on a post or comment to edit.")
+        builder.setIcon(R.drawable.ic_hint_3)
+                .setTitle("Editing tips")
+                .setMessage("LONG PRESS on a post or a comment \nto edit.")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

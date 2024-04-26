@@ -137,7 +137,7 @@
             android:layout_height="80dp"
             android:layout_above="@+id/commentsRecyclerView"
             android:layout_alignTop="@+id/post_detail_comment"
-            android:layout_marginStart="-5dp"
+            android:layout_marginStart="-10dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="10dp"
             android:layout_toEndOf="@+id/post_detail_comment"
