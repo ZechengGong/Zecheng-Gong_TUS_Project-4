@@ -13,10 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.petvillage.Google.Login;
+import com.example.petvillage.Google.Google_Login;
+import com.example.petvillage.Google.Google_Logout;
+//import com.example.petvillage.Google.Login;
 import com.example.petvillage.Google.Maps_Dublin;
 import com.example.petvillage.Google.Maps_Galway;
-import com.example.petvillage.Google.SignHomeActivity;
+//import com.example.petvillage.Google.SignHomeActivity;
 import com.example.petvillage.Main.MainActivity;
 import com.example.petvillage.R;
 import com.google.android.material.navigation.NavigationView;
@@ -61,14 +63,14 @@ public class Nearby extends AppCompatActivity {
                     case R.id.contact: {
                         Intent i = new Intent();
                         i.setAction(Intent.ACTION_DIAL);
-                        i.setData(Uri.parse("tel:" + 400123456));
+                        i.setData(Uri.parse("tel:" + 353831234));
                         startActivity(i);
                         break;
                     }
                     case R.id.email: {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"petvillage@petvilg.ie"});
-                        i.putExtra(Intent.EXTRA_SUBJECT, "From Ms./ Mr. / Mx.");
+                        i.putExtra(Intent.EXTRA_SUBJECT, "From:");
                         i.putExtra(Intent.EXTRA_TEXT, "To Pet Village Team: ");
                         i.setType("message/rfc822");
                         startActivity(Intent.createChooser(i, "Send Mail Using :"));
@@ -82,14 +84,14 @@ public class Nearby extends AppCompatActivity {
                     }
 
                     case R.id.login: {
-                        Intent gologin = new Intent(Nearby.this, Login.class);
+                        Intent gologin = new Intent(Nearby.this, Google_Login.class);
                         startActivity(gologin);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
 
                     case R.id.logout: {
-                        Intent gologout = new Intent(Nearby.this, SignHomeActivity.class);
+                        Intent gologout = new Intent(Nearby.this, Google_Logout.class);
                         startActivity(gologout);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;

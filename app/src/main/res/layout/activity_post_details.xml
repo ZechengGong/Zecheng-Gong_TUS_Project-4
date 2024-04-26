@@ -10,53 +10,71 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="2dp"
-            app:cardCornerRadius="20dp">
-            <ImageView
-                android:id="@+id/imageView3"
+        <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageViewPostImage"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:scaleType="centerCrop" />
-        </androidx.cardview.widget.CardView>
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="2dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/RoundedSquare"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/btn_liked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/card"
+            android:layout_alignBottom="@id/imageViewPostImage"
             app:backgroundTint="@color/white"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="-30dp"
             android:clickable="true"
-            app:srcCompat="@drawable/like" />
+            app:srcCompat="@drawable/like"
+            android:contentDescription="Click if you like this post"
+            android:hint="liked"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageViewPerson"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/imageViewPostImage"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="By Someone"
+            android:scaleType="centerCrop"
+            android:textSize="15sp"
+            app:shapeAppearanceOverlay="@style/Circular"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/card"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_below="@+id/imageViewPostImage"
+            android:layout_marginStart="-8dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="2dp"
+            android:layout_toEndOf="@+id/imageViewPerson"
+            android:contentDescription="Add modelComment"
             android:fontFamily="@font/poppins_medium"
+            android:src="@drawable/add_comment"
             android:text="By Someone"
             android:textSize="15sp" />
 
         <TextView
-            android:layout_below="@+id/textViewName"
             android:id="@+id/textViewDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="2dp"
+            android:layout_below="@+id/textViewName"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/poppins_medium"
@@ -68,7 +86,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewDate"
-            android:layout_marginStart="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/poppins_semibold"
@@ -81,7 +100,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewTitle"
-            android:layout_marginStart="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="18dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/poppins_medium"
@@ -105,18 +125,21 @@
             android:layout_below="@+id/textViewContents"
             android:layout_marginStart="16dp"
             android:layout_marginTop="235dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/edittext_button_style_rounded"
             android:ems="10"
             android:hint="Leave a comment..."
-            android:inputType="textPersonName"/>
+            android:inputType="textMultiLine" />
 
         <ImageButton
             android:id="@+id/post_detail_add_comment_btn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_above="@+id/commentsRecyclerView"
             android:layout_alignTop="@+id/post_detail_comment"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="-5dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="10dp"
             android:layout_toEndOf="@+id/post_detail_comment"
             android:background="#00000000"
             android:contentDescription="Add modelComment"

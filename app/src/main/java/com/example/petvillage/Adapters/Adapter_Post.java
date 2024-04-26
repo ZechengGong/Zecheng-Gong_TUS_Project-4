@@ -3,6 +3,7 @@ package com.example.petvillage.Adapters;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +20,24 @@ import com.bumptech.glide.Glide;
 import com.example.petvillage.Main.PostDetail;
 import com.example.petvillage.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.petvillage.Models.Model_Post;
+import com.example.petvillage.Models.Model_Comment;
 
 
 public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> {
 
     public ArrayList<Model_Post> list;
+    private static String COMMENT_KEY = "Comment";
 
     public Adapter_Post(ArrayList<Model_Post> list) {
         this.list = list;
@@ -52,26 +60,30 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
         Model_Post modelPost = list.get(position);
         holder.title.setText(modelPost.getTitle());
         holder.date.setText(modelPost.getDate());
-        holder.share_count.setText(modelPost.getLikes() + " Likes");
+        holder.liked_count.setText(modelPost.getLikes() + " Likes");
         holder.nickname.setText("By: " + modelPost.getNickname());
 
         Glide.with(holder.nickname.getContext()).load(modelPost.getImg()).into(holder.img);
+
+        DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference(COMMENT_KEY).child(modelPost.getId());
+        commentsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long count = dataSnapshot.getChildrenCount(); // 获取子节点数作为评论数量
+                holder.comment_count.setText(count + " Comments");
+                Log.d("Adapter_Post", "Comments loaded for post ID " + modelPost.getId() + ": " + count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Adapter_Post", "Failed to read comment count: " + databaseError.getMessage());
+            }
+        });
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.nickname.getContext(), PostDetail.class);
             intent.putExtra("id", modelPost.getId());
             holder.nickname.getContext().startActivity(intent);
-        });
-
-        holder.itemView.setOnLongClickListener(v -> {
-            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-            if (currentUserId.equals(modelPost.getUserId())) {
-                showUserOptionsDialog(holder, modelPost);
-            } else {
-                Toast.makeText(holder.nickname.getContext(), "You can only modify your OWN posts.", Toast.LENGTH_SHORT).show();
-            }
-            return true;
         });
     }
 
@@ -90,7 +102,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
         final Dialog dialog = new Dialog(holder.nickname.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
-        dialog.setContentView(R.layout.update_dialog);
+        dialog.setContentView(R.layout.update_post_dialog);
 
         EditText title = dialog.findViewById(R.id.et_title);
         EditText content = dialog.findViewById(R.id.et_content);
@@ -172,7 +184,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
-        TextView date, title, share_count, nickname;
+        TextView date, title, liked_count, nickname, comment_count;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -180,8 +192,9 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
             img = itemView.findViewById(R.id.imageView3);
             date = itemView.findViewById(R.id.t_date);
             title = itemView.findViewById(R.id.textView9);
-            share_count = itemView.findViewById(R.id.textView10);
+            liked_count = itemView.findViewById(R.id.textView10);
             nickname = itemView.findViewById(R.id.textView8);
+            comment_count = itemView.findViewById(R.id.textViewCommentCount);  // 初始化 comment_count
         }
     }
 }

@@ -1,9 +1,12 @@
 package com.example.petvillage.Main;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -57,12 +60,35 @@ public class PostDetail extends AppCompatActivity {
 
     private static String COMMENT_KEY = "Comment";
 
+    private Matrix matrix = new Matrix();
+    private float scale = 1f;
+    private ScaleGestureDetector scaleGestureDetector;
+    private boolean isImageZoomed = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPostDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         showData();
+
+        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+
+        // 设置 ImageView 的 onTouchListener 来处理缩放手势
+        binding.imageViewPostImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("PostDetail", "ImageView clicked"); // 添加日志确认点击事件
+                if (!isImageZoomed) {
+                    binding.imageViewPostImage.animate().scaleX(2f).scaleY(2f).setDuration(300).start();
+                    isImageZoomed = true;
+                } else {
+                    binding.imageViewPostImage.animate().scaleX(1f).scaleY(1f).setDuration(300).start();
+                    isImageZoomed = false;
+                }
+            }
+        });
 
         RvComment = findViewById(R.id.commentsRecyclerView);
         editTextComment = findViewById(R.id.post_detail_comment);
@@ -173,9 +199,9 @@ public class PostDetail extends AppCompatActivity {
                 if (documentSnapshot.exists()) {
                     List<String> likedBy = (List<String>) documentSnapshot.get("likedBy");
                     if (likedBy != null && likedBy.contains(firebaseUser.getUid())) {
-                        binding.floatingActionButton.setImageResource(R.drawable.liked);  // 已点赞状态图标
+                        binding.btnLiked.setImageResource(R.drawable.liked);  // 已点赞状态图标
                     } else {
-                        binding.floatingActionButton.setImageResource(R.drawable.like);  // 未点赞状态图标
+                        binding.btnLiked.setImageResource(R.drawable.like);  // 未点赞状态图标
                     }
                 }
             }
@@ -187,47 +213,98 @@ public class PostDetail extends AppCompatActivity {
         });
     }
 
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scale *= detector.getScaleFactor();
+            scale = Math.max(0.1f, Math.min(scale, 5.0f)); // 设置缩放范围
+            matrix.setScale(scale, scale);
+            binding.imageViewPostImage.setImageMatrix(matrix);
+            return true;
+        }
+    }
 
     private void showData() {
         id = getIntent().getStringExtra("id");
-
-        checkLikeStatus();  // 检查并设置点赞状态
+        checkLikeStatus();  // Check and set the like status
 
         FirebaseFirestore.getInstance().collection("POSTs").document(id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null && value.exists()) {
-                    Glide.with(getApplicationContext()).load(value.getString("img")).into(binding.imageView3);
+                    Glide.with(getApplicationContext()).load(value.getString("img")).into(binding.imageViewPostImage);
                     binding.textViewName.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + value.getString("nickname")));
                     binding.textViewTitle.setText(value.getString("title"));
                     binding.textViewContents.setText(value.getString("content"));
                     binding.textViewDate.setText("Published on: " + value.getString("date"));
                     title = value.getString("title");
                     content = value.getString("content");
+
+                    if (firebaseUser != null && firebaseUser.getPhotoUrl() != null) {
+                        // Load the profile image from the user's Google account
+                        Glide.with(getApplicationContext()).load(firebaseUser.getPhotoUrl().toString()).into(binding.imageViewPerson);
+                    } else {
+                        // Set a default image or hide the imageView if no photo is available
+                        binding.imageViewPerson.setImageResource(R.drawable.ic_dafault_user_photo);
+                    }
+
                 }
             }
         });
 
-        binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        binding.btnLiked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 DocumentReference postRef = db.collection("POSTs").document(id);
 
-                postRef.update("likes", FieldValue.increment(1), "likedBy", FieldValue.arrayUnion(firebaseUser.getUid()))
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                binding.floatingActionButton.setImageResource(R.drawable.liked);  // 更新为已点赞图标
-                                Toast.makeText(PostDetail.this, "Liked!", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(PostDetail.this, "Error liking post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                postRef.get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> likedBy = (List<String>) documentSnapshot.get("likedBy");
+                        if (likedBy != null && likedBy.contains(firebaseUser.getUid())) {
+                            // 如果已经点赞了，这次点击是为了取消点赞
+                            postRef.update(
+                                    "likes", FieldValue.increment(-1),
+                                    "likedBy", FieldValue.arrayRemove(firebaseUser.getUid())
+                            ).addOnSuccessListener(aVoid -> {
+                                binding.btnLiked.setImageResource(R.drawable.like);  // 更新为未点赞图标
+                                Toast.makeText(PostDetail.this, "Like removed!", Toast.LENGTH_SHORT).show();
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(PostDetail.this, "Error updating like: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        } else {
+                            // 如果还没点赞，这次点击是为了点赞
+                            postRef.update(
+                                    "likes", FieldValue.increment(1),
+                                    "likedBy", FieldValue.arrayUnion(firebaseUser.getUid())
+                            ).addOnSuccessListener(aVoid -> {
+                                binding.btnLiked.setImageResource(R.drawable.liked);  // 更新为已点赞图标
+                                Toast.makeText(PostDetail.this, "Like successfully", Toast.LENGTH_SHORT).show();
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(PostDetail.this, "Error updating like: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                    }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(PostDetail.this, "Error fetching post details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+
+
+        // 设置图片点击事件，用于放大和缩小
+        binding.imageViewPostImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isImageZoomed) {
+                    // 放大图片
+                    binding.imageViewPostImage.animate().scaleX(2f).scaleY(2f).setDuration(300).start();
+                    isImageZoomed = true;
+                } else {
+                    // 缩小图片
+                    binding.imageViewPostImage.animate().scaleX(1f).scaleY(1f).setDuration(300).start();
+                    isImageZoomed = false;
+                }
             }
         });
 //        binding.btu_back.setOnClickListener(new View.OnClickListener() {

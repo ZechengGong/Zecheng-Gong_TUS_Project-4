@@ -118,7 +118,7 @@ public class MomentsFragment extends Fragment {
     }
 
     private void setSearchView() {
-        binding.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;

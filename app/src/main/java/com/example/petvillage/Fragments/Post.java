@@ -23,6 +23,7 @@ import com.example.petvillage.R;
 import com.example.petvillage.databinding.FragmentPostBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -62,8 +63,23 @@ public class Post extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        selectImage();
         super.onViewCreated(view, savedInstanceState);
+        selectImage();
+
+        // 获取当前用户实例
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // 获取用户的显示名称
+            String displayName = user.getDisplayName();
+            // 如果displayName不为空，则设置到et_nickname
+            if (displayName != null && !displayName.isEmpty()) {
+                binding.etNickname.setText(displayName);
+            } else {
+                // 如果没有设置显示名称，可以提示用户或者留空
+                binding.etNickname.setText(""); // 或者提示用户 "未设置昵称"
+            }
+        }
+
     }
 
     private void selectImage() {
@@ -83,13 +99,35 @@ public class Post extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 101 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filepath = data.getData(); // 保存图片的Uri，稍后上传
+            filepath = data.getData(); // Save the image's Uri to upload later
             binding.imgThumbnail.setVisibility(View.VISIBLE);
-            binding.imgThumbnail.setImageURI(filepath); // 显示图片预览
+            binding.imgThumbnail.setImageURI(filepath); // Display the image preview
             binding.view2.setVisibility(View.INVISIBLE);
             binding.bSelectImage.setVisibility(View.INVISIBLE);
+
+            // Inform the user that they can long-press to delete the image
+            Toast.makeText(getContext(), "Tap and hold the image to delete it.", Toast.LENGTH_LONG).show();
+
+            // Set long click listener to delete the selected image
+            binding.imgThumbnail.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    deleteSelectedImage();
+                    return true; // Indicates the callback consumed the long click
+                }
+            });
         }
     }
+
+    private void deleteSelectedImage() {
+        filepath = null; // Remove the reference to the image
+        binding.imgThumbnail.setImageURI(null); // Clear the image view
+        binding.imgThumbnail.setVisibility(View.GONE);
+        binding.view2.setVisibility(View.VISIBLE);
+        binding.bSelectImage.setVisibility(View.VISIBLE);
+        Toast.makeText(getContext(), "Image removed. You can select a new one.", Toast.LENGTH_SHORT).show();
+    }
+
 
     private void uploadData(Uri filepath) {
         String title = binding.etTitle.getText().toString().trim();

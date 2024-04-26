@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/view"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
             android:orientation="vertical">
 
             <EditText
@@ -45,8 +45,8 @@
                 android:background="@drawable/light_bg"
                 android:ems="10"
                 android:fontFamily="@font/poppins"
-                android:hint="Title"
-                android:inputType="textPersonName"
+                android:hint="Briefly talk about the post..."
+                android:inputType="textMultiLine"
                 android:padding="15dp"
                 android:textColor="@color/black" />
 
@@ -73,30 +73,40 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="150dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="1dp"
                 android:background="@drawable/light_bg"
                 android:ems="10"
                 android:fontFamily="@font/poppins"
                 android:hint="Leave a nickname..."
                 android:inputType="textPersonName"
                 android:padding="15dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="296dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="21dp"
+                android:layout_marginEnd="150dp"
+                android:layout_marginBottom="-20dp"
+                android:text="Use your nickname or something else...">
+
+            </TextView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/stroke_bg"
-                app:cardCornerRadius="18dp">
+                app:cardCornerRadius="5dp">
 
                 <ImageView
                     android:id="@+id/img_thumbnail"
                     android:layout_width="wrap_content"
-                    android:layout_height="170dp"
+                    android:layout_height="180dp"
                     android:scaleType="centerCrop"
                     android:visibility="invisible"
                     tools:src="@tools:sample/backgrounds/scenic" />
@@ -104,13 +114,14 @@
                 <View
                     android:id="@+id/view2"
                     android:layout_width="wrap_content"
-                    android:layout_height="170dp"
+                    android:layout_height="180dp"
                     android:background="@drawable/selection" />
 
                 <TextView
                     android:id="@+id/b_selectImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:layout_gravity="center"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Select an Image\n\n\n"
@@ -123,7 +134,7 @@
                 android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="-5dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/light_bg"
                 android:backgroundTint="@color/orange"
@@ -132,8 +143,6 @@
                 android:text="POST NOW"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
-
         </LinearLayout>
-
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>
