@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,15 +154,31 @@ public class MomentsFragment extends Fragment {
         FirebaseFirestore.getInstance().collection("POSTs").orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                list.clear();
-                for (DocumentSnapshot snapshot:value.getDocuments()){
-                    modelPost = snapshot.toObject(Model_Post.class);
-                    modelPost.setId(snapshot.getId());
-                    list.add(modelPost);
+                if (error != null) {
+                    // 处理错误情况，可能需要显示错误信息或者日志记录
+                    Log.e("Firestore Error", error.getMessage(), error);
+                    return;
                 }
-                adapterPost.notifyDataSetChanged();
+
+                if (value != null) {
+                    list.clear();
+                    for (DocumentSnapshot snapshot : value.getDocuments()) {
+                        Model_Post modelPost = snapshot.toObject(Model_Post.class);
+                        if (modelPost != null) { // 确保转换成功
+                            modelPost.setId(snapshot.getId());
+                            list.add(modelPost);
+                        }
+                    }
+                    adapterPost.notifyDataSetChanged();
+                } else {
+                    // 查询结果为空时的处理逻辑，例如显示提示信息
+                    Log.d("Firestore Info", "No data found");
+                }
             }
+
         });
+
+
         adapterPost = new Adapter_Post(list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setStackFromEnd(true);
