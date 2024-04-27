@@ -65,18 +65,18 @@
             android:fontFamily="@font/poppins_medium"
             android:src="@drawable/add_comment"
             android:text="By Someone"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/textViewDate"
+            android:id="@+id/textViewPostDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewName"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="-5dp"
+            android:layout_marginTop="-20dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@+id/textViewName"
             android:fontFamily="@font/poppins_medium"
             android:text="Date"
             android:textSize="10sp" />
@@ -85,7 +85,7 @@
             android:id="@+id/textViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewDate"
+            android:layout_below="@+id/textViewPostDate"
             android:layout_alignParentStart="true"
             android:layout_marginStart="15dp"
             android:layout_marginTop="1dp"
@@ -93,7 +93,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:text="Title will be here."
             android:textColor="@color/black"
-            android:textSize="25sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textViewContents"
@@ -120,32 +120,37 @@
 
         <EditText
             android:id="@+id/post_detail_comment"
-            android:layout_width="310dp"
-            android:layout_height="wrap_content"
+            android:layout_width="500dp"
+            android:layout_height="match_parent"
             android:layout_below="@+id/textViewContents"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="235dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="101dp"
+            android:layout_marginEnd="50dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/edittext_button_style_rounded"
             android:ems="10"
-            android:hint="Leave a comment..."
-            android:inputType="textMultiLine" />
+            android:hint="Leave a comment...MAX 150 Words"
+            android:inputType="textMultiLine"
+            android:maxLength="150"
+            android:maxLines="3"
+            android:textSize="15dp" />
 
         <ImageButton
             android:id="@+id/post_detail_add_comment_btn"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_above="@+id/commentsRecyclerView"
-            android:layout_alignTop="@+id/post_detail_comment"
-            android:layout_marginStart="-10dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_toEndOf="@+id/post_detail_comment"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@id/post_detail_comment"
+            android:layout_alignBottom="@id/post_detail_comment"
+            android:layout_toEndOf="@id/post_detail_comment"
+            android:layout_marginStart="-55dp"
             android:background="#00000000"
             android:contentDescription="Add modelComment"
-            android:src="@drawable/add_comment"
+            android:src="@drawable/ic_add_comment"
             android:text="ADD"
-            android:textSize="20dp" />
+            android:textSize="25dp" />
+
 
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

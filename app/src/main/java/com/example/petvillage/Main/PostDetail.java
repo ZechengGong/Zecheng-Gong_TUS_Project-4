@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -21,10 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.petvillage.Adapters.Adapter_Comment;
+import com.example.petvillage.Models.Model_Post;
 import com.example.petvillage.R;
 import com.example.petvillage.databinding.ActivityPostDetailsBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,6 +43,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import com.example.petvillage.Models.Model_Comment;
@@ -176,7 +181,8 @@ public class PostDetail extends AppCompatActivity {
                         listModelComment.add(modelComment);
                     }
                 }
-                adapterComment.notifyDataSetChanged(); // 通知适配器数据已更新
+                Collections.reverse(listModelComment); // Reverse the list
+                adapterComment.notifyDataSetChanged(); // Notify adapter
             }
 
             @Override
@@ -236,7 +242,11 @@ public class PostDetail extends AppCompatActivity {
                     binding.textViewName.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + value.getString("nickname")));
                     binding.textViewTitle.setText(value.getString("title"));
                     binding.textViewContents.setText(value.getString("content"));
-                    binding.textViewDate.setText("Published on: " + value.getString("date"));
+                    Long timeMillis = value.getLong("timestamp");
+                    if (timeMillis != null) {
+                        binding.textViewPostDate.setText("Published on: " + formatDate(timeMillis));
+                    }
+
                     title = value.getString("title");
                     content = value.getString("content");
 
@@ -314,6 +324,28 @@ public class PostDetail extends AppCompatActivity {
 //            }
 //        });
     }
+
+    private String formatDate(long time) {
+        Calendar now = Calendar.getInstance();
+        Calendar timeToCheck = Calendar.getInstance();
+        timeToCheck.setTimeInMillis(time);
+
+        // Check if the date is today
+        if (now.get(Calendar.YEAR) == timeToCheck.get(Calendar.YEAR) &&
+                now.get(Calendar.DAY_OF_YEAR) == timeToCheck.get(Calendar.DAY_OF_YEAR)) {
+            return "Today " + DateFormat.format("HH:mm", timeToCheck);
+        }
+        // Check if the date was yesterday
+        else if (now.get(Calendar.YEAR) == timeToCheck.get(Calendar.YEAR) &&
+                now.get(Calendar.DAY_OF_YEAR) - 1 == timeToCheck.get(Calendar.DAY_OF_YEAR)) {
+            return "Yesterday " + DateFormat.format("HH:mm", timeToCheck);
+        }
+        // For other dates
+        else {
+            return DateFormat.format("dd-MM-yyyy HH:mm", timeToCheck).toString();
+        }
+    }
+
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editTextComment.getWindowToken(), 0);

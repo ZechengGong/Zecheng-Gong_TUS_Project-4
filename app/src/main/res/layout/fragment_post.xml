@@ -45,8 +45,9 @@
                 android:background="@drawable/light_bg"
                 android:ems="10"
                 android:fontFamily="@font/poppins"
-                android:hint="Briefly talk about the post..."
+                android:hint="Briefly talk about...MAX 50 words"
                 android:inputType="textMultiLine"
+                android:maxLength="50"
                 android:padding="15dp"
                 android:textColor="@color/black" />
 
@@ -61,8 +62,10 @@
                 android:ems="10"
                 android:fontFamily="@font/poppins"
                 android:gravity="start"
-                android:hint="Write anything down..."
+                android:hint="Write anything down...\nMAX Words 800"
                 android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:maxLength="800"
                 android:minHeight="150dp"
                 android:padding="15dp"
                 android:textColor="@color/black" />
@@ -80,15 +83,16 @@
                 android:hint="Leave a nickname..."
                 android:inputType="textPersonName"
                 android:padding="15dp"
+                android:maxLength="20"
                 android:textColor="@color/black"/>
 
             <TextView
-                android:layout_width="296dp"
+                android:layout_width="350dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="21dp"
                 android:layout_marginEnd="150dp"
                 android:layout_marginBottom="-20dp"
-                android:text="Use your nickname or something else...">
+                android:text="Use your nickname or something else...MAX Words 20">
 
             </TextView>
 
@@ -106,7 +110,7 @@
                 <ImageView
                     android:id="@+id/img_thumbnail"
                     android:layout_width="wrap_content"
-                    android:layout_height="180dp"
+                    android:layout_height="170dp"
                     android:scaleType="centerCrop"
                     android:visibility="invisible"
                     tools:src="@tools:sample/backgrounds/scenic" />
@@ -114,7 +118,7 @@
                 <View
                     android:id="@+id/view2"
                     android:layout_width="wrap_content"
-                    android:layout_height="180dp"
+                    android:layout_height="170dp"
                     android:background="@drawable/selection" />
 
                 <TextView

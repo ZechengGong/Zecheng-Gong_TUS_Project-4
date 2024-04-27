@@ -132,10 +132,27 @@ public class Adapter_Comment extends RecyclerView.Adapter<Adapter_Comment.Commen
     }
 
     private String timestampToString(long time) {
+        Calendar now = Calendar.getInstance();
+        Calendar timeToCheck = Calendar.getInstance();
+        timeToCheck.setTimeInMillis(time);
 
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        calendar.setTimeInMillis(time);
-        String date = DateFormat.format("HH:mm",calendar).toString();
-        return date;
+        DateFormat dateFormat = new DateFormat();
+
+        // Check if the comment date is today
+        if (now.get(Calendar.YEAR) == timeToCheck.get(Calendar.YEAR) &&
+                now.get(Calendar.DAY_OF_YEAR) == timeToCheck.get(Calendar.DAY_OF_YEAR)) {
+            return "Today " + DateFormat.format("HH:mm", timeToCheck);
+        }
+        // Check if the comment date was yesterday
+        else if (now.get(Calendar.YEAR) == timeToCheck.get(Calendar.YEAR) &&
+                now.get(Calendar.DAY_OF_YEAR) - 1 == timeToCheck.get(Calendar.DAY_OF_YEAR)) {
+            return "Yesterday " + DateFormat.format("HH:mm", timeToCheck);
+        }
+        // For other days
+        else {
+            return DateFormat.format("dd-MM-yyyy HH:mm", timeToCheck).toString();
+        }
     }
+
+
 }

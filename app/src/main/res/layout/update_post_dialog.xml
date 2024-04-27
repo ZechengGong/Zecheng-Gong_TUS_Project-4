@@ -51,9 +51,10 @@
                     android:background="@drawable/light_bg"
                     android:ems="10"
                     android:fontFamily="@font/poppins"
-                    android:hint="Title"
+                    android:hint="Update Title...MAX 50 Words"
                     android:inputType="textPersonName"
                     android:padding="15dp"
+                    android:maxLength="50"
                     android:textColor="@color/black" />
 
                 <EditText
@@ -71,6 +72,8 @@
                     android:inputType="textMultiLine"
                     android:minHeight="150dp"
                     android:padding="15dp"
+                    android:maxLines="5"
+                    android:maxLength="600"
                     android:textColor="@color/black" />
 
                 <EditText
@@ -83,9 +86,10 @@
                     android:background="@drawable/light_bg"
                     android:ems="10"
                     android:fontFamily="@font/poppins"
-                    android:hint="Nickname"
+                    android:hint="Nickname...MAX 20 Words"
                     android:inputType="textPersonName"
                     android:padding="15dp"
+                    android:maxLength="20"
                     android:textColor="@color/black" />
 
                 <TextView

@@ -3,6 +3,7 @@ package com.example.petvillage.Adapters;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import com.example.petvillage.Models.Model_Post;
@@ -59,7 +61,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Model_Post modelPost = list.get(position);
         holder.title.setText(modelPost.getTitle());
-        holder.date.setText(modelPost.getDate());
+        holder.date.setText(holder.formatDate(modelPost.getTimestamp()));
         holder.liked_count.setText(modelPost.getLikes() + " Likes");
         holder.nickname.setText("By: " + modelPost.getNickname());
 
@@ -201,12 +203,26 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            img = itemView.findViewById(R.id.imageView3);
+            img = itemView.findViewById(R.id.imageViewPost);
             date = itemView.findViewById(R.id.t_date);
-            title = itemView.findViewById(R.id.textView9);
-            liked_count = itemView.findViewById(R.id.textView10);
-            nickname = itemView.findViewById(R.id.textView8);
+            title = itemView.findViewById(R.id.textViewTitle);
+            liked_count = itemView.findViewById(R.id.textViewLikes);
+            nickname = itemView.findViewById(R.id.textViewName);
             comment_count = itemView.findViewById(R.id.textViewCommentCount);  // 初始化 comment_count
+        }
+        private String formatDate(long time) {
+            Calendar now = Calendar.getInstance();
+            Calendar timeToCheck = Calendar.getInstance();
+            timeToCheck.setTimeInMillis(time);
+
+            if (now.get(Calendar.YEAR) == timeToCheck.get(Calendar.YEAR)) {
+                if (now.get(Calendar.DAY_OF_YEAR) == timeToCheck.get(Calendar.DAY_OF_YEAR)) {
+                    return "Today " + DateFormat.format("HH:mm", timeToCheck);
+                } else if (now.get(Calendar.DAY_OF_YEAR) - 1 == timeToCheck.get(Calendar.DAY_OF_YEAR)) {
+                    return "Yesterday " + DateFormat.format("HH:mm", timeToCheck);
+                }
+            }
+            return DateFormat.format("dd-MM-yyyy HH:mm", timeToCheck).toString();
         }
     }
 }
