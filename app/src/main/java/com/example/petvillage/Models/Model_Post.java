@@ -9,6 +9,7 @@ public class Model_Post {
     private List<Model_Comment> modelComments;
     private String userId;
     private int likes;
+    private String userImg;
 
     public Model_Post(String title, String content, String nickname, String date, String img, String id, long timestamp, String userId) {
         this.title = title;
@@ -101,5 +102,13 @@ public class Model_Post {
     }
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
     }
 }

@@ -148,7 +148,11 @@ public class Post extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();  // 获取用户ID
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = currentUser != null ? currentUser.getUid() : null;
+        String userImgUrl = currentUser != null && currentUser.getPhotoUrl() != null ? currentUser.getPhotoUrl().toString() : null;
+
+        // String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();  // 获取用户ID
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference().child("post_images/" + System.currentTimeMillis() + ".jpg");
@@ -160,6 +164,7 @@ public class Post extends Fragment {
                     postMap.put("nickname", nickname);
                     postMap.put("userId", userId);
                     postMap.put("img", uri.toString());
+                    postMap.put("userImg", userImgUrl);  // 添加用户头像URL
                     postMap.put("date", currentDate);  // 添加当前日期
                     postMap.put("timestamp", System.currentTimeMillis());
 

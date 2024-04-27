@@ -26,6 +26,8 @@ public class Google_Logout extends AppCompatActivity {
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
+
+
         // Sign out from Google first
         googleSignInClient.signOut().addOnCompleteListener(this, task -> {
             // Now sign out from FirebaseAuth

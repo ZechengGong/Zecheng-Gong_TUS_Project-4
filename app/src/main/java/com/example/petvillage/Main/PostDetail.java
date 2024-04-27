@@ -232,32 +232,39 @@ public class PostDetail extends AppCompatActivity {
 
     private void showData() {
         id = getIntent().getStringExtra("id");
-        checkLikeStatus();  // Check and set the like status
+        checkLikeStatus(); // Check and set the like status
 
         FirebaseFirestore.getInstance().collection("POSTs").document(id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value != null && value.exists()) {
-                    Glide.with(getApplicationContext()).load(value.getString("img")).into(binding.imageViewPostImage);
-                    binding.textViewName.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + value.getString("nickname")));
-                    binding.textViewTitle.setText(value.getString("title"));
-                    binding.textViewContents.setText(value.getString("content"));
-                    Long timeMillis = value.getLong("timestamp");
-                    if (timeMillis != null) {
-                        binding.textViewPostDate.setText("Published on: " + formatDate(timeMillis));
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    // Converting the document snapshot to a Model_Post object
+                    Model_Post post = documentSnapshot.toObject(Model_Post.class);
+                    if (post != null) {
+                        Glide.with(getApplicationContext()).load(post.getImg()).into(binding.imageViewPostImage);
+                        binding.textViewName.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + post.getNickname()));
+                        binding.textViewTitle.setText(post.getTitle());
+                        binding.textViewContents.setText(post.getContent());
+
+                        // Convert timestamp if it's stored as a long
+                        Long timeMillis = post.getTimestamp();
+                        if (timeMillis != null) {
+                            binding.textViewPostDate.setText("Published on: " + formatDate(timeMillis));
+                        }
+
+                        title = post.getTitle();
+                        content = post.getContent();
+
+                        // Load the profile image of the post creator
+                        if (post.getUserImg() != null && !post.getUserImg().isEmpty()) {
+                            Glide.with(getApplicationContext()).load(post.getUserImg()).into(binding.imageViewPerson);
+                        } else {
+                            // Default image if user image is not available
+                            binding.imageViewPerson.setImageResource(R.drawable.ic_dafault_user_photo);
+                        }
                     }
-
-                    title = value.getString("title");
-                    content = value.getString("content");
-
-                    if (firebaseUser != null && firebaseUser.getPhotoUrl() != null) {
-                        // Load the profile image from the user's Google account
-                        Glide.with(getApplicationContext()).load(firebaseUser.getPhotoUrl().toString()).into(binding.imageViewPerson);
-                    } else {
-                        // Set a default image or hide the imageView if no photo is available
-                        binding.imageViewPerson.setImageResource(R.drawable.ic_dafault_user_photo);
-                    }
-
+                } else if (error != null) {
+                    Log.e("PostDetail", "Error loading post", error);
                 }
             }
         });
