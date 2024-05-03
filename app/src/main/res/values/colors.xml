@@ -10,4 +10,5 @@
     <color name="light_white">#F3F3F3</color>
     <color name="dark_black">#1C1C1C</color>
     <color name="orange">#ffcc5c</color>
+    <color name="darkOrange">#ffad23</color>
 </resources>

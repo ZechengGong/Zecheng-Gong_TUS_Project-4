@@ -222,7 +222,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
                     return "Yesterday " + DateFormat.format("HH:mm", timeToCheck);
                 }
             }
-            return DateFormat.format("dd-MM-yyyy HH:mm", timeToCheck).toString();
+            return DateFormat.format("dd-MM-yyyy  HH:mm", timeToCheck).toString();
         }
     }
 }

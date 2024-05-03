@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -21,8 +21,8 @@
 
         <TextView
             android:id="@+id/t_date"
-            android:layout_width="70dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/light_bg"
             android:backgroundTint="@color/light_white"
@@ -30,7 +30,9 @@
             android:gravity="center"
             android:text="1 JAN 2021"
             android:textColor="@color/black"
-            android:textSize="8sp" />
+            android:textSize="7sp"
+            android:paddingLeft="2sp"
+            android:paddingRight="2sp"/>
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
