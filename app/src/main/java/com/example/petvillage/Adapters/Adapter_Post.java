@@ -34,6 +34,8 @@ import java.util.HashMap;
 
 import com.example.petvillage.Models.Model_Post;
 import com.example.petvillage.Models.Model_Comment;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> {
@@ -184,11 +186,46 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
         dialog.show();
     }
 
-
     private void deletePost(String postId, ViewHolder holder) {
-        FirebaseFirestore.getInstance().collection("POSTs").document(postId).delete()
-                .addOnSuccessListener(aVoid -> Toast.makeText(holder.nickname.getContext(), "Post deleted successfully", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(holder.nickname.getContext(), "Failed to delete post: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseDatabase realtimeDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference commentRef = realtimeDatabase.getReference(COMMENT_KEY).child(postId);
+
+        // 删除评论
+        commentRef.removeValue().addOnSuccessListener(aVoid -> {
+            Log.d("deletePost", "Comments deleted successfully for post ID: " + postId);
+
+            // 获取帖子的图片URL
+            db.collection("POSTs").document(postId).get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    // 获取图片的 URL
+                    String imgUrl = documentSnapshot.getString("img");
+
+                    // 删除图片文件
+                    if (imgUrl != null && !imgUrl.isEmpty()) {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference imgRef = storage.getReferenceFromUrl(imgUrl);
+                        imgRef.delete().addOnSuccessListener(aVoid1 -> {
+                            // 删除帖子数据
+                            db.collection("POSTs").document(postId).delete()
+                                    .addOnSuccessListener(aVoid2 -> Toast.makeText(holder.nickname.getContext(), "Post, image and comments deleted successfully", Toast.LENGTH_SHORT).show())
+                                    .addOnFailureListener(e -> Toast.makeText(holder.nickname.getContext(), "Failed to delete post: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                        }).addOnFailureListener(e -> Toast.makeText(holder.nickname.getContext(), "Failed to delete image: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    } else {
+                        // 没有关联的图片，直接删除帖子数据
+                        db.collection("POSTs").document(postId).delete()
+                                .addOnSuccessListener(aVoid2 -> Toast.makeText(holder.nickname.getContext(), "Post and comments deleted successfully", Toast.LENGTH_SHORT).show())
+                                .addOnFailureListener(e -> Toast.makeText(holder.nickname.getContext(), "Failed to delete post: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    }
+                } else {
+                    Toast.makeText(holder.nickname.getContext(), "Post not found", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(e -> Toast.makeText(holder.nickname.getContext(), "Failed to fetch post: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        }).addOnFailureListener(e -> {
+            Log.e("deletePost", "Failed to delete comments for post ID: " + postId, e);
+            Toast.makeText(holder.nickname.getContext(), "Failed to delete comments: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

@@ -144,7 +144,7 @@ public class Post extends Fragment {
 
         ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle("Loading...");
-        progressDialog.setMessage("Please wait, uploading post...");
+        progressDialog.setMessage("Please wait, uploading......");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
