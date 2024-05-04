@@ -31,7 +31,7 @@ public class Maps_Galway extends AppCompatActivity
         LatLng Galway = new LatLng(53.26530059682855, -9.053282584436984);
         googleMap.addMarker(new MarkerOptions()
                 .position(Galway)
-                .title("Marker in Galway Office"));
+                .title("Marker in Galway Store"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(Galway));
         googleMap.setMinZoomPreference(11);
     }

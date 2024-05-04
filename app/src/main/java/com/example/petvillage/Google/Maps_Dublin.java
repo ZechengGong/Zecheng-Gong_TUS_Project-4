@@ -32,7 +32,7 @@ public class Maps_Dublin extends AppCompatActivity
         LatLng dublin = new LatLng(53.35601034056712, -6.329813302011234);
         googleMap.addMarker(new MarkerOptions()
                 .position(dublin)
-                .title("Marker in Dublin Office"));
+                .title("Marker in Dublin Store"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(dublin));
         googleMap.setMinZoomPreference(11);
     }
