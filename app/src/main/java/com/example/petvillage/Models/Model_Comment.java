@@ -1,14 +1,12 @@
 package com.example.petvillage.Models;
 import com.google.firebase.database.ServerValue;
 
+// Comment Model
 public class Model_Comment {
     private String content,uid, uImg,uname;
     private Object timestamp;
-
     private String commentId;
-
     private String postId;
-
     public Model_Comment() {
     }
 

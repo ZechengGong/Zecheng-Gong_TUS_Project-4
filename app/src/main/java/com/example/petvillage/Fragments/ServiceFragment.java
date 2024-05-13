@@ -78,8 +78,6 @@ public class ServiceFragment extends Fragment {
         // Inflate the layout for this fragment
         View Service = inflater.inflate(R.layout.fragment_service, container, false);
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         return Service;
     }
-
 }

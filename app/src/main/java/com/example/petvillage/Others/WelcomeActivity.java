@@ -11,8 +11,8 @@ import com.example.petvillage.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+// Welcome/splash screen for entering the app
 public class WelcomeActivity extends AppCompatActivity {
-
     private static final int SPLASH_TIME_OUT = 2500;  // Splash screen timer
 
     @Override

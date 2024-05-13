@@ -10,12 +10,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/card"
         android:layout_margin="15dp"
-        app:cardCornerRadius="15dp">
+        app:cardCornerRadius="10dp">
 
         <ImageView
             android:id="@+id/imageViewPost"
             android:layout_width="185dp"
-            android:layout_height="120dp"
+            android:layout_height="115dp"
             android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/backgrounds/scenic"/>
 
@@ -28,7 +28,7 @@
             android:backgroundTint="@color/light_white"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
-            android:text="1 JAN 2021"
+            android:text="1 JAN 2024"
             android:textColor="@color/black"
             android:textSize="7sp"
             android:paddingLeft="2sp"
@@ -61,7 +61,7 @@
             android:id="@+id/textViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="1dp"
             android:maxLines="3"
             android:ellipsize="end"
             android:fontFamily="@font/poppins_semibold"

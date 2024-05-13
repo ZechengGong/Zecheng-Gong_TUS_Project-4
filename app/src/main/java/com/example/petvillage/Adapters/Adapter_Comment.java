@@ -27,15 +27,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+// Comment Adapter class, RecyclerView used to manage comments
 public class Adapter_Comment extends RecyclerView.Adapter<Adapter_Comment.CommentViewHolder> {
-
     private Activity mActivity;
     private Context mContext;
-    private List<Model_Comment> mData;
+    private List<Model_Comment> mData; // Data source, containing a list of all comments
+    private static String COMMENT_KEY = "Comment"; // Key to use for Firebase paths
 
-    private static String COMMENT_KEY = "Comment";
-
-
+    // Constructor, initialize adapter
     public Adapter_Comment(Activity  activity, List<Model_Comment> mData) {
         this.mActivity  = activity;
         this.mData = mData;
@@ -45,26 +44,31 @@ public class Adapter_Comment extends RecyclerView.Adapter<Adapter_Comment.Commen
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Create a new view holder and load the layout of the comments list items
         View row = LayoutInflater.from(mContext).inflate(R.layout.comment_list,parent,false);
         return new CommentViewHolder(row);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
+        // Bind data to the view holder and set comment information
         Model_Comment comment = mData.get(position);
-        Glide.with(mContext).load(mData.get(position).getuImg()).into(holder.img_user);
-        holder.tv_name.setText(mData.get(position).getUname());
-        holder.tv_content.setText(mData.get(position).getContent());
-        holder.tv_date.setText(timestampToString((Long)mData.get(position).getTimestamp()));
+        Glide.with(mContext).load(mData.get(position).getuImg()).into(holder.img_user); // Use Glide to load user images
+        holder.tv_name.setText(mData.get(position).getUname()); // Set username
+        holder.tv_content.setText(mData.get(position).getContent()); // Set comment content
+        holder.tv_date.setText(timestampToString((Long)mData.get(position).getTimestamp())); // Set date
 
+        // Set a long press listener for deleting comments
         holder.itemView.setOnLongClickListener(v -> {
             Log.d("AdapterComment", "Long click detected");
-
             if (FirebaseAuth.getInstance().getCurrentUser() != null &&
                     FirebaseAuth.getInstance().getCurrentUser().getUid().equals(comment.getUid())) {
                 Log.d("AdapterComment", "Showing delete dialog for comment");
+
+                // If the current user is the author of the comment, display the delete dialog
                 showDeleteDialog(comment);
             } else {
+                // If it is not the author, it will prompt that it cannot be deleted.
                 Toast.makeText(mContext, "You can only delete your OWN comments.", Toast.LENGTH_SHORT).show();
             }
             return true;
@@ -73,11 +77,11 @@ public class Adapter_Comment extends RecyclerView.Adapter<Adapter_Comment.Commen
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData.size(); // Return the number of comments
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder{
-
+        // Used to hold a reference to the comment view
         ImageView img_user;
         TextView tv_name,tv_content,tv_date;
 
@@ -90,8 +94,11 @@ public class Adapter_Comment extends RecyclerView.Adapter<Adapter_Comment.Commen
         }
     }
 
+
     private void showDeleteDialog(Model_Comment comment) {
-        new AlertDialog.Builder(mActivity) // 使用 Activity 的 Context
+
+        // Display the dialog box for deleting comments
+        new AlertDialog.Builder(mActivity) // Use Activity's Context
                 .setTitle("Delete Comment")
                 .setMessage("Are you sure you want to delete this comment?")
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
@@ -99,10 +106,11 @@ public class Adapter_Comment extends RecyclerView.Adapter<Adapter_Comment.Commen
                 .show();
     }
 
-    // 删除评论的方法
     private void deleteComment(Model_Comment comment) {
+
         Log.d("AdapterComment", "Trying to delete comment with ID: " + comment.getCommentId() + " under post ID: " + comment.getPostId());
 
+        // Delete comments
         if (comment.getCommentId() == null || comment.getCommentId().isEmpty() || comment.getPostId() == null || comment.getPostId().isEmpty()) {
             Toast.makeText(mActivity, "Invalid comment or post ID", Toast.LENGTH_SHORT).show();
             return;
@@ -132,13 +140,13 @@ public class Adapter_Comment extends RecyclerView.Adapter<Adapter_Comment.Commen
     }
 
     private String timestampToString(long time) {
+        // Convert timestamp to readable date format
         Calendar now = Calendar.getInstance();
         Calendar timeToCheck = Calendar.getInstance();
         timeToCheck.setTimeInMillis(time);
+        // DateFormat dateFormat = new DateFormat();
 
-        DateFormat dateFormat = new DateFormat();
-
-        // Check if the comment date is today
+        // Check if the comment date is today, yesterday or another date
         if (now.get(Calendar.YEAR) == timeToCheck.get(Calendar.YEAR) &&
                 now.get(Calendar.DAY_OF_YEAR) == timeToCheck.get(Calendar.DAY_OF_YEAR)) {
             return "Today " + DateFormat.format("HH:mm", timeToCheck);
@@ -153,6 +161,4 @@ public class Adapter_Comment extends RecyclerView.Adapter<Adapter_Comment.Commen
             return DateFormat.format("dd-MM-yyyy HH:mm", timeToCheck).toString();
         }
     }
-
-
 }

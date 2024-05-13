@@ -3,9 +3,9 @@ package com.example.petvillage.Others;
 import android.content.Context;
 import android.media.MediaPlayer;
 
+// To play the music when entering the app
 public class MusicServer {
     private static MediaPlayer mp = null;
-
     public static void play(Context context, int resource) {
         stop(context);
         mp = MediaPlayer.create(context, resource);
@@ -21,5 +21,4 @@ public class MusicServer {
             mp = null;
         }
     }
-
 }

@@ -39,6 +39,8 @@ import com.example.petvillage.Models.Model_Post;
  * Use the {@link MomentsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+// MomentsFragment class
 public class MomentsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -49,10 +51,10 @@ public class MomentsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    FragmentMomentsBinding binding;
-    ArrayList<Model_Post> list;
-    Adapter_Post adapterPost;
-    Model_Post modelPost;
+    private FragmentMomentsBinding binding; // Fragment binding class instance, used to conveniently operate the views in the layout
+    private ArrayList<Model_Post> list; // Post data list
+    private Adapter_Post adapterPost; // Post list adapter
+    // private Model_Post modelPost;
 
     public MomentsFragment() {
         // Required empty public constructor
@@ -67,6 +69,8 @@ public class MomentsFragment extends Fragment {
      * @return A new instance of fragment MomentsFragment.
      */
     // TODO: Rename and change types and number of parameters
+
+    // Create instances & initialization parameters
     public static MomentsFragment newInstance(String param1, String param2) {
         MomentsFragment fragment = new MomentsFragment();
         Bundle args = new Bundle();
@@ -76,63 +80,74 @@ public class MomentsFragment extends Fragment {
         return fragment;
     }
 
-    private ActivityResultLauncher<String> mGetContent;
+    // private ActivityResultLauncher<String> mGetContent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Get initialization parameters from Bundle
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
-    private static int REQUEST_CODE_IMAGE = 101;
+    private static final int REQUEST_CODE_IMAGE = 101;
 
-    DatabaseReference DataRef;
-    StorageReference StorageRef;
+    // private DatabaseReference DataRef;
+    // private StorageReference StorageRef;
 
-
+    // Create and return the Fragment view
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 //        View Moments = inflater.inflate(R.layout.fragment_moments, container, false);
 //        return Moments;
+
+        // Use the Binding class to initialize the layout
         binding = FragmentMomentsBinding.inflate(inflater,container,false);
-        return binding.getRoot();
+        return binding.getRoot(); // Return to the root view
     }
 
+    // Callback after the view is created
     @Override
     public void onViewCreated(@NonNull View view, @androidx.annotation.Nullable Bundle savedInstanceState) {
-        setupRv();
-        setSearchView();
         super.onViewCreated(view, savedInstanceState);
 
+        setupRv(); // Set up RecyclerView
+        setSearchView(); // Set the search view
+
+        // Click the help icon to display the dialog box
         ImageView imgRightIcon = view.findViewById(R.id.imgICQuestion);
-        imgRightIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showIconDialog();
-            }
-        });
+        imgRightIcon.setOnClickListener(v -> showIconDialog());
+
+//        imgRightIcon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showIconDialog();
+//            }
+//        });
     }
 
+    // Set search view logic
     private void setSearchView() {
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                // Processing when text is submitted
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                // Processing when text changes, calling filtering method
                 filter(newText);
                 return false;
             }
         });
     }
 
+    // Filter the post list
     private void filter(String newText) {
         ArrayList<Model_Post> filtered_list = new ArrayList<>();
         for(Model_Post item : list) {
@@ -141,21 +156,22 @@ public class MomentsFragment extends Fragment {
                 filtered_list.add(item);
             }
         }
+
+        // Handle the case where the filter result is empty
         if (filtered_list.isEmpty()) {
-            Toast.makeText(getContext(), "No matches found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Found nothing related...", Toast.LENGTH_SHORT).show();
         } else {
-            adapterPost.filter_list(filtered_list);
+            adapterPost.filter_list(filtered_list); // Update adapter data
         }
     }
 
-
+    // Initialize RecyclerView
     private void setupRv() {
         list = new ArrayList<>();
         FirebaseFirestore.getInstance().collection("POSTs").orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
-                    // 处理错误情况，可能需要显示错误信息或者日志记录
                     Log.e("Firestore Error", error.getMessage(), error);
                     return;
                 }
@@ -164,20 +180,17 @@ public class MomentsFragment extends Fragment {
                     list.clear();
                     for (DocumentSnapshot snapshot : value.getDocuments()) {
                         Model_Post modelPost = snapshot.toObject(Model_Post.class);
-                        if (modelPost != null) { // 确保转换成功
+                        if (modelPost != null) { // Make sure the conversion is successful
                             modelPost.setId(snapshot.getId());
                             list.add(modelPost);
                         }
                     }
-                    adapterPost.notifyDataSetChanged();
+                    adapterPost.notifyDataSetChanged(); // Notify data changes
                 } else {
-                    // 查询结果为空时的处理逻辑，例如显示提示信息
                     Log.d("Firestore Info", "No data found");
                 }
             }
-
         });
-
 
         adapterPost = new Adapter_Post(list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -187,18 +200,13 @@ public class MomentsFragment extends Fragment {
         binding.rvBlogs.setAdapter(adapterPost);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        binding=null;
-    }
-
+    // Show the edit prompt dialog box
     private void showIconDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setIcon(R.drawable.ic_hint_3)
                 .setTitle("Editing tips")
-                .setMessage("LONG PRESS on a post or a comment \nto edit.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setMessage("LONG PRESS\non a post or a comment to edit.")
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -206,5 +214,11 @@ public class MomentsFragment extends Fragment {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding=null; // Clean up Binding references to avoid memory leaks
     }
 }

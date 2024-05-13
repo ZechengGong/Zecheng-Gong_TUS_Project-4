@@ -29,7 +29,6 @@ public class About extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +43,7 @@ public class About extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // Options
                 switch (item.getItemId()) {
                     case R.id.home: {
                         Intent go = new Intent(About.this, MainActivity.class);

@@ -1,5 +1,7 @@
 package com.example.petvillage.Main;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -29,7 +31,7 @@ import android.widget.Toast;
 
 import com.example.petvillage.Fragments.HomeFragment;
 import com.example.petvillage.Fragments.MomentsFragment;
-import com.example.petvillage.Fragments.Post;
+import com.example.petvillage.Fragments.PostFragment;
 import com.example.petvillage.Fragments.ServiceFragment;
 import com.example.petvillage.Google.Google_Login;
 import com.example.petvillage.Google.Google_Logout;
@@ -51,38 +53,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+// MainActivity class, as the main interface of the application
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private ActionBarDrawerToggle drawerToggle;
-    private GoogleSignInOptions signInOptions;
-    private GoogleSignInClient signInClient;
-    private FirebaseAuth auth;
-
-    @Override
-    public void onBackPressed() {
-
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.home);
-        if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    private ActivityMainBinding binding;  // View binding object for easy access to views in the layout
+    private DrawerLayout drawerLayout; // DrawerLayout provides a sliding navigation menu
+    private NavigationView navigationView; // Navigation view component
+    private ActionBarDrawerToggle drawerToggle; // ActionBarDrawerToggle, used to control the drawer
+    private GoogleSignInOptions signInOptions; // Google login configuration
+    private GoogleSignInClient signInClient; // Google login client
+    private FirebaseAuth auth; // Firebase authentication object
+    private ActivityResultLauncher<Intent> signInLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,29 +74,31 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.bottomNavigationView.setBackground(null);
+        // Bottom navigation view settings
+        binding.bottomNavigationView.setBackground(null);  // remove background
 
+        // Handle the click event of the bottom navigation bar
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch (item.getItemId()) {
-
                 case R.id.home:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragment()); // Switch to home page Fragment
                     break;
                 case R.id.shopping:
-                    replaceFragment(new ServiceFragment());
+                    replaceFragment(new ServiceFragment()); // Switch to shopping fragment
                     break;
                 case R.id.moments:
-                    replaceFragment(new MomentsFragment());
+                    replaceFragment(new MomentsFragment()); // Switch to dynamic Fragment
                     break;
                 case R.id.assistant:
-                    showAssistantDialog();
+                    showAssistantDialog(); // Show assistant dialog
                     break;
-
             }
+            drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
 
+        // Set the floating button click event to display the bottom dialog box
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,12 +106,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Initialize DrawerLayout and NavigationView
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.drawer_view);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Navigation view item click event handling
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -167,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "You are ALREADY logged in.", Toast.LENGTH_LONG).show();
                             drawerLayout.closeDrawer(GravityCompat.START);
                         } else {
-                            // 用户未登录，跳转到登录页面
+                            // The user is not logged in, jump to the login page
                             Intent loginIntent = new Intent(MainActivity.this, Google_Login.class);
                             startActivity(loginIntent);
                             overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
@@ -185,8 +171,61 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        // Initialize Google login and Firebase authentication
         setupSignIn();
+
+        // Set ActivityResultLauncher
+        signInLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                        handleSignInResult(task); // Handle the sign-in result
+                    } else {
+                        // Optionally handle other result codes
+                        Toast.makeText(getApplicationContext(), "Sign-In Cancelled", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+
+
         setFragment(new HomeFragment());
+    }
+
+    // Check if the user is logged in when the activity starts, if not, try to log in automatically
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser == null) {
+            signIn();
+        }
+    }
+
+    // Behavior definition when the user presses the return key
+    @Override
+    public void onBackPressed() {
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.home);
+        if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
+    // Handle the click event of the drawer switch when creating the menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupSignIn() {
@@ -206,27 +245,56 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser == null) {
-            signIn();
-        }
-    }
-
-
     private void displayFragment(Fragment fragment) {
-        // 替换并显示指定的 Fragment
+        // Replace and display the specified Fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment); // 确保 frame_layout 是你的容器 ID
-        fragmentTransaction.commitAllowingStateLoss();  // 使用 commitAllowingStateLoss 防止异常
+        fragmentTransaction.replace(R.id.frame_layout, fragment); // Make sure frame_layout is your container ID
+        fragmentTransaction.commitAllowingStateLoss();  // Use commitAllowingStateLoss to prevent exceptions
     }
 
     private void signIn() {
-        Intent intent = signInClient.getSignInIntent();
-        startActivityForResult(intent,100);
+        Intent signInIntent = signInClient.getSignInIntent();
+        signInLauncher.launch(signInIntent); // Start the sign-in process
+    }
+
+    // Method for processing login results
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            if (account != null) {
+                // Get authentication credentials using account information
+                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                // Use credentials for Firebase authentication
+                auth.signInWithCredential(credential)
+                        .addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                // login successful
+                                Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_LONG).show();
+                                updateUI(auth.getCurrentUser()); //Update UI display
+                            } else {
+                                // Login failed
+                                Toast.makeText(getApplicationContext(), "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                updateUI(null); //Update UI display
+                            }
+                        });
+            }
+        } catch (ApiException e) {
+            // Handle API exceptions
+            Toast.makeText(getApplicationContext(), "Login Failed: " + e.getStatusCode(), Toast.LENGTH_LONG).show();
+            updateUI(null); // Update UI display
+        }
+    }
+
+    // Update the interface based on the user's login status
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            // The user logs in successfully and goes to the main interface or other logic
+            setFragment(new HomeFragment());
+        } else {
+            // The user is not logged in or failed to log in, and an error message is displayed.
+            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -242,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_LONG).show();
-                            displayFragment(new HomeFragment());  // 正确显示 Fragment
+                            displayFragment(new HomeFragment());  // Display Fragment correctly
                         }else{
                             Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
                         }
@@ -254,6 +322,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Replace the currently displayed Fragment
+    private void replaceFragment(Fragment fragment) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);  // Make sure to add this line of code
+        fragmentTransaction.commit();
+    }
+
+    // Show the bottom dialog box
     private void showBottomDialog() {
 
         final Dialog dialog = new Dialog(this);
@@ -284,21 +363,11 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
-
     }
 
-    private void replaceFragment(Fragment fragment) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.addToBackStack(null);  // 确保添加这行代码
-        fragmentTransaction.commit();
-
-    }
-
+    // Display the Fragment of the published post
     public void showPublishFragment() {
-        Post postFragment = new Post();
+        PostFragment postFragment = new PostFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, postFragment);
@@ -306,12 +375,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    // Display the assistant dialog box, indicating that the function is not yet open
     private void showAssistantDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.pet_care);
         builder.setTitle("Sorry");
         builder.setMessage("The function is not yet available.");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

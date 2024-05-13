@@ -5,8 +5,8 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+// A RecyclerView design, but seems like not very useful...
 public class NonScrollableRecyclerView extends RecyclerView {
-
     public NonScrollableRecyclerView(Context context) {
         super(context);
     }

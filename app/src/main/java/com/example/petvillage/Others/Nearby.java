@@ -43,7 +43,7 @@ public class Nearby extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.drawer_view);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -84,15 +84,15 @@ public class Nearby extends AppCompatActivity {
                     }
 
                     case R.id.login: {
-                        Intent gologin = new Intent(Nearby.this, Google_Login.class);
-                        startActivity(gologin);
+                        Intent goLogin = new Intent(Nearby.this, Google_Login.class);
+                        startActivity(goLogin);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
 
                     case R.id.logout: {
-                        Intent gologout = new Intent(Nearby.this, Google_Logout.class);
-                        startActivity(gologout);
+                        Intent goLogout = new Intent(Nearby.this, Google_Logout.class);
+                        startActivity(goLogout);
                         overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                         break;
                     }
@@ -121,10 +121,8 @@ public class Nearby extends AppCompatActivity {
                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
         });
-
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

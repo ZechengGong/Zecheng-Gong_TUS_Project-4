@@ -49,42 +49,52 @@ import java.util.List;
 
 import com.example.petvillage.Models.Model_Comment;
 
-
+// Post Details class, related methods for handling the post itself
 public class PostDetail extends AppCompatActivity {
-    private ActivityPostDetailsBinding binding;
+    private ActivityPostDetailsBinding binding;  // Binding for accessing views in the layout directly
+
+    // Post ID and content variables
     private String id;
-    private String title, content;
+    public String title, content;
+
+    // Firebase authentication and database references
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private FirebaseDatabase firebaseDatabase;
+
+    // Components for handling comments
     private RecyclerView RvComment;
     private Adapter_Comment adapterComment;
     private List<Model_Comment> listModelComment;
     private EditText editTextComment;
     private ImageButton btnAddComment;
 
+    // Constant for database reference
     private static String COMMENT_KEY = "Comment";
 
+    // For handling image scaling and gestures
     private Matrix matrix = new Matrix();
     private float scale = 1f;
-    private ScaleGestureDetector scaleGestureDetector;
+    public ScaleGestureDetector scaleGestureDetector;
     private boolean isImageZoomed = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPostDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Initialize components and load post data
         showData();
 
+        // Setup for handling scale gestures on an image view
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        // 设置 ImageView 的 onTouchListener 来处理缩放手势
+        // Set ImageView's onTouchListener to handle zoom gestures
         binding.imageViewPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("PostDetail", "ImageView clicked"); // 添加日志确认点击事件
+                Log.d("PostDetail", "ImageView clicked"); // Add log confirmation click event
                 if (!isImageZoomed) {
                     binding.imageViewPostImage.animate().scaleX(2f).scaleY(2f).setDuration(300).start();
                     isImageZoomed = true;
@@ -103,7 +113,7 @@ public class PostDetail extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        // add Comment button click listener
+        // Adding a comment to Firebase
         btnAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,12 +126,12 @@ public class PostDetail extends AppCompatActivity {
 
                 btnAddComment.setVisibility(View.INVISIBLE);
                 DatabaseReference commentReference = firebaseDatabase.getReference(COMMENT_KEY).child(id).push();
-                String commentId = commentReference.getKey();  // 获取生成的评论ID
+                String commentId = commentReference.getKey();  // Get the generated comment IDc
                 String uid = firebaseUser.getUid();
                 String uname = firebaseUser.getDisplayName();
                 String uImg = (firebaseUser.getPhotoUrl() != null) ? firebaseUser.getPhotoUrl().toString() : "default_user_image_url";
 
-                // 传入 postId
+                // Pass in postId
                 Model_Comment modelComment = new Model_Comment(commentContent, uid, uImg, uname, commentId, id);
 
                 if (firebaseUser != null) {
@@ -145,6 +155,7 @@ public class PostDetail extends AppCompatActivity {
             }
         });
 
+        // Initialize the RecyclerView for comments
         iniRvComment();
     }
 
@@ -163,6 +174,7 @@ public class PostDetail extends AppCompatActivity {
 //                });
 
     private void iniRvComment() {
+        // Setting up the RecyclerView for comments
         RvComment.setLayoutManager(new LinearLayoutManager(this));
         if (listModelComment == null) {
             listModelComment = new ArrayList<>();
@@ -170,11 +182,12 @@ public class PostDetail extends AppCompatActivity {
         adapterComment = new Adapter_Comment(PostDetail.this, listModelComment);
         RvComment.setAdapter(adapterComment);
 
+        // Listening for changes in the comment section of the database
         DatabaseReference commentRef = firebaseDatabase.getReference(COMMENT_KEY).child(id);
         commentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listModelComment.clear(); // 确保在添加数据前清空列表
+                listModelComment.clear(); // Make sure to clear the list before adding data
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Model_Comment modelComment = snap.getValue(Model_Comment.class);
                     if (modelComment != null) {
@@ -205,9 +218,9 @@ public class PostDetail extends AppCompatActivity {
                 if (documentSnapshot.exists()) {
                     List<String> likedBy = (List<String>) documentSnapshot.get("likedBy");
                     if (likedBy != null && likedBy.contains(firebaseUser.getUid())) {
-                        binding.btnLiked.setImageResource(R.drawable.liked);  // 已点赞状态图标
+                        binding.btnLiked.setImageResource(R.drawable.liked);  // Liked status icon
                     } else {
-                        binding.btnLiked.setImageResource(R.drawable.like);  // 未点赞状态图标
+                        binding.btnLiked.setImageResource(R.drawable.like);  // Not liked status icon
                     }
                 }
             }
@@ -219,21 +232,11 @@ public class PostDetail extends AppCompatActivity {
         });
     }
 
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            scale *= detector.getScaleFactor();
-            scale = Math.max(0.1f, Math.min(scale, 5.0f)); // 设置缩放范围
-            matrix.setScale(scale, scale);
-            binding.imageViewPostImage.setImageMatrix(matrix);
-            return true;
-        }
-    }
-
     private void showData() {
         id = getIntent().getStringExtra("id");
         checkLikeStatus(); // Check and set the like status
 
+        // Displaying the post details
         FirebaseFirestore.getInstance().collection("POSTs").document(id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
@@ -241,6 +244,7 @@ public class PostDetail extends AppCompatActivity {
                     // Converting the document snapshot to a Model_Post object
                     Model_Post post = documentSnapshot.toObject(Model_Post.class);
                     if (post != null) {
+                        // Setting text and images from the post data
                         Glide.with(getApplicationContext()).load(post.getImg()).into(binding.imageViewPostImage);
                         binding.textViewName.setText(Html.fromHtml("<font color='B7B7B7'>By </font> <font color='#000000'>" + post.getNickname()));
                         binding.textViewTitle.setText(post.getTitle());
@@ -279,23 +283,23 @@ public class PostDetail extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         List<String> likedBy = (List<String>) documentSnapshot.get("likedBy");
                         if (likedBy != null && likedBy.contains(firebaseUser.getUid())) {
-                            // 如果已经点赞了，这次点击是为了取消点赞
+                            // If have already liked it, this click is to cancel the like.
                             postRef.update(
                                     "likes", FieldValue.increment(-1),
                                     "likedBy", FieldValue.arrayRemove(firebaseUser.getUid())
                             ).addOnSuccessListener(aVoid -> {
-                                binding.btnLiked.setImageResource(R.drawable.like);  // 更新为未点赞图标
+                                binding.btnLiked.setImageResource(R.drawable.like);  // Update to the unliked icon
                                 Toast.makeText(PostDetail.this, "Like removed!", Toast.LENGTH_SHORT).show();
                             }).addOnFailureListener(e -> {
                                 Toast.makeText(PostDetail.this, "Error updating like: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
                         } else {
-                            // 如果还没点赞，这次点击是为了点赞
+                            // If haven’t liked it yet, this click is for likes.
                             postRef.update(
                                     "likes", FieldValue.increment(1),
                                     "likedBy", FieldValue.arrayUnion(firebaseUser.getUid())
                             ).addOnSuccessListener(aVoid -> {
-                                binding.btnLiked.setImageResource(R.drawable.liked);  // 更新为已点赞图标
+                                binding.btnLiked.setImageResource(R.drawable.liked);  // Update to the liked icon
                                 Toast.makeText(PostDetail.this, "Like successfully", Toast.LENGTH_SHORT).show();
                             }).addOnFailureListener(e -> {
                                 Toast.makeText(PostDetail.this, "Error updating like: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -308,17 +312,16 @@ public class PostDetail extends AppCompatActivity {
             }
         });
 
-
-        // 设置图片点击事件，用于放大和缩小
+        // Set image click event for zooming in and out
         binding.imageViewPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isImageZoomed) {
-                    // 放大图片
+                    // Zoom in picture
                     binding.imageViewPostImage.animate().scaleX(2f).scaleY(2f).setDuration(300).start();
                     isImageZoomed = true;
                 } else {
-                    // 缩小图片
+                    // Shrink the image
                     binding.imageViewPostImage.animate().scaleX(1f).scaleY(1f).setDuration(300).start();
                     isImageZoomed = false;
                 }
@@ -333,6 +336,7 @@ public class PostDetail extends AppCompatActivity {
     }
 
     private String formatDate(long time) {
+        // Formatting the date from timestamp
         Calendar now = Calendar.getInstance();
         Calendar timeToCheck = Calendar.getInstance();
         timeToCheck.setTimeInMillis(time);
@@ -354,7 +358,19 @@ public class PostDetail extends AppCompatActivity {
     }
 
     private void hideKeyboard() {
+        // Hiding the keyboard
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editTextComment.getWindowToken(), 0);
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scale *= detector.getScaleFactor();
+            scale = Math.max(0.1f, Math.min(scale, 5.0f)); // Limit scale
+            matrix.setScale(scale, scale);
+            binding.imageViewPostImage.setImageMatrix(matrix);
+            return true;
+        }
     }
 }

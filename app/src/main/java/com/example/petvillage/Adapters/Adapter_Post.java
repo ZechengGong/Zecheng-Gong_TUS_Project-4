@@ -37,16 +37,19 @@ import com.example.petvillage.Models.Model_Comment;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-
+// Post (Details) Adapter
 public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> {
 
-    public ArrayList<Model_Post> list;
-    private static String COMMENT_KEY = "Comment";
+    public ArrayList<Model_Post> list; // List to save post data
+    private static String COMMENT_KEY = "Comment"; // Key to use for review data in Firebase
 
+    // Constructor, initialize the post list and notify data changes
     public Adapter_Post(ArrayList<Model_Post> list) {
         this.list = list;
         this.notifyDataSetChanged();
     }
+
+    // Update the list and notify of changes
     public void filter_list(ArrayList<Model_Post> filter_list){
         list = filter_list;
         notifyDataSetChanged();
@@ -55,25 +58,27 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Load the view from the layout file
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_list, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Model_Post modelPost = list.get(position);
-        holder.title.setText(modelPost.getTitle());
-        holder.date.setText(holder.formatDate(modelPost.getTimestamp()));
-        holder.liked_count.setText(modelPost.getLikes() + " Likes");
-        holder.nickname.setText("By: " + modelPost.getNickname());
+        Model_Post modelPost = list.get(position); // Get the post data of the current location
+        holder.title.setText(modelPost.getTitle()); //Set title
+        holder.date.setText(holder.formatDate(modelPost.getTimestamp())); // Set date
+        holder.liked_count.setText(modelPost.getLikes() + " Likes"); // Set the number of likes
+        holder.nickname.setText("By: " + modelPost.getNickname()); // Set nickname
 
-        Glide.with(holder.nickname.getContext()).load(modelPost.getImg()).into(holder.img);
+        Glide.with(holder.nickname.getContext()).load(modelPost.getImg()).into(holder.img); // Load images
 
+        // Listen and count the number of comments
         DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference(COMMENT_KEY).child(modelPost.getId());
         commentsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long count = dataSnapshot.getChildrenCount(); // 获取子节点数作为评论数量
+                long count = dataSnapshot.getChildrenCount(); // Get the number of child nodes as the number of comments
                 holder.comment_count.setText(count + " Comments");
                 Log.d("Adapter_Post", "Comments loaded for post ID " + modelPost.getId() + ": " + count);
             }
@@ -84,25 +89,27 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
             }
         });
 
+        // Set the post click event and enter the post details
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.nickname.getContext(), PostDetail.class);
             intent.putExtra("id", modelPost.getId());
             holder.nickname.getContext().startActivity(intent);
         });
 
-        // 设置长按监听器
+        // Set a long press listener and provide modification and deletion options
         holder.itemView.setOnLongClickListener(v -> {
             String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             if (currentUserId != null && currentUserId.equals(modelPost.getUserId())) {
                 showUserOptionsDialog(holder, modelPost);
-                return true;  // 表明事件已被处理
+                return true;  // Indicates that the event has been processed
             } else {
                 Toast.makeText(holder.nickname.getContext(), "You can only modify your OWN posts.", Toast.LENGTH_SHORT).show();
-                return false;  // 表明事件未被处理
+                return false;  //Indicates that the event has not been handled
             }
         });
     }
 
+    // Pop-up dialog box provides modification and deletion options
     private void showUserOptionsDialog(ViewHolder holder, Model_Post modelPost) {
         AlertDialog.Builder builder = new AlertDialog.Builder(holder.nickname.getContext());
         builder.setTitle("Choose an action for the post:");
@@ -114,6 +121,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
         dialog.show();
     }
 
+    // Show Update dialog
     private void showUpdateDialog(ViewHolder holder, Model_Post modelPost) {
         final Dialog dialog = new Dialog(holder.nickname.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -124,7 +132,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
         EditText content = dialog.findViewById(R.id.et_content);
         EditText nickname = dialog.findViewById(R.id.et_nickname);
 
-        // 确保所有元素都不为空
+        // Make sure all elements are not empty
         if (title != null && content != null && nickname != null) {
             title.setText(modelPost.getTitle());
             content.setText(modelPost.getContent());
@@ -142,6 +150,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
         }
     }
 
+    // Check whether the input field is empty
     private boolean validateFields(EditText title, EditText desc, EditText nickname) {
         if (title.getText().toString().isEmpty() || desc.getText().toString().isEmpty() || nickname.getText().toString().isEmpty()) {
             if (title.getText().toString().isEmpty()) title.setError("Field is Required!");
@@ -152,6 +161,7 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
         return true;
     }
 
+    // Update post information
     private void updatePost(String postId, String title, String content, String nickname, Dialog dialog) {
         HashMap<String, Object> updateMap = new HashMap<>();
         updateMap.put("title", title);
@@ -173,48 +183,49 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
         AlertDialog.Builder builder = new AlertDialog.Builder(holder.nickname.getContext());
         builder.setTitle("Are you sure you want to delete this post?");
 
-        // 交换按钮的文本和响应功能
+        // Swap the button's text and response functions
         builder.setPositiveButton("No", (dialog, which) -> {
-            dialog.dismiss(); // 实际上，这里现在是“否”，所以只需关闭对话框
+            dialog.dismiss(); // this is "No", just close the dialog
         });
 
         builder.setNegativeButton("Yes", (dialog, which) -> {
-            deletePost(modelPost.getId(), holder); // 实际上，这里现在是“是”，执行删除操作
+            deletePost(modelPost.getId(), holder); // this is "yes", perform the delete operation
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
+    // Perform the operation of deleting posts and related comments
     private void deletePost(String postId, ViewHolder holder) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseDatabase realtimeDatabase = FirebaseDatabase.getInstance();
         DatabaseReference commentRef = realtimeDatabase.getReference(COMMENT_KEY).child(postId);
 
-        // 删除评论
+        // Delete comment
         commentRef.removeValue().addOnSuccessListener(aVoid -> {
             Log.d("deletePost", "Comments deleted successfully for post ID: " + postId);
 
-            // 获取帖子的图片URL
+            // Get the image URL of the post
             db.collection("POSTs").document(postId).get().addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
-                    // 获取图片的 URL
+                    // Get the URL of the image
                     String imgUrl = documentSnapshot.getString("img");
 
-                    // 删除图片文件
+                    // Delete image files
                     if (imgUrl != null && !imgUrl.isEmpty()) {
                         FirebaseStorage storage = FirebaseStorage.getInstance();
                         StorageReference imgRef = storage.getReferenceFromUrl(imgUrl);
                         imgRef.delete().addOnSuccessListener(aVoid1 -> {
-                            // 删除帖子数据
+                            // Delete post data
                             db.collection("POSTs").document(postId).delete()
-                                    .addOnSuccessListener(aVoid2 -> Toast.makeText(holder.nickname.getContext(), "Post, image and comments deleted successfully", Toast.LENGTH_SHORT).show())
+                                    .addOnSuccessListener(aVoid2 -> Toast.makeText(holder.nickname.getContext(), "Post, image and comments deleted", Toast.LENGTH_SHORT).show())
                                     .addOnFailureListener(e -> Toast.makeText(holder.nickname.getContext(), "Failed to delete post: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                         }).addOnFailureListener(e -> Toast.makeText(holder.nickname.getContext(), "Failed to delete image: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     } else {
-                        // 没有关联的图片，直接删除帖子数据
+                        // If there is no associated picture, delete the post data directly
                         db.collection("POSTs").document(postId).delete()
-                                .addOnSuccessListener(aVoid2 -> Toast.makeText(holder.nickname.getContext(), "Post and comments deleted successfully", Toast.LENGTH_SHORT).show())
+                                .addOnSuccessListener(aVoid2 -> Toast.makeText(holder.nickname.getContext(), "Post and comments deleted", Toast.LENGTH_SHORT).show())
                                 .addOnFailureListener(e -> Toast.makeText(holder.nickname.getContext(), "Failed to delete post: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 } else {
@@ -230,9 +241,10 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list.size(); // Return the total number of posts
     }
 
+    // ViewHolder used to cache view components
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
         TextView date, title, liked_count, nickname, comment_count;
@@ -245,8 +257,10 @@ public class Adapter_Post extends RecyclerView.Adapter<Adapter_Post.ViewHolder> 
             title = itemView.findViewById(R.id.textViewTitle);
             liked_count = itemView.findViewById(R.id.textViewLikes);
             nickname = itemView.findViewById(R.id.textViewName);
-            comment_count = itemView.findViewById(R.id.textViewCommentCount);  // 初始化 comment_count
+            comment_count = itemView.findViewById(R.id.textViewCommentCount);  // Initialize comment_count
         }
+
+        // Format the timestamp into a more readable date format
         private String formatDate(long time) {
             Calendar now = Calendar.getInstance();
             Calendar timeToCheck = Calendar.getInstance();

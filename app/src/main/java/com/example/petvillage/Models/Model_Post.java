@@ -3,6 +3,7 @@ package com.example.petvillage.Models;
 import java.util.ArrayList;
 import java.util.List;
 
+// Post Model
 public class Model_Post {
     private String title, content, nickname, date, img, id;
     private long timestamp;
@@ -22,7 +23,6 @@ public class Model_Post {
         this.timestamp = timestamp;
         this.modelComments = new ArrayList<>();
     }
-
     public long getTimestamp() {
         return timestamp;
     }
@@ -33,7 +33,6 @@ public class Model_Post {
 
     public Model_Post() {
     }
-
     public String getId() {
         return id;
     }
