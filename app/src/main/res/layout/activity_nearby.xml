@@ -61,7 +61,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/maps_nanjing"
+                    android:id="@+id/maps_dublin"
                     android:layout_width="49dp"
                     android:layout_height="58dp"
                     android:layout_marginStart="250dp"
@@ -123,7 +123,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/maps_shanghai"
+                    android:id="@+id/maps_galway"
                     android:layout_width="49dp"
                     android:layout_height="58dp"
                     android:layout_marginStart="250dp"

@@ -28,8 +28,8 @@ public class Nearby extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
-    private ImageView maps_nanjing;
-    private ImageView maps_shanghai;
+    private ImageView maps_galway;
+    private ImageView maps_dublin;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -101,10 +101,11 @@ public class Nearby extends AppCompatActivity {
             }
         });
 
-        maps_nanjing = findViewById(R.id.maps_nanjing);
-        maps_shanghai = findViewById(R.id.maps_shanghai);
+        maps_dublin = findViewById(R.id.maps_dublin);
+        maps_galway = findViewById(R.id.maps_galway);
 
-        maps_nanjing.setOnClickListener(new View.OnClickListener() {
+        // Location Dublin
+        maps_dublin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Nearby.this, Maps_Dublin.class);
@@ -113,7 +114,7 @@ public class Nearby extends AppCompatActivity {
             }
         });
 
-        maps_shanghai.setOnClickListener(new View.OnClickListener() {
+        maps_galway.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Nearby.this, Maps_Galway.class);
